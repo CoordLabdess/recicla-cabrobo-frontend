@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	statusIconContainer: {
-		marginRight: 7,
+		marginHorizontal: 10,
 	},
 	statusInfoContainer: {},
 	statusTitleText: {

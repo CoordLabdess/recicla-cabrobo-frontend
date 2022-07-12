@@ -7,10 +7,12 @@ import { RootBottomTabNavigator } from './src/routers/RootBottomTabNavigator'
 export default function App() {
 	return (
 		<SafeAreaProvider>
-			<NavigationContainer>
-				<StatusBar style='auto' />
-				<RootBottomTabNavigator />
-			</NavigationContainer>
+			<View style={{ flex: 1, backgroundColor: '#fff' }}>
+				<NavigationContainer>
+					<StatusBar style='auto' />
+					<RootBottomTabNavigator />
+				</NavigationContainer>
+			</View>
 		</SafeAreaProvider>
 	)
 }

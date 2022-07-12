@@ -29,11 +29,6 @@ const actions: Action[] = [
 		icon: 'calculator',
 		screen: '',
 	},
-	{
-		title: 'Calculadora de Impacto',
-		icon: 'calculator',
-		screen: '',
-	},
 ]
 
 function ActionCard(props: { itemData: ListRenderItemInfo<Action> }) {
@@ -77,6 +72,7 @@ const styles = StyleSheet.create({
 		borderTopWidth: 1,
 		paddingTop: 16,
 		flex: 1,
+		marginBottom: 30,
 	},
 	actionContainer: {
 		width: 84,

@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'space-between',
+		paddingHorizontal: 20,
+		paddingTop: 20,
 	},
 	infoContainer: {
 		flexDirection: 'row',
