@@ -5,7 +5,11 @@ const Stack = createNativeStackNavigator()
 
 export function ProfileStackRouter() {
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}
+		>
 			<Stack.Screen name='Perfil' component={ProfileScreen} />
 		</Stack.Navigator>
 	)

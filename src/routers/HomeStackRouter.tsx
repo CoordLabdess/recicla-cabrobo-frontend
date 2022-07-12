@@ -5,7 +5,11 @@ const Stack = createNativeStackNavigator()
 
 export function HomeStackRouter() {
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false
+			}}
+		>
 			<Stack.Screen name='Inicio' component={HomeScreen} />
 		</Stack.Navigator>
 	)
