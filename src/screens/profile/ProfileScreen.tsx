@@ -4,11 +4,13 @@ import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { ProfileHeader } from '../../components/profile/ProfileHeader'
 import { UserStatus } from '../../components/profile/UserStatus'
+import { ProfileActions } from '../../components/profile/ProfileActions'
 
 function Header() {
 	return (
 		<ProfileHeader>
 			<UserStatus />
+			<ProfileActions />
 		</ProfileHeader>
 	)
 }

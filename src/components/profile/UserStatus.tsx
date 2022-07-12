@@ -49,7 +49,7 @@ function StatusCard(props: { itemData: ListRenderItemInfo<StatusItem> }) {
 
 export function UserStatus() {
 	return (
-		<View>
+		<View style={styles.root}>
 			<FlatList
 				showsHorizontalScrollIndicator={false}
 				data={data}
@@ -64,9 +64,13 @@ export function UserStatus() {
 }
 
 const styles = StyleSheet.create({
+	root: {
+		alignItems: 'center',
+	},
 	statusContainer: {
 		flexDirection: 'row',
 		marginTop: 25,
+		alignItems: 'center',
 	},
 	statusIconContainer: {
 		marginRight: 7,
