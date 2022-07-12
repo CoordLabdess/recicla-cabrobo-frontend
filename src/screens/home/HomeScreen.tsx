@@ -2,10 +2,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
-import { ProfileHeader } from '../../components/profile/ProfileHeader'
-import { UserStatus } from '../../components/profile/UserStatus'
-import { ProfileActions } from '../../components/profile/ProfileActions'
-import { History } from '../../components/profile/History'
+import { ProfileHeader } from '../../components/home/ProfileHeader'
+import { UserStatus } from '../../components/home/UserStatus'
+import { ProfileActions } from '../../components/home/ProfileActions'
+import { History } from '../../components/home/History'
 
 interface History {
 	date: Date
@@ -75,7 +75,7 @@ function Header() {
 	)
 }
 
-export function ProfileScreen() {
+export function HomeScreen() {
 	return (
 		<SafeAreaView style={styles.root}>
 			<FlatList

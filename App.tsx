@@ -9,7 +9,7 @@ export default function App() {
 		<SafeAreaProvider>
 			<View style={{ flex: 1, backgroundColor: '#fff' }}>
 				<NavigationContainer>
-					<StatusBar style='auto' />
+					<StatusBar style='auto' backgroundColor='#fff' />
 					<RootBottomTabNavigator />
 				</NavigationContainer>
 			</View>

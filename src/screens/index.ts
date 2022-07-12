@@ -1,4 +1,3 @@
-export { HomeScreen } from './HomeScreen'
 export { OptionsScreen } from './OptionsScreen'
-export { ProfileScreen } from './profile/ProfileScreen'
+export { HomeScreen } from './home/HomeScreen'
 export { AnyScreen } from './AnyScreen'
