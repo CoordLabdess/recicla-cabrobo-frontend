@@ -52,6 +52,7 @@ export function ProfileActions() {
 	return (
 		<View style={styles.root}>
 			<FlatList
+				alwaysBounceHorizontal={false}
 				showsHorizontalScrollIndicator={false}
 				data={actions}
 				ItemSeparatorComponent={() => <View style={{ width: 20 }} />}

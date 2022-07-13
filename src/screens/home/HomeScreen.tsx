@@ -81,6 +81,7 @@ export function HomeScreen() {
 			<FlatList
 				ListHeaderComponent={Header}
 				showsVerticalScrollIndicator={false}
+				alwaysBounceVertical={false}
 				data={historyData}
 				style={styles.contentList}
 				renderItem={itemData => (

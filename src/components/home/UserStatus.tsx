@@ -1,4 +1,5 @@
-import { View, Text, FlatList, ListRenderItemInfo, StyleSheet } from 'react-native'
+import { View, Text, FlatList, ListRenderItemInfo, StyleSheet, Pressable } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 
 interface StatusItem {
@@ -6,6 +7,7 @@ interface StatusItem {
 	icon: string
 	value: number
 	unit: string
+	screen: string
 }
 
 const data: StatusItem[] = [
@@ -14,25 +16,33 @@ const data: StatusItem[] = [
 		icon: 'leaf-outline',
 		value: 1000,
 		unit: 'pts',
+		screen: 'ranking',
 	},
 	{
 		title: 'Sua classificação',
 		icon: 'medal-outline',
 		value: 1000,
 		unit: 'º Lugar',
+		screen: 'ranking',
 	},
 	{
 		title: 'Peso Total Entregue',
 		icon: 'trash-outline',
-
 		value: 0,
 		unit: 'kg',
+		screen: 'ranking',
 	},
 ]
 
 function StatusCard(props: { itemData: ListRenderItemInfo<StatusItem> }) {
+	const navigation = useNavigation()
 	return (
-		<View style={styles.statusContainer}>
+		<Pressable
+			style={styles.statusContainer}
+			onPress={() => {
+				navigation.navigate('Ranking' as never)
+			}}
+		>
 			<View style={styles.statusIconContainer}>
 				<Ionicons name={props.itemData.item.icon as any} color='#000' size={34} />
 			</View>
@@ -43,7 +53,7 @@ function StatusCard(props: { itemData: ListRenderItemInfo<StatusItem> }) {
 					{props.itemData.item.unit}
 				</Text>
 			</View>
-		</View>
+		</Pressable>
 	)
 }
 
@@ -51,6 +61,7 @@ export function UserStatus() {
 	return (
 		<View style={styles.root}>
 			<FlatList
+				alwaysBounceHorizontal={false}
 				showsHorizontalScrollIndicator={false}
 				data={data}
 				ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
