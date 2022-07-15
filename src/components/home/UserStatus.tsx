@@ -1,6 +1,7 @@
 import { View, Text, FlatList, ListRenderItemInfo, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
+import { COLORS } from '../../constants/colors'
 
 interface StatusItem {
 	title: string
@@ -58,9 +59,10 @@ function StatusCard(props: { itemData: ListRenderItemInfo<StatusItem> }) {
 }
 
 export function UserStatus() {
+	const navigation = useNavigation()
 	return (
 		<View style={styles.root}>
-			<FlatList
+			{/*<FlatList
 				alwaysBounceHorizontal={false}
 				showsHorizontalScrollIndicator={false}
 				data={data}
@@ -69,14 +71,50 @@ export function UserStatus() {
 				renderItem={itemData => {
 					return <StatusCard itemData={itemData} />
 				}}
-			/>
+			/>*/}
+			<Pressable
+				style={styles.scoreContainer}
+				onPress={() => {
+					navigation.navigate('Ranking' as never)
+				}}
+			>
+				<Ionicons name='leaf-outline' size={26} style={{ marginRight: 5 }} />
+				<View style={{ flex: 1 }}>
+					<Text style={styles.scoreContainerTitle}>Pontos disponíveis</Text>
+					<Text style={styles.scoreContainerText}>1000Pts</Text>
+				</View>
+			</Pressable>
+			<Pressable
+				android_ripple={{ color: '#ccc' }}
+				style={styles.rankingContainer}
+				onPress={() => {
+					navigation.navigate('Ranking' as never)
+				}}
+			>
+				<Ionicons name='medal-outline' size={26} style={{ marginRight: 5 }} />
+				<View
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						flex: 1,
+						justifyContent: 'space-between',
+					}}
+				>
+					<View>
+						<Text style={styles.rankingContainerTitle}>Sua Classificação</Text>
+						<Text style={styles.rankingContainerText}>1º Lugar</Text>
+					</View>
+					<Ionicons name='chevron-forward' size={26} color={COLORS.secondary500} />
+				</View>
+			</Pressable>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
 	root: {
-		alignItems: 'center',
+		alignItems: 'flex-start',
+		marginTop: 16,
 	},
 	statusContainer: {
 		flexDirection: 'row',
@@ -94,5 +132,29 @@ const styles = StyleSheet.create({
 	statusValueText: {
 		fontSize: 17,
 		fontWeight: '400',
+	},
+	scoreContainer: {
+		flexDirection: 'row',
+		paddingHorizontal: 20,
+		paddingVertical: 4,
+	},
+	scoreContainerTitle: {
+		fontSize: 18,
+	},
+	scoreContainerText: {
+		fontSize: 16,
+		color: COLORS.secondary500,
+	},
+	rankingContainer: {
+		flexDirection: 'row',
+		paddingHorizontal: 20,
+		paddingVertical: 4,
+	},
+	rankingContainerTitle: {
+		fontSize: 18,
+	},
+	rankingContainerText: {
+		fontSize: 16,
+		color: COLORS.secondary500,
 	},
 })

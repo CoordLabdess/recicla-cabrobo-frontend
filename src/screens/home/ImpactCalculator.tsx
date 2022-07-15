@@ -88,7 +88,7 @@ function ImpactElement(props: { itemData: ListRenderItemInfo<Economy> }) {
 			: props.itemData.item.alias === 'water'
 			? `Isso corresponde a ${((2 / 1) * props.itemData.item.value).toFixed(
 					0,
-			  )} unidade(s) pequena(s) de pagua mineral de 500ml.`
+			  )} unidade(s) pequena(s) de água mineral de 500ml.`
 			: `Isso corresponde ao espaço que ${((2 / 2.4) * props.itemData.item.value).toFixed(
 					0,
 			  )} unidade(s) de papel higiênico ocupam num aterro.`

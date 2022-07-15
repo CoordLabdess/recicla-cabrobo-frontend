@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
 	root: {
 		alignItems: 'center',
 		borderTopColor: '#c3c3c3',
-		marginTop: 20,
 		borderTopWidth: 1,
 		paddingTop: 16,
 		flex: 1,
