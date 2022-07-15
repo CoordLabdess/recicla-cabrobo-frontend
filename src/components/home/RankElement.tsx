@@ -42,6 +42,7 @@ export function RankElement(props: RankElementProps) {
 											: '#8b6703'
 									}
 									size={18}
+									style={{ marginRight: 5 }}
 								/>
 							)}
 							<Text style={{ color: '#838495' }}>{props.itemData.item.points}Pts</Text>
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
 		marginBottom: 9,
 	},
 	outterRankElement: {
-		flex: 1,
+		width: '80%',
 		borderRadius: 30,
 		shadowColor: '#000',
 		shadowOffset: {
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	innerRankElement: {
-		width: 347,
+		width: '100%',
 		backgroundColor: '#fff',
 		borderRadius: 30,
 		height: 90,

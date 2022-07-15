@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { ProfileHeader } from '../../components/home/ProfileHeader'
 import { RankElement } from '../../components/home/RankElement'
 import { Ionicons } from '@expo/vector-icons'
+import { SimplePageHeader } from '../../components/ui/SimplePageHeader'
 
 interface Rank {
 	name: string
@@ -73,33 +74,7 @@ export function RankingScreen() {
 	return (
 		<SafeAreaView style={styles.root}>
 			<FlatList
-				ListHeaderComponent={() => (
-					<View
-						style={{
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							paddingHorizontal: 20,
-							marginVertical: 20,
-						}}
-					>
-						<Pressable
-							style={{ alignItems: 'center', flexDirection: 'row' }}
-							onPress={() => {
-								navigation.goBack()
-							}}
-						>
-							<Ionicons name='arrow-back' size={32} color='#838495' />
-						</Pressable>
-						<Text
-							style={{ fontSize: 22, color: '#838495', textAlign: 'center', marginVertical: 10 }}
-						>
-							Ranking dos Alunos
-						</Text>
-						<View style={{ opacity: 0, alignItems: 'center', flexDirection: 'row' }}>
-							<Ionicons name='arrow-back' size={32} color='#838495' />
-						</View>
-					</View>
-				)}
+				ListHeaderComponent={() => <SimplePageHeader title='Ranking dos Alunos' />}
 				alwaysBounceVertical={false}
 				style={styles.contentList}
 				data={rankins}

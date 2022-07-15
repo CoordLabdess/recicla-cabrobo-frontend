@@ -1,6 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { HomeScreen } from '../screens'
 import { RankingScreen } from '../screens/home/RankingScreen'
+import { ImpactCalculator } from '../screens/home/ImpactCalculator'
+import { COLORS } from '../constants/colors'
 
 const Stack = createNativeStackNavigator()
 
@@ -17,6 +19,18 @@ export function HomeStackRouter() {
 				component={RankingScreen}
 				options={{
 					animation: 'slide_from_bottom',
+				}}
+			/>
+			<Stack.Screen
+				name='ImpactCalculator'
+				component={ImpactCalculator}
+				options={{
+					title: 'Calculadora de Impacto',
+					headerShown: false,
+					headerTintColor: COLORS.secondary500,
+
+					headerTitleAlign: 'center',
+					animation: 'slide_from_right',
 				}}
 			/>
 		</Stack.Navigator>

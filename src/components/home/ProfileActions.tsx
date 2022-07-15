@@ -1,6 +1,7 @@
 import { View, Text, FlatList, StyleSheet, Pressable, ListRenderItemInfo } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
+import { useNavigation } from '@react-navigation/native'
 
 interface Action {
 	title: string
@@ -27,16 +28,17 @@ const actions: Action[] = [
 	{
 		title: 'Calculadora de Impacto',
 		icon: 'calculator',
-		screen: '',
+		screen: 'ImpactCalculator',
 	},
 ]
 
 function ActionCard(props: { itemData: ListRenderItemInfo<Action> }) {
+	const navigation = useNavigation()
 	return (
 		<View style={styles.actionContainer}>
 			<Pressable
 				onPress={() => {
-					console.log(props.itemData.item.title)
+					navigation.navigate(props.itemData.item.screen as never)
 				}}
 			>
 				<View style={styles.actionIconContainer}>
