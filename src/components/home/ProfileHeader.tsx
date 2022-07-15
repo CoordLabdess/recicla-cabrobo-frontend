@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 
@@ -25,9 +25,14 @@ export function ProfileHeader(props: ProfileHeaderProps) {
 						<Text style={styles.tag}>Aluno</Text>
 					</View>
 				</View>
-				<View>
-					<Ionicons name='settings-outline' color={COLORS.primary500} size={31} />
-				</View>
+				<Pressable>
+					<Ionicons
+						name='exit-outline'
+						color={COLORS.primary500}
+						size={36}
+						onPress={() => console.log('exit')}
+					/>
+				</Pressable>
 			</View>
 			{props.children ? props.children : <></>}
 		</View>
