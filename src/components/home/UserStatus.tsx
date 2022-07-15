@@ -72,12 +72,7 @@ export function UserStatus() {
 					return <StatusCard itemData={itemData} />
 				}}
 			/>*/}
-			<Pressable
-				style={styles.scoreContainer}
-				onPress={() => {
-					navigation.navigate('Ranking' as never)
-				}}
-			>
+			<Pressable style={styles.scoreContainer}>
 				<Ionicons name='leaf-outline' size={26} style={{ marginRight: 5 }} />
 				<View style={{ flex: 1 }}>
 					<Text style={styles.scoreContainerTitle}>Pontos disponíveis</Text>
