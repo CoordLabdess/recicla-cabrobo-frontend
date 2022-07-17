@@ -8,6 +8,7 @@ import { useContext, useState } from 'react'
 import { AuthContext } from '../../store/context/authContext'
 import { useNavigation } from '@react-navigation/native'
 import { signIn } from '../../utils/auth'
+import { LoadingScreen } from '../ui/LoadingScreen'
 
 export function LoginScreen() {
 	const [isAuthenticating, setIsAuthenticating] = useState(false)
@@ -21,7 +22,7 @@ export function LoginScreen() {
 			const token = await signIn(email, password)
 			authCtx.authenticate(token)
 		} catch (error) {
-			Alert.alert('Erro de autenticação!', 'Configura suas credenciais e tente novamente.')
+			Alert.alert('Erro de autenticação!', 'Confira suas credenciais e tente novamente.')
 			setIsAuthenticating(false)
 		}
 	}
@@ -29,11 +30,7 @@ export function LoginScreen() {
 	const authCtx = useContext(AuthContext)
 
 	if (isAuthenticating) {
-		return (
-			<SafeAreaView>
-				<Text>Loading</Text>
-			</SafeAreaView>
-		)
+		return <LoadingScreen />
 	} else {
 		return (
 			<SafeAreaView style={styles.root}>

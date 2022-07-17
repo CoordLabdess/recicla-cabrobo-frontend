@@ -8,6 +8,7 @@ import { useContext, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { signUp } from '../../utils/auth'
 import { AuthContext } from '../../store/context/authContext'
+import { LoadingScreen } from '../ui/LoadingScreen'
 
 export function RegisterScreen() {
 	const [isAuthenticating, setIsAuthenticating] = useState(false)
@@ -23,17 +24,13 @@ export function RegisterScreen() {
 			await signUp(email, password)
 			navigation.navigate('Login' as never)
 		} catch (error) {
-			Alert.alert('Informações inválidas!', 'Configura suas credenciais e tente novamente.')
+			Alert.alert('Informações inválidas!', 'Confira suas credenciais e tente novamente.')
 			setIsAuthenticating(false)
 		}
 	}
 
 	if (isAuthenticating) {
-		return (
-			<SafeAreaView>
-				<Text>Loading</Text>
-			</SafeAreaView>
-		)
+		return <LoadingScreen />
 	} else {
 		return (
 			<SafeAreaView style={styles.root}>
