@@ -35,7 +35,11 @@ export function RegisterScreen() {
 		return (
 			<SafeAreaView style={styles.root}>
 				<View>
-					<ScrollView style={{ flexGrow: 1 }}>
+					<ScrollView
+						style={{ flexGrow: 1 }}
+						alwaysBounceVertical={false}
+						showsVerticalScrollIndicator={false}
+					>
 						<View
 							style={{
 								width: '80%',
