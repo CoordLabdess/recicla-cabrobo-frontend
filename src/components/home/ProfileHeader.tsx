@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
-import { AuthContext } from '../../../store/context/authContext'
+import { AuthContext } from '../../store/context/authContext'
 import { useContext } from 'react'
 
 interface ProfileHeaderProps {

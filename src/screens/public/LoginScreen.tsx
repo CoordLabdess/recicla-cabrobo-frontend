@@ -1,94 +1,118 @@
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, Button, StyleSheet, ScrollView, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomButton, PrimaryButton } from '../../components/ui/Buttons'
 import { COLORS } from '../../constants/colors'
 import { PrimaryTextInput } from '../../components/ui/TextInputs'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useContext } from 'react'
-import { AuthContext } from '../../../store/context/authContext'
+import { useContext, useState } from 'react'
+import { AuthContext } from '../../store/context/authContext'
 import { useNavigation } from '@react-navigation/native'
+import { signIn } from '../../utils/auth'
 
 export function LoginScreen() {
+	const [isAuthenticating, setIsAuthenticating] = useState(false)
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
 	const navigation = useNavigation()
 
-	function login() {
-		authCtx.authenticate('aaa')
+	async function signInHandler() {
+		setIsAuthenticating(true)
+		try {
+			const token = await signIn(email, password)
+			authCtx.authenticate(token)
+		} catch (error) {
+			Alert.alert('Erro de autenticação!', 'Configura suas credenciais e tente novamente.')
+			setIsAuthenticating(false)
+		}
 	}
 
 	const authCtx = useContext(AuthContext)
 
-	return (
-		<SafeAreaView style={styles.root}>
-			<View>
-				<ScrollView style={{ flexGrow: 1 }}>
-					<View
-						style={{
-							width: '80%',
-							paddingVertical: 20,
-							alignItems: 'center',
-							alignSelf: 'center',
-						}}
-					>
-						<View style={{ width: '100%', marginBottom: 37 }}>
-							<Text style={styles.title}>Bem-Vindo</Text>
-							<View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-								<Text style={[styles.title, { fontSize: 17, lineHeight: 30 }]}>ao</Text>
-								<Text style={styles.title}> Recicla!</Text>
-							</View>
-						</View>
-						<View style={{ width: '100%', marginBottom: 50 }}>
-							<Text style={[styles.title, { fontSize: 17 }]}>Faça login para continuar</Text>
-						</View>
-
-						<PrimaryTextInput
-							placeholder='Digite seu e-mail'
-							style={{ width: '100%', height: 50, marginBottom: 28 }}
-						/>
-
-						<PrimaryTextInput
-							placeholder='Digite sua senha'
-							style={{ width: '100%', height: 50, marginBottom: 12 }}
-						/>
-
-						<CustomButton
-							style={{ marginBottom: 66 }}
-							title='Esqueci minha senha'
-							onPress={() => console.log('oi')}
-							textStyle={{ color: '#00E0FF' }}
-						/>
-
-						<CustomButton
-							title='Login'
-							onPress={login}
+	if (isAuthenticating) {
+		return (
+			<SafeAreaView>
+				<Text>Loading</Text>
+			</SafeAreaView>
+		)
+	} else {
+		return (
+			<SafeAreaView style={styles.root}>
+				<View>
+					<ScrollView style={{ flexGrow: 1 }}>
+						<View
 							style={{
-								marginBottom: 32,
-								backgroundColor: COLORS.primary500,
-								height: 57,
-								width: '65%',
-								borderRadius: 50,
+								width: '80%',
+								paddingVertical: 20,
 								alignItems: 'center',
-								justifyContent: 'center',
+								alignSelf: 'center',
 							}}
-							textStyle={{
-								color: '#fff',
-								fontWeight: '600',
-								fontSize: 25,
-							}}
-						/>
+						>
+							<View style={{ width: '100%', marginBottom: 37 }}>
+								<Text style={styles.title}>Bem-Vindo</Text>
+								<View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+									<Text style={[styles.title, { fontSize: 17, lineHeight: 30 }]}>ao</Text>
+									<Text style={styles.title}> Recicla!</Text>
+								</View>
+							</View>
+							<View style={{ width: '100%', marginBottom: 50 }}>
+								<Text style={[styles.title, { fontSize: 17 }]}>Faça login para continuar</Text>
+							</View>
 
-						<View style={[styles.registerContainer, { marginBottom: 34 }]}>
-							<Text>Não tem uma conta? </Text>
+							<PrimaryTextInput
+								placeholder='Digite seu e-mail'
+								value={email}
+								onChangeText={(text: string) => setEmail(text)}
+								style={{ width: '100%', height: 50, marginBottom: 28 }}
+							/>
+
+							<PrimaryTextInput
+								placeholder='Digite sua senha'
+								secureTextEntry
+								value={password}
+								onChangeText={(text: string) => setPassword(text)}
+								style={{ width: '100%', height: 50, marginBottom: 12 }}
+							/>
+
 							<CustomButton
-								title='Cadastre-se'
-								onPress={() => navigation.navigate('Register' as any)}
+								style={{ marginBottom: 66 }}
+								title='Esqueci minha senha'
+								onPress={() => console.log('oi')}
 								textStyle={{ color: '#00E0FF' }}
 							/>
+
+							<CustomButton
+								title='Login'
+								onPress={signInHandler}
+								style={{
+									marginBottom: 32,
+									backgroundColor: COLORS.primary500,
+									height: 57,
+									width: '65%',
+									borderRadius: 50,
+									alignItems: 'center',
+									justifyContent: 'center',
+								}}
+								textStyle={{
+									color: '#fff',
+									fontWeight: '600',
+									fontSize: 25,
+								}}
+							/>
+
+							<View style={[styles.registerContainer, { marginBottom: 34 }]}>
+								<Text>Não tem uma conta? </Text>
+								<CustomButton
+									title='Cadastre-se'
+									onPress={() => navigation.navigate('SignUp' as any)}
+									textStyle={{ color: '#00E0FF' }}
+								/>
+							</View>
 						</View>
-					</View>
-				</ScrollView>
-			</View>
-		</SafeAreaView>
-	)
+					</ScrollView>
+				</View>
+			</SafeAreaView>
+		)
+	}
 }
 
 const styles = StyleSheet.create({

@@ -16,7 +16,7 @@ export function PublicRouter() {
 		>
 			<Stack.Screen name='Login' component={LoginPage} />
 			<Stack.Screen
-				name='Register'
+				name='SignUp'
 				component={RegisterScreen}
 				options={{
 					animation: 'slide_from_bottom',

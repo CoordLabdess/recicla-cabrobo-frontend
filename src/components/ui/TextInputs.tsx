@@ -1,23 +1,23 @@
-import { View, TextInput, StyleSheet, ViewStyle } from 'react-native'
+import { useLayoutEffect, useState } from 'react'
+import { View, TextInput, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native'
 
 interface TextInputProps {
 	placeholder?: string
 	value?: string
 	setValue?: Function
-	style?: ViewStyle
+	style?: StyleProp<TextStyle>
+	onChangeText?: (text: string) => void
+	secureTextEntry?: boolean
 }
 
 export function PrimaryTextInput(props: TextInputProps) {
-	function changeInputValue(text: string) {
-		props.setValue && props.setValue(text)
-	}
-
 	return (
 		<TextInput
+			secureTextEntry={props.secureTextEntry}
 			style={[primaryTextInputStyle.input, props.style]}
 			placeholder={props.placeholder}
 			value={props.value}
-			onChangeText={changeInputValue}
+			onChangeText={props.onChangeText}
 		/>
 	)
 }

@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../store/context/authContext'
+import { AuthContext } from '../store/context/authContext'
 import { PublicRouter } from './public/PublicRouter'
 import { RootBottomTabNavigator } from './RootBottomTabNavigator'
 
