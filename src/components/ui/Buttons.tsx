@@ -1,4 +1,12 @@
-import { Pressable, Text, View, TextStyle, ViewStyle, StyleSheet } from 'react-native'
+import {
+	Pressable,
+	Text,
+	View,
+	TextStyle,
+	ViewStyle,
+	StyleSheet,
+	ActivityIndicator,
+} from 'react-native'
 import { COLORS } from '../../constants/colors'
 
 interface ButtonProps {
@@ -6,13 +14,20 @@ interface ButtonProps {
 	style?: ViewStyle
 	textStyle?: TextStyle
 	onPress: () => void
+	isLoading?: boolean
 }
 
 export function CustomButton(props: ButtonProps) {
 	return (
-		<Pressable style={props.style} onPress={props.onPress}>
-			<Text style={props.textStyle}>{props.title}</Text>
-		</Pressable>
+		<View>
+			<Pressable style={props.style} onPress={props.onPress}>
+				{props.isLoading ? (
+					<ActivityIndicator color={props.textStyle?.color} size={props.textStyle?.fontSize} />
+				) : (
+					<Text style={props.textStyle}>{props.title}</Text>
+				)}
+			</Pressable>
+		</View>
 	)
 }
 
@@ -21,10 +36,17 @@ export function PrimaryButton(props: ButtonProps) {
 		<View style={primaryButtonStyles.outterContainer}>
 			<Pressable
 				android_ripple={{ color: '#ccc' }}
-				style={[primaryButtonStyles.buttonContainer, props.style]}
+				style={primaryButtonStyles.buttonContainer}
 				onPress={props.onPress}
 			>
-				<Text style={[primaryButtonStyles.text, props.textStyle]}>{props.title}</Text>
+				{props.isLoading ? (
+					<ActivityIndicator
+						color={primaryButtonStyles.text.color}
+						size={primaryButtonStyles.text.fontSize}
+					/>
+				) : (
+					<Text style={primaryButtonStyles.text}>{props.title}</Text>
+				)}
 			</Pressable>
 		</View>
 	)
@@ -32,22 +54,25 @@ export function PrimaryButton(props: ButtonProps) {
 
 const primaryButtonStyles = StyleSheet.create({
 	outterContainer: {
+		backgroundColor: COLORS.primary500,
+		height: 57,
+		width: 200,
 		borderRadius: 50,
+		alignItems: 'center',
+		justifyContent: 'center',
+		elevation: 4,
 		overflow: 'hidden',
 	},
 	buttonContainer: {
 		backgroundColor: COLORS.primary500,
-		paddingVertical: 5,
-		paddingHorizontal: 10,
-		height: 57,
-		width: 254,
+		height: '100%',
+		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 50,
 	},
 	text: {
-		color: COLORS.secondary100,
-		fontSize: 25,
+		color: '#fff',
 		fontWeight: '600',
+		fontSize: 25,
 	},
 })

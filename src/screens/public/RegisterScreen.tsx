@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, ScrollView, Alert } from 'react-native'
+import { View, Text, Button, StyleSheet, ScrollView, Alert, TextInput } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomButton, PrimaryButton } from '../../components/ui/Buttons'
 import { COLORS } from '../../constants/colors'
@@ -9,23 +9,88 @@ import { useNavigation } from '@react-navigation/native'
 import { signUp } from '../../utils/auth'
 import { AuthContext } from '../../store/context/authContext'
 import { LoadingScreen } from '../ui/LoadingScreen'
+import { isEmailValid, isPasswordLong } from '../../utils/verification'
+
+interface Erros {
+	invalidEmail: boolean
+	shortPassword: boolean
+	emptyEmail: boolean
+	emptyPassword: boolean
+	emailOrPasswordWrong: boolean
+}
 
 export function RegisterScreen() {
 	const [isAuthenticating, setIsAuthenticating] = useState(false)
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const navigation = useNavigation()
+	const [errors, setErros] = useState<Erros>({
+		invalidEmail: false,
+		shortPassword: false,
+		emptyEmail: false,
+		emptyPassword: false,
+		emailOrPasswordWrong: false,
+	})
 
 	const authCtx = useContext(AuthContext)
 
+	function validateData() {
+		let isDataValid = true
+		if (!isEmailValid(email)) {
+			setErros(cErros => {
+				return { ...cErros, invalidEmail: true }
+			})
+			isDataValid = false
+		} else {
+			setErros(cErros => {
+				return { ...cErros, invalidEmail: false }
+			})
+		}
+		if (!isPasswordLong(password)) {
+			setErros(cErros => {
+				return { ...cErros, shortPassword: true }
+			})
+			isDataValid = false
+		} else {
+			setErros(cErros => {
+				return { ...cErros, shortPassword: false }
+			})
+		}
+		if (!email.trim()) {
+			setErros(cErros => {
+				return { ...cErros, emptyEmail: true, invalidEmail: false }
+			})
+			isDataValid = false
+		} else {
+			setErros(cErros => {
+				return { ...cErros, emptyEmail: false }
+			})
+		}
+		if (!password.trim()) {
+			setErros(cErros => {
+				return { ...cErros, emptyPassword: true }
+			})
+			isDataValid = false
+		} else {
+			setErros(cErros => {
+				return { ...cErros, emptyPassword: false }
+			})
+		}
+		return isDataValid
+	}
+
 	async function signUpHandler() {
-		setIsAuthenticating(true)
-		try {
-			await signUp(email, password)
-			navigation.navigate('Login' as never)
-		} catch (error) {
-			Alert.alert('Informações inválidas!', 'Confira suas credenciais e tente novamente.')
-			setIsAuthenticating(false)
+		if (validateData()) {
+			setIsAuthenticating(true)
+			try {
+				await signUp(email, password)
+				navigation.navigate('Login' as never)
+			} catch (error) {
+				Alert.alert('Informações inválidas!', 'Confira suas credenciais e tente novamente.')
+				setIsAuthenticating(false)
+			}
+		} else {
+			console.log('Informações Incorretas')
 		}
 	}
 
@@ -59,53 +124,52 @@ export function RegisterScreen() {
 									<Text style={[styles.title, { fontSize: 17 }]}>Crie sua conta</Text>
 								</View>
 							</View>
-							<PrimaryTextInput
+							<TextInput
 								placeholder='Digite seu e-mail'
 								value={email}
 								onChangeText={(text: string) => setEmail(text)}
-								style={{ width: '100%', height: 50, marginBottom: 28 }}
+								style={{
+									width: '100%',
+									height: 50,
+									marginBottom: 28,
+									backgroundColor: '#EEEEEE',
+									borderRadius: 16,
+									paddingHorizontal: 21,
+								}}
 							/>
 
-							<PrimaryTextInput
+							<TextInput
 								placeholder='Digite sua senha'
 								secureTextEntry
 								value={password}
 								onChangeText={(text: string) => setPassword(text)}
-								style={{ width: '100%', height: 50, marginBottom: 12 }}
+								style={{
+									width: '100%',
+									height: 50,
+									marginBottom: 12,
+									backgroundColor: '#EEEEEE',
+									borderRadius: 16,
+									paddingHorizontal: 21,
+								}}
 							/>
 
 							<CustomButton
 								style={{ marginBottom: 66 }}
 								title='Esqueci minha senha'
 								onPress={() => console.log('oi')}
-								textStyle={{ color: '#00E0FF' }}
+								textStyle={{ color: '#1a6dbb' }}
 							/>
 
-							<CustomButton
-								title='Cadastrar'
-								onPress={signUpHandler}
-								style={{
-									marginBottom: 32,
-									backgroundColor: COLORS.primary500,
-									height: 57,
-									width: '65%',
-									borderRadius: 50,
-									alignItems: 'center',
-									justifyContent: 'center',
-								}}
-								textStyle={{
-									color: '#fff',
-									fontWeight: '600',
-									fontSize: 25,
-								}}
-							/>
+							<View style={{ width: '100%', marginBottom: 32, alignItems: 'center' }}>
+								<PrimaryButton title='Cadastrar' onPress={signUpHandler} />
+							</View>
 
 							<View style={[styles.registerContainer, { marginBottom: 34 }]}>
 								<Text>Já possui uma conta? </Text>
 								<CustomButton
 									title='Logue-se'
 									onPress={() => navigation.navigate('Login' as any)}
-									textStyle={{ color: '#00E0FF' }}
+									textStyle={{ color: '#1a6dbb' }}
 								/>
 							</View>
 						</View>

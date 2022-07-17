@@ -1,5 +1,13 @@
 import { useLayoutEffect, useState } from 'react'
-import { View, TextInput, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native'
+import {
+	View,
+	TextInput,
+	StyleSheet,
+	ViewStyle,
+	TextStyle,
+	StyleProp,
+	KeyboardTypeOptions,
+} from 'react-native'
 
 interface TextInputProps {
 	placeholder?: string
@@ -8,11 +16,13 @@ interface TextInputProps {
 	style?: StyleProp<TextStyle>
 	onChangeText?: (text: string) => void
 	secureTextEntry?: boolean
+	keyboardType?: KeyboardTypeOptions
 }
 
 export function PrimaryTextInput(props: TextInputProps) {
 	return (
 		<TextInput
+			keyboardType={props.keyboardType}
 			secureTextEntry={props.secureTextEntry}
 			style={[primaryTextInputStyle.input, props.style]}
 			placeholder={props.placeholder}
