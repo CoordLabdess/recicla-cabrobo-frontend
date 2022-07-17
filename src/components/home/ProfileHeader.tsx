@@ -1,12 +1,20 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
+import { AuthContext } from '../../../store/context/authContext'
+import { useContext } from 'react'
 
 interface ProfileHeaderProps {
 	children?: React.ReactNode
 }
 
 export function ProfileHeader(props: ProfileHeaderProps) {
+	const authToken = useContext(AuthContext)
+
+	function logout() {
+		authToken.logout()
+	}
+
 	return (
 		<View>
 			<View style={styles.root}>
@@ -25,13 +33,8 @@ export function ProfileHeader(props: ProfileHeaderProps) {
 						<Text style={styles.tag}>Aluno</Text>
 					</View>
 				</View>
-				<Pressable>
-					<Ionicons
-						name='exit-outline'
-						color={COLORS.primary500}
-						size={36}
-						onPress={() => console.log('exit')}
-					/>
+				<Pressable onPress={logout}>
+					<Ionicons name='exit-outline' color={COLORS.primary500} size={36} />
 				</Pressable>
 			</View>
 			{props.children ? props.children : <></>}

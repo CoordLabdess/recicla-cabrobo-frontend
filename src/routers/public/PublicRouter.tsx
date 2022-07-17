@@ -3,14 +3,9 @@ import { AnyScreen, LoginScreen } from '../../screens'
 
 const Stack = createNativeStackNavigator()
 
-interface PublicRouterProps {
-	isLogged: boolean
-	setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export function PublicRouter(props: PublicRouterProps) {
+export function PublicRouter() {
 	function LoginPage() {
-		return <LoginScreen isLogged={props.isLogged} setIsLogged={props.setIsLogged} />
+		return <LoginScreen />
 	}
 	return (
 		<Stack.Navigator

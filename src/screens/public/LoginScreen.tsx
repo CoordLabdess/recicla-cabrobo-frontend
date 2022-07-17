@@ -4,16 +4,17 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomButton, PrimaryButton } from '../../components/ui/Buttons'
 import { COLORS } from '../../constants/colors'
 import { PrimaryTextInput } from '../../components/ui/TextInputs'
+import { LinearGradient } from 'expo-linear-gradient'
+import { useContext } from 'react'
+import { AuthContext } from '../../../store/context/authContext'
 
-interface LoginScreenProps {
-	isLogged: boolean
-	setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export function LoginScreen(props: LoginScreenProps) {
+export function LoginScreen() {
 	function login() {
-		props.setIsLogged(true)
+		authCtx.authenticate('aaa')
 	}
+
+	const authCtx = useContext(AuthContext)
+
 	return (
 		<SafeAreaView style={styles.root}>
 			<View>
@@ -21,6 +22,7 @@ export function LoginScreen(props: LoginScreenProps) {
 					<View
 						style={{
 							width: '80%',
+							paddingVertical: 20,
 							alignItems: 'center',
 							alignSelf: 'center',
 						}}
