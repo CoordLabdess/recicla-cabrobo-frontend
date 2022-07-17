@@ -5,17 +5,10 @@ import { COLORS } from '../../constants/colors'
 import { PrimaryTextInput } from '../../components/ui/TextInputs'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useContext } from 'react'
-import { AuthContext } from '../../../store/context/authContext'
 import { useNavigation } from '@react-navigation/native'
 
-export function LoginScreen() {
+export function RegisterScreen() {
 	const navigation = useNavigation()
-
-	function login() {
-		authCtx.authenticate('aaa')
-	}
-
-	const authCtx = useContext(AuthContext)
 
 	return (
 		<SafeAreaView style={styles.root}>
@@ -35,11 +28,11 @@ export function LoginScreen() {
 								<Text style={[styles.title, { fontSize: 17, lineHeight: 30 }]}>ao</Text>
 								<Text style={styles.title}> Recicla!</Text>
 							</View>
-						</View>
-						<View style={{ width: '100%', marginBottom: 50 }}>
-							<Text style={[styles.title, { fontSize: 17 }]}>Faça login para continuar</Text>
-						</View>
 
+							<View style={{ width: '100%', marginBottom: 50 }}>
+								<Text style={[styles.title, { fontSize: 17 }]}>Crie sua conta</Text>
+							</View>
+						</View>
 						<PrimaryTextInput
 							placeholder='Digite seu e-mail'
 							style={{ width: '100%', height: 50, marginBottom: 28 }}
@@ -58,8 +51,8 @@ export function LoginScreen() {
 						/>
 
 						<CustomButton
-							title='Login'
-							onPress={login}
+							title='Cadastrar'
+							onPress={() => console.log('oi')}
 							style={{
 								marginBottom: 32,
 								backgroundColor: COLORS.primary500,
@@ -77,10 +70,10 @@ export function LoginScreen() {
 						/>
 
 						<View style={[styles.registerContainer, { marginBottom: 34 }]}>
-							<Text>Não tem uma conta? </Text>
+							<Text>Já possui uma conta? </Text>
 							<CustomButton
-								title='Cadastre-se'
-								onPress={() => navigation.navigate('Register' as any)}
+								title='Logue-se'
+								onPress={() => navigation.navigate('Login' as any)}
 								textStyle={{ color: '#00E0FF' }}
 							/>
 						</View>
