@@ -102,6 +102,7 @@ export function RegisterScreen() {
 		<SafeAreaView style={styles.root}>
 			<View>
 				<ScrollView
+					keyboardShouldPersistTaps='handled'
 					style={{ flexGrow: 1 }}
 					alwaysBounceVertical={false}
 					showsVerticalScrollIndicator={false}

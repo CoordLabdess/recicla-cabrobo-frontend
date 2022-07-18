@@ -37,7 +37,7 @@ export function PrimaryButton(props: ButtonProps) {
 			<Pressable
 				android_ripple={{ color: '#ccc' }}
 				style={primaryButtonStyles.buttonContainer}
-				onPress={props.onPress}
+				onPress={props.isLoading ? () => {} : props.onPress}
 			>
 				{props.isLoading ? (
 					<ActivityIndicator

@@ -33,9 +33,15 @@ export function ProfileHeader(props: ProfileHeaderProps) {
 						<Text style={styles.tag}>Aluno</Text>
 					</View>
 				</View>
-				<Pressable onPress={logout}>
-					<Ionicons name='exit-outline' color={COLORS.primary500} size={36} />
-				</Pressable>
+				<View style={{ borderRadius: 10, overflow: 'hidden' }}>
+					<Pressable
+						onPress={logout}
+						android_ripple={{ color: '#ccc' }}
+						style={{ padding: 2, alignItems: 'center', justifyContent: 'center' }}
+					>
+						<Ionicons name='exit-outline' color={COLORS.primary500} size={36} />
+					</Pressable>
+				</View>
 			</View>
 			{props.children ? props.children : <></>}
 		</View>

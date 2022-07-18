@@ -54,16 +54,6 @@ export function LoginScreen() {
 				return { ...cErros, invalidEmail: false }
 			})
 		}
-		if (!isPasswordLong(password)) {
-			setErros(cErros => {
-				return { ...cErros, shortPassword: true }
-			})
-			isDataValid = false
-		} else {
-			setErros(cErros => {
-				return { ...cErros, shortPassword: false }
-			})
-		}
 		if (!email.trim()) {
 			setErros(cErros => {
 				return { ...cErros, emptyEmail: true, invalidEmail: false }
@@ -110,6 +100,7 @@ export function LoginScreen() {
 		<SafeAreaView style={styles.root}>
 			<View>
 				<ScrollView
+					keyboardShouldPersistTaps='handled'
 					style={{ flexGrow: 1 }}
 					alwaysBounceVertical={false}
 					showsVerticalScrollIndicator={false}

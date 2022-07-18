@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { HomeScreen } from '../screens'
-import { RankingScreen } from '../screens/home/RankingScreen'
-import { ImpactCalculator } from '../screens/home/ImpactCalculator'
-import { COLORS } from '../constants/colors'
+import { HomeScreen } from '../../screens'
+import { RankingScreen } from '../../screens/student/home/RankingScreen'
+import { ImpactCalculator } from '../../screens/student/home/ImpactCalculator'
+import { COLORS } from '../../constants/colors'
 
 const Stack = createNativeStackNavigator()
 

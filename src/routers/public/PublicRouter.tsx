@@ -26,7 +26,7 @@ export function PublicRouter() {
 				name='SignUp'
 				component={RegisterScreen}
 				options={{
-					animation: 'none',
+					animation: 'fade',
 				}}
 			/>
 		</Stack.Navigator>

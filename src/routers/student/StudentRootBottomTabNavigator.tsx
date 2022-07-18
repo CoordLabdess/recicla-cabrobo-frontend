@@ -1,23 +1,23 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { HomeStackRouter } from './HomeStackRouter'
-import { ProfileStackRouter } from './ProfileStackRouter'
-import { OptionsScreen, AnyScreen } from '../screens'
+import { ProfileStackRouter } from '../ProfileStackRouter'
+import { OptionsScreen, AnyScreen } from '../../screens'
 import { Ionicons } from '@expo/vector-icons'
-import { COLORS } from '../constants/colors'
+import { COLORS } from '../../constants/colors'
 
 const BottomTab = createBottomTabNavigator()
 
-export function RootBottomTabNavigator() {
+export function StudentRootBottomTabNavigator() {
 	return (
 		<BottomTab.Navigator
 			screenOptions={{
 				headerShown: false,
 				tabBarStyle: {
 					backgroundColor: COLORS.primary500,
-					height: 65
+					height: 65,
 				},
 				tabBarInactiveTintColor: COLORS.secondary100,
-				tabBarActiveTintColor: COLORS.secondary100
+				tabBarActiveTintColor: COLORS.secondary100,
 			}}
 		>
 			<BottomTab.Screen
@@ -33,7 +33,7 @@ export function RootBottomTabNavigator() {
 								color={tabInfo.color}
 							/>
 						)
-					}
+					},
 				}}
 			/>
 			<BottomTab.Screen
@@ -49,7 +49,7 @@ export function RootBottomTabNavigator() {
 								color={tabInfo.color}
 							/>
 						)
-					}
+					},
 				}}
 			/>
 			<BottomTab.Screen
@@ -65,7 +65,7 @@ export function RootBottomTabNavigator() {
 								color={tabInfo.color}
 							/>
 						)
-					}
+					},
 				}}
 			/>
 			<BottomTab.Screen
@@ -81,7 +81,7 @@ export function RootBottomTabNavigator() {
 								color={tabInfo.color}
 							/>
 						)
-					}
+					},
 				}}
 			/>
 		</BottomTab.Navigator>

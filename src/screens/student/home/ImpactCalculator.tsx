@@ -1,8 +1,8 @@
 import { View, Text, FlatList, Pressable, StyleSheet, ListRenderItemInfo } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { SimplePageHeader } from '../../components/ui/SimplePageHeader'
+import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { useState, useEffect } from 'react'
-import { COLORS } from '../../constants/colors'
+import { COLORS } from '../../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
 import { useLinkProps } from '@react-navigation/native'
 

@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, FlatList, ListRenderItemInfo, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
-import { ProfileHeader } from '../../components/home/ProfileHeader'
-import { RankElement } from '../../components/home/RankElement'
+import { ProfileHeader } from '../../../components/home/ProfileHeader'
+import { RankElement } from '../../../components/home/RankElement'
 import { Ionicons } from '@expo/vector-icons'
-import { SimplePageHeader } from '../../components/ui/SimplePageHeader'
+import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 
 interface Rank {
 	name: string

@@ -1,11 +1,11 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { COLORS } from '../../constants/colors'
-import { ProfileHeader } from '../../components/home/ProfileHeader'
-import { UserStatus } from '../../components/home/UserStatus'
-import { ProfileActions } from '../../components/home/ProfileActions'
-import { History } from '../../components/home/History'
+import { COLORS } from '../../../constants/colors'
+import { ProfileHeader } from '../../../components/home/ProfileHeader'
+import { UserStatus } from '../../../components/home/UserStatus'
+import { ProfileActions } from '../../../components/home/ProfileActions'
+import { History } from '../../../components/home/History'
 import { useState } from 'react'
 
 interface History {
