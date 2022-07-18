@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, ScrollView, Alert, TextInput } from 'react-native'
+import { View, Text, Button, StyleSheet, ScrollView, Alert, TextInput, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomButton, PrimaryButton } from '../../components/ui/Buttons'
 import { COLORS } from '../../constants/colors'
@@ -17,6 +17,7 @@ interface Erros {
 	emptyEmail: boolean
 	emptyPassword: boolean
 	emailOrPasswordWrong: boolean
+	emailUnavaiable: boolean
 }
 
 export function RegisterScreen() {
@@ -30,6 +31,7 @@ export function RegisterScreen() {
 		emptyEmail: false,
 		emptyPassword: false,
 		emailOrPasswordWrong: false,
+		emailUnavaiable: false,
 	})
 
 	const authCtx = useContext(AuthContext)
@@ -86,7 +88,9 @@ export function RegisterScreen() {
 				await signUp(email, password)
 				navigation.navigate('Login' as never)
 			} catch (error) {
-				Alert.alert('Informações inválidas!', 'Confira suas credenciais e tente novamente.')
+				setErros(cErros => {
+					return { ...cErros, emailUnavaiable: true }
+				})
 				setIsAuthenticating(false)
 			}
 		} else {
@@ -94,17 +98,27 @@ export function RegisterScreen() {
 		}
 	}
 
-	if (isAuthenticating) {
-		return <LoadingScreen />
-	} else {
-		return (
-			<SafeAreaView style={styles.root}>
-				<View>
-					<ScrollView
-						style={{ flexGrow: 1 }}
-						alwaysBounceVertical={false}
-						showsVerticalScrollIndicator={false}
-					>
+	return (
+		<SafeAreaView style={styles.root}>
+			<View>
+				<ScrollView
+					style={{ flexGrow: 1 }}
+					alwaysBounceVertical={false}
+					showsVerticalScrollIndicator={false}
+				>
+					<LinearGradient colors={['#90d485', '#fff', '#fff', '#fff']} style={{ flex: 1 }}>
+						<View style={styles.imageContainer}>
+							<Image
+								resizeMode='contain'
+								style={styles.bola}
+								source={require('../../../assets/public/bola.png')}
+							/>
+							<Image
+								resizeMode='contain'
+								style={styles.logo}
+								source={require('../../../assets/public/LogoRecicla.png')}
+							/>
+						</View>
 						<View
 							style={{
 								width: '80%',
@@ -119,40 +133,56 @@ export function RegisterScreen() {
 									<Text style={[styles.title, { fontSize: 17, lineHeight: 30 }]}>ao</Text>
 									<Text style={styles.title}> Recicla!</Text>
 								</View>
-
-								<View style={{ width: '100%', marginBottom: 50 }}>
-									<Text style={[styles.title, { fontSize: 17 }]}>Crie sua conta</Text>
-								</View>
 							</View>
-							<TextInput
-								placeholder='Digite seu e-mail'
-								value={email}
-								onChangeText={(text: string) => setEmail(text)}
-								style={{
-									width: '100%',
-									height: 50,
-									marginBottom: 28,
-									backgroundColor: '#EEEEEE',
-									borderRadius: 16,
-									paddingHorizontal: 21,
-								}}
-							/>
+							<View style={{ width: '100%', marginBottom: 50 }}>
+								<Text style={[styles.title, { fontSize: 17 }]}>Crie sua conta</Text>
+							</View>
+							<View style={[styles.elementContainer, { marginBottom: 28 }]}>
+								<TextInput
+									placeholder='Digite seu e-mail'
+									value={email}
+									onChangeText={(text: string) => setEmail(text)}
+									style={{
+										width: '100%',
+										height: 50,
+										backgroundColor: '#EEEEEE',
+										borderRadius: 16,
+										paddingHorizontal: 21,
+									}}
+								/>
+								<Text style={errors.emptyEmail ? styles.errorMessage : styles.invisible}>
+									O campo de e-mail não pode estar em branco!
+								</Text>
+								<Text style={errors.invalidEmail ? styles.errorMessage : styles.invisible}>
+									Endereço de e-mail inválido!
+								</Text>
+							</View>
 
-							<TextInput
-								placeholder='Digite sua senha'
-								secureTextEntry
-								value={password}
-								onChangeText={(text: string) => setPassword(text)}
-								style={{
-									width: '100%',
-									height: 50,
-									marginBottom: 12,
-									backgroundColor: '#EEEEEE',
-									borderRadius: 16,
-									paddingHorizontal: 21,
-								}}
-							/>
+							<View style={[styles.elementContainer, { marginBottom: 12 }]}>
+								<TextInput
+									placeholder='Digite sua senha'
+									secureTextEntry
+									value={password}
+									onChangeText={(text: string) => setPassword(text)}
+									style={{
+										width: '100%',
+										height: 50,
+										backgroundColor: '#EEEEEE',
+										borderRadius: 16,
+										paddingHorizontal: 21,
+									}}
+								/>
 
+								<Text style={errors.emptyPassword ? styles.errorMessage : styles.invisible}>
+									O campo de senha não pode estar em branco!
+								</Text>
+								<Text style={errors.shortPassword ? styles.errorMessage : styles.invisible}>
+									A senha deve possui ao menos 6 caracteres!
+								</Text>
+								<Text style={errors.emailUnavaiable ? styles.errorMessage : styles.invisible}>
+									O endereço de e-mail já está cadastrado!
+								</Text>
+							</View>
 							<CustomButton
 								style={{ marginBottom: 66 }}
 								title='Esqueci minha senha'
@@ -160,8 +190,12 @@ export function RegisterScreen() {
 								textStyle={{ color: '#1a6dbb' }}
 							/>
 
-							<View style={{ width: '100%', marginBottom: 32, alignItems: 'center' }}>
-								<PrimaryButton title='Cadastrar' onPress={signUpHandler} />
+							<View style={[styles.container, { marginBottom: 32 }]}>
+								<PrimaryButton
+									isLoading={isAuthenticating}
+									title='Cadastrar'
+									onPress={signUpHandler}
+								/>
 							</View>
 
 							<View style={[styles.registerContainer, { marginBottom: 34 }]}>
@@ -173,17 +207,16 @@ export function RegisterScreen() {
 								/>
 							</View>
 						</View>
-					</ScrollView>
-				</View>
-			</SafeAreaView>
-		)
-	}
+					</LinearGradient>
+				</ScrollView>
+			</View>
+		</SafeAreaView>
+	)
 }
 
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		justifyContent: 'center',
 		backgroundColor: '#fff',
 	},
 	container: {
@@ -199,5 +232,36 @@ const styles = StyleSheet.create({
 		fontSize: 30,
 		color: COLORS.primary500,
 		fontWeight: '600',
+	},
+	elementContainer: {
+		width: '100%',
+	},
+	errorMessage: {
+		color: '#ff2525',
+		fontSize: 11,
+		marginLeft: 5,
+	},
+	invisible: {
+		width: 0,
+		height: 0,
+	},
+	imageContainer: {
+		width: '100%',
+		marginBottom: 80,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+	},
+	logo: {
+		height: 82,
+		width: 210,
+		marginRight: 20,
+		marginTop: 20,
+	},
+	bola: {
+		height: 145,
+		width: 220,
+		position: 'absolute',
+		top: -2,
+		left: -2,
 	},
 })

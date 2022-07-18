@@ -15,12 +15,18 @@ export function PublicRouter() {
 				headerShown: false,
 			}}
 		>
-			<Stack.Screen name='Login' component={LoginPage} />
+			<Stack.Screen
+				name='Login'
+				component={LoginPage}
+				options={{
+					animation: 'none',
+				}}
+			/>
 			<Stack.Screen
 				name='SignUp'
 				component={RegisterScreen}
 				options={{
-					animation: 'slide_from_bottom',
+					animation: 'none',
 				}}
 			/>
 		</Stack.Navigator>

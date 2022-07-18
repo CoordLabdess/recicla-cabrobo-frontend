@@ -7,13 +7,14 @@ import {
 	Alert,
 	TextInput,
 	ActivityIndicator,
+	Image,
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomButton, PrimaryButton } from '../../components/ui/Buttons'
 import { COLORS } from '../../constants/colors'
 import { PrimaryTextInput } from '../../components/ui/TextInputs'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { AuthContext } from '../../store/context/authContext'
 import { useNavigation } from '@react-navigation/native'
 import { signIn } from '../../utils/auth'
@@ -26,10 +27,6 @@ interface Erros {
 	emptyEmail: boolean
 	emptyPassword: boolean
 	emailOrPasswordWrong: boolean
-}
-
-function loading(props: { color: string; size: number }) {
-	return <ActivityIndicator color={props.color} size={props.size} />
 }
 
 export function LoginScreen() {
@@ -117,87 +114,105 @@ export function LoginScreen() {
 					alwaysBounceVertical={false}
 					showsVerticalScrollIndicator={false}
 				>
-					<View
-						style={{
-							width: '80%',
-							paddingVertical: 20,
-							alignItems: 'center',
-							alignSelf: 'center',
-						}}
-					>
-						<View style={{ width: '100%', marginBottom: 37 }}>
-							<Text style={styles.title}>Bem-Vindo</Text>
-							<View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-								<Text style={[styles.title, { fontSize: 17, lineHeight: 30 }]}>ao</Text>
-								<Text style={styles.title}> Recicla!</Text>
+					<LinearGradient colors={['#90d485', '#fff', '#fff', '#fff']} style={{ flex: 1 }}>
+						<View style={styles.imageContainer}>
+							<Image
+								resizeMode='contain'
+								style={styles.bola}
+								source={require('../../../assets/public/bola.png')}
+							/>
+							<Image
+								resizeMode='contain'
+								style={styles.logo}
+								source={require('../../../assets/public/LogoRecicla.png')}
+							/>
+						</View>
+						<View
+							style={{
+								width: '80%',
+								paddingVertical: 20,
+								alignItems: 'center',
+								alignSelf: 'center',
+							}}
+						>
+							<View style={{ width: '100%', marginBottom: 37 }}>
+								<Text style={styles.title}>Bem-Vindo</Text>
+								<View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+									<Text style={[styles.title, { fontSize: 17, lineHeight: 30 }]}>ao</Text>
+									<Text style={styles.title}> Recicla!</Text>
+								</View>
 							</View>
-						</View>
-						<View style={{ width: '100%', marginBottom: 50 }}>
-							<Text style={[styles.title, { fontSize: 17 }]}>Faça login para continuar</Text>
-						</View>
+							<View style={{ width: '100%', marginBottom: 50 }}>
+								<Text style={[styles.title, { fontSize: 17 }]}>Faça login para continuar</Text>
+							</View>
 
-						<View style={[styles.elementContainer, { marginBottom: 28 }]}>
-							<TextInput
-								placeholder='Digite seu e-mail'
-								value={email}
-								onChangeText={(text: string) => setEmail(text)}
-								style={{
-									width: '100%',
-									height: 50,
+							<View style={[styles.elementContainer, { marginBottom: 28 }]}>
+								<TextInput
+									placeholder='Digite seu e-mail'
+									value={email}
+									onChangeText={(text: string) => setEmail(text)}
+									style={{
+										width: '100%',
+										height: 50,
 
-									backgroundColor: '#EEEEEE',
-									borderRadius: 16,
-									paddingHorizontal: 21,
-								}}
-							/>
-							<Text style={errors.emptyEmail ? styles.errorMessage : styles.invisible}>
-								O campo de e-mail não pode estar em branco!
-							</Text>
-							<Text style={errors.invalidEmail ? styles.errorMessage : styles.invisible}>
-								Endereço de e-mail inválido!
-							</Text>
-						</View>
+										backgroundColor: '#EEEEEE',
+										borderRadius: 16,
+										paddingHorizontal: 21,
+									}}
+								/>
+								<Text style={errors.emptyEmail ? styles.errorMessage : styles.invisible}>
+									O campo de e-mail não pode estar em branco!
+								</Text>
+								<Text style={errors.invalidEmail ? styles.errorMessage : styles.invisible}>
+									Endereço de e-mail inválido!
+								</Text>
+							</View>
 
-						<View style={[styles.elementContainer, { marginBottom: 12 }]}>
-							<TextInput
-								placeholder='Digite sua senha'
-								secureTextEntry
-								value={password}
-								onChangeText={(text: string) => setPassword(text)}
-								style={{
-									width: '100%',
-									height: 50,
-									backgroundColor: '#EEEEEE',
-									borderRadius: 16,
-									paddingHorizontal: 21,
-								}}
-							/>
-							<Text style={errors.emptyPassword ? styles.errorMessage : styles.invisible}>
-								O campo de senha não pode estar em branco!
-							</Text>
-							<Text style={errors.emailOrPasswordWrong ? styles.errorMessage : styles.invisible}>
-								E-mail ou senha incorretos!
-							</Text>
-						</View>
+							<View style={[styles.elementContainer, { marginBottom: 12 }]}>
+								<TextInput
+									placeholder='Digite sua senha'
+									secureTextEntry
+									value={password}
+									onChangeText={(text: string) => setPassword(text)}
+									style={{
+										width: '100%',
+										height: 50,
+										backgroundColor: '#EEEEEE',
+										borderRadius: 16,
+										paddingHorizontal: 21,
+									}}
+								/>
+								<Text style={errors.emptyPassword ? styles.errorMessage : styles.invisible}>
+									O campo de senha não pode estar em branco!
+								</Text>
+								<Text style={errors.emailOrPasswordWrong ? styles.errorMessage : styles.invisible}>
+									E-mail ou senha incorretos!
+								</Text>
+							</View>
 
-						<CustomButton
-							style={{ marginBottom: 66 }}
-							title='Esqueci minha senha'
-							onPress={() => console.log('oi')}
-							textStyle={{ color: '#1a6dbb' }}
-						/>
-						<View style={[styles.elementContainer, { marginBottom: 32, alignItems: 'center' }]}>
-							<PrimaryButton isLoading={isAuthenticating} title='Acessar' onPress={signInHandler} />
-						</View>
-						<View style={[styles.registerContainer, { marginBottom: 34 }]}>
-							<Text>Não tem uma conta? </Text>
 							<CustomButton
-								title='Cadastre-se'
-								onPress={() => navigation.navigate('SignUp' as any)}
+								style={{ marginBottom: 66 }}
+								title='Esqueci minha senha'
+								onPress={() => console.log('oi')}
 								textStyle={{ color: '#1a6dbb' }}
 							/>
+							<View style={[styles.elementContainer, { marginBottom: 32, alignItems: 'center' }]}>
+								<PrimaryButton
+									isLoading={isAuthenticating}
+									title='Acessar'
+									onPress={signInHandler}
+								/>
+							</View>
+							<View style={[styles.registerContainer, { marginBottom: 34 }]}>
+								<Text>Não tem uma conta? </Text>
+								<CustomButton
+									title='Cadastre-se'
+									onPress={() => navigation.navigate('SignUp' as any)}
+									textStyle={{ color: '#1a6dbb' }}
+								/>
+							</View>
 						</View>
-					</View>
+					</LinearGradient>
 				</ScrollView>
 			</View>
 		</SafeAreaView>
@@ -207,7 +222,6 @@ export function LoginScreen() {
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
-		justifyContent: 'center',
 		backgroundColor: '#fff',
 	},
 	container: {
@@ -235,5 +249,24 @@ const styles = StyleSheet.create({
 	invisible: {
 		width: 0,
 		height: 0,
+	},
+	imageContainer: {
+		width: '100%',
+		marginBottom: 80,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+	},
+	logo: {
+		height: 82,
+		width: 210,
+		marginRight: 20,
+		marginTop: 20,
+	},
+	bola: {
+		height: 145,
+		width: 220,
+		position: 'absolute',
+		top: -2,
+		left: -2,
 	},
 })
