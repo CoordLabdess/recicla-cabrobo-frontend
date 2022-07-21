@@ -5,6 +5,8 @@ import { PrimaryButton } from '../../../components/ui/Buttons'
 import { useState } from 'react'
 import { ErrorMessage } from '../../../components/ui/ErrorMessage'
 import { useNavigation } from '@react-navigation/native'
+import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
+import { students } from '../../../data/students'
 
 interface Errors {
 	emptyId: boolean
@@ -35,22 +37,37 @@ export function NewDeliveryScreen() {
 		return isDataValid
 	}
 
+	async function getStudentByStudentCode(code: string) {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				const student = students.filter(student => {
+					return student.studentCode === code.trim()
+				})[0]
+				if (student) {
+					resolve(student)
+				} else {
+					reject()
+				}
+			}, 1000)
+		})
+	}
+
 	async function sendStudentNumber() {
 		if (validateData()) {
 			setIsLoading(true)
-			await setTimeout(() => {
-				if (studentNumber.trim().length < 3) {
-					setErrors(cErros => {
-						return { ...cErros, notFound: true }
-					})
-				} else {
+			await getStudentByStudentCode(studentNumber)
+				.then(response => {
 					setErrors(cErros => {
 						return { ...cErros, notFound: false }
 					})
-					navigation.navigate('Delivery2' as never)
-				}
-				setIsLoading(false)
-			}, 1000)
+					navigation.navigate('Delivery2' as never, { student: response } as never)
+				})
+				.catch(error => {
+					setErrors(cErros => {
+						return { ...cErros, notFound: true }
+					})
+				})
+			setIsLoading(false)
 		}
 	}
 
@@ -60,14 +77,24 @@ export function NewDeliveryScreen() {
 				keyboardShouldPersistTaps='handled'
 				contentContainerStyle={{
 					flexGrow: 1,
-					justifyContent: 'center',
-					paddingHorizontal: '10%',
+					justifyContent: 'flex-start',
+					paddingHorizontal: '5%',
 					alignItems: 'center',
 				}}
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
 			>
-				<Text style={styles.title}>Nova Entrega de Materiais</Text>
+				<SimplePageHeader
+					title='Nova Entrega de Materiais'
+					dontShowGoBack
+					textStyle={styles.title}
+				/>
+
+				<Text style={styles.description}>
+					Adicione uma nova entrega de materiais de um aluno. Insira as informações corretas em cada
+					campo do formulário.
+				</Text>
+
 				<Text style={styles.label}>Número de matrícula do aluno</Text>
 				<View style={styles.inputContainer}>
 					<TextInput
@@ -102,7 +129,6 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 24,
 		color: COLORS.primary500,
-		marginBottom: 150,
 		fontWeight: '600',
 	},
 	input: {
@@ -121,5 +147,13 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		width: '85%',
 		marginBottom: 32,
+	},
+	description: {
+		color: COLORS.secondary500,
+		lineHeight: 22,
+		marginHorizontal: '5%',
+		marginTop: 40,
+		marginBottom: 60,
+		textAlign: 'center',
 	},
 })
