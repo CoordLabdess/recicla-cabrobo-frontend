@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { AnyScreen } from '../../screens'
 import { ConfirmStudentScreen } from '../../screens/school/delivery/ConfirmStudentScreen'
+import { InformMaterialsScreen } from '../../screens/school/delivery/InformMaterialsScreen'
 import { NewDeliveryScreen } from '../../screens/school/delivery/NewDeliveryScreen'
 
 const Stack = createNativeStackNavigator()
@@ -29,7 +30,7 @@ export function DeliveryStackRouter() {
 			/>
 			<Stack.Screen
 				name='Delivery3'
-				component={AnyScreen}
+				component={InformMaterialsScreen}
 				options={{
 					title: 'Entrega de Materiais',
 				}}
