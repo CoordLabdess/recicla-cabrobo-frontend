@@ -3,9 +3,16 @@ import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
 
+interface Material {
+	id: number
+	title: string
+	category: 'Plastic' | 'Paper' | 'Metal' | 'Glass'
+	pointsPerKg: number
+	icon: string
+}
+
 interface AddMaterialComponentProps {
-	title?: string
-	category?: 'Plastic' | 'Paper' | 'Metal' | 'Glass'
+	material: Material
 	value?: number
 	setValue?: (value: number) => void
 }
@@ -15,11 +22,11 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 		<View
 			style={[
 				styles.shadowContainer,
-				props.category === 'Plastic'
+				props.material.category === 'Plastic'
 					? styles.plastic
-					: props.category === 'Metal'
+					: props.material.category === 'Metal'
 					? styles.metal
-					: props.category === 'Paper'
+					: props.material.category === 'Paper'
 					? styles.paper
 					: styles.glass,
 			]}
@@ -29,7 +36,7 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 					<Ionicons name='trash' size={52} color='#fff' />
 				</View>
 				<View>
-					<Text style={styles.title}>Garrafa Pet</Text>
+					<Text style={styles.title}>{props.material.title}</Text>
 					<View style={{ flexDirection: 'row' }}>
 						<TextInput placeholder='0' keyboardType='number-pad' style={styles.input} />
 						<Text style={styles.title}>Kg</Text>
@@ -41,6 +48,9 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 						height: '100%',
 						justifyContent: 'space-between',
 						alignItems: 'flex-end',
+						position: 'absolute',
+						right: 0,
+						marginRight: 10,
 					}}
 				>
 					<Pressable
@@ -50,7 +60,7 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 					>
 						<Ionicons name='information-circle' size={26} color='#fff' />
 					</Pressable>
-					<Text style={styles.pointsText}>0,60Pts/kg</Text>
+					<Text style={styles.pointsText}>{props.material.pointsPerKg}Pts/kg</Text>
 				</View>
 			</View>
 		</View>
@@ -69,6 +79,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.22,
 		shadowRadius: 2.22,
 		elevation: 3,
+		marginBottom: 40,
 	},
 	cardContainer: {
 		flexDirection: 'row',
@@ -93,7 +104,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		color: '#fff',
-		fontSize: 25,
+		fontSize: 22,
 		fontWeight: '600',
 	},
 	input: {

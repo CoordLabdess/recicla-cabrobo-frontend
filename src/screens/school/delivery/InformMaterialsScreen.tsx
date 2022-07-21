@@ -1,13 +1,36 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, FlatList, ListRenderItemInfo } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AddMaterialComponent } from '../../../components/delivery/AddMaterialComponent'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
+import { materials } from '../../../data/materialTable'
+
+interface Material {
+	id: number
+	title: string
+	category: 'Plastic' | 'Paper' | 'Metal' | 'Glass'
+	pointsPerKg: number
+	icon: string
+}
+
+function renderHeader() {
+	return <SimplePageHeader title='Informe o Peso dos Materiais' textStyle={styles.title} />
+}
 
 export function InformMaterialsScreen() {
+	function renderMaterial(itemData: ListRenderItemInfo<Material>) {
+		return (
+			<View style={[styles.container]}>
+				<AddMaterialComponent material={itemData.item} />
+			</View>
+		)
+	}
 	return (
 		<SafeAreaView style={styles.root}>
-			<ScrollView
+			<FlatList
+				ListHeaderComponent={renderHeader}
+				data={materials}
+				renderItem={itemData => renderMaterial(itemData)}
 				keyboardShouldPersistTaps='handled'
 				contentContainerStyle={{
 					flexGrow: 1,
@@ -17,12 +40,7 @@ export function InformMaterialsScreen() {
 				}}
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
-			>
-				<SimplePageHeader title='Informe o Peso dos Materiais' textStyle={styles.title} />
-				<View style={[styles.container]}>
-					<AddMaterialComponent />
-				</View>
-			</ScrollView>
+			/>
 		</SafeAreaView>
 	)
 }

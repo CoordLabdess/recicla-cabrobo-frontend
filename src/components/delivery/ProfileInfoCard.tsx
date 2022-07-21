@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		width: '100%',
 		marginBottom: 10,
-		alignItems: 'center',
+		alignItems: 'flex-end',
 	},
 	topicTitle: {
 		fontWeight: '600',
