@@ -10,6 +10,7 @@ import { signUp } from '../../utils/auth'
 import { AuthContext } from '../../store/context/authContext'
 import { LoadingScreen } from '../ui/LoadingScreen'
 import { isEmailValid, isPasswordLong } from '../../utils/verification'
+import { ErrorMessage } from '../../components/ui/ErrorMessage'
 
 interface Erros {
 	invalidEmail: boolean
@@ -151,12 +152,12 @@ export function RegisterScreen() {
 										paddingHorizontal: 21,
 									}}
 								/>
-								<Text style={errors.emptyEmail ? styles.errorMessage : styles.invisible}>
+								<ErrorMessage isActive={errors.emptyEmail}>
 									O campo de e-mail não pode estar em branco!
-								</Text>
-								<Text style={errors.invalidEmail ? styles.errorMessage : styles.invisible}>
+								</ErrorMessage>
+								<ErrorMessage isActive={errors.invalidEmail}>
 									Endereço de e-mail inválido!
-								</Text>
+								</ErrorMessage>
 							</View>
 
 							<View style={[styles.elementContainer, { marginBottom: 12 }]}>
@@ -173,16 +174,15 @@ export function RegisterScreen() {
 										paddingHorizontal: 21,
 									}}
 								/>
-
-								<Text style={errors.emptyPassword ? styles.errorMessage : styles.invisible}>
+								<ErrorMessage isActive={errors.emptyPassword}>
 									O campo de senha não pode estar em branco!
-								</Text>
-								<Text style={errors.shortPassword ? styles.errorMessage : styles.invisible}>
+								</ErrorMessage>
+								<ErrorMessage isActive={errors.shortPassword}>
 									A senha deve possui ao menos 6 caracteres!
-								</Text>
-								<Text style={errors.emailUnavaiable ? styles.errorMessage : styles.invisible}>
+								</ErrorMessage>
+								<ErrorMessage isActive={errors.emailUnavaiable}>
 									O endereço de e-mail já está cadastrado!
-								</Text>
+								</ErrorMessage>
 							</View>
 							<CustomButton
 								style={{ marginBottom: 66 }}

@@ -13,6 +13,7 @@ interface ButtonProps {
 	title: string
 	style?: ViewStyle
 	textStyle?: TextStyle
+	innerContainerStyle?: ViewStyle
 	onPress: () => void
 	isLoading?: boolean
 }
@@ -33,10 +34,10 @@ export function CustomButton(props: ButtonProps) {
 
 export function PrimaryButton(props: ButtonProps) {
 	return (
-		<View style={primaryButtonStyles.outterContainer}>
+		<View style={[primaryButtonStyles.outterContainer, props.style]}>
 			<Pressable
 				android_ripple={{ color: '#ccc' }}
-				style={primaryButtonStyles.buttonContainer}
+				style={[primaryButtonStyles.buttonContainer, props.innerContainerStyle]}
 				onPress={props.isLoading ? () => {} : props.onPress}
 			>
 				{props.isLoading ? (
@@ -45,7 +46,7 @@ export function PrimaryButton(props: ButtonProps) {
 						size={primaryButtonStyles.text.fontSize}
 					/>
 				) : (
-					<Text style={primaryButtonStyles.text}>{props.title}</Text>
+					<Text style={[primaryButtonStyles.text, props.textStyle]}>{props.title}</Text>
 				)}
 			</Pressable>
 		</View>

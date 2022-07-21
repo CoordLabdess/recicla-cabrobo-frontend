@@ -20,6 +20,7 @@ import { useNavigation } from '@react-navigation/native'
 import { signIn } from '../../utils/auth'
 import { LoadingScreen } from '../ui/LoadingScreen'
 import { isEmailValid, isPasswordLong } from '../../utils/verification'
+import { ErrorMessage } from '../../components/ui/ErrorMessage'
 
 interface Erros {
 	invalidEmail: boolean
@@ -151,12 +152,13 @@ export function LoginScreen() {
 										paddingHorizontal: 21,
 									}}
 								/>
-								<Text style={errors.emptyEmail ? styles.errorMessage : styles.invisible}>
+
+								<ErrorMessage isActive={errors.emptyEmail}>
 									O campo de e-mail não pode estar em branco!
-								</Text>
-								<Text style={errors.invalidEmail ? styles.errorMessage : styles.invisible}>
+								</ErrorMessage>
+								<ErrorMessage isActive={errors.invalidEmail}>
 									Endereço de e-mail inválido!
-								</Text>
+								</ErrorMessage>
 							</View>
 
 							<View style={[styles.elementContainer, { marginBottom: 12 }]}>
@@ -173,12 +175,12 @@ export function LoginScreen() {
 										paddingHorizontal: 21,
 									}}
 								/>
-								<Text style={errors.emptyPassword ? styles.errorMessage : styles.invisible}>
+								<ErrorMessage isActive={errors.emptyPassword}>
 									O campo de senha não pode estar em branco!
-								</Text>
-								<Text style={errors.emailOrPasswordWrong ? styles.errorMessage : styles.invisible}>
+								</ErrorMessage>
+								<ErrorMessage isActive={errors.emailOrPasswordWrong}>
 									E-mail ou senha incorretos!
-								</Text>
+								</ErrorMessage>
 							</View>
 
 							<CustomButton

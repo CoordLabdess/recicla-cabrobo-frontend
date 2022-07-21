@@ -12,6 +12,7 @@ export function StudentRootBottomTabNavigator() {
 		<BottomTab.Navigator
 			screenOptions={{
 				headerShown: false,
+				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
 					backgroundColor: COLORS.primary500,
 					height: 65,

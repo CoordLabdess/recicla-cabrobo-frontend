@@ -3,7 +3,7 @@ import { HomeScreen } from '../../screens'
 import { RankingScreen } from '../../screens/student/home/RankingScreen'
 import { ImpactCalculator } from '../../screens/student/home/ImpactCalculator'
 import { COLORS } from '../../constants/colors'
-import { ProfessorHomeScreen } from '../../screens/professor/home/ProfessorHomeScreen'
+import { SchoolHomeScreen } from '../../screens/school/home/SchoolHomeScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -14,7 +14,7 @@ export function HomeStackRouter() {
 				headerShown: false,
 			}}
 		>
-			<Stack.Screen name='Inicio' component={ProfessorHomeScreen} />
+			<Stack.Screen name='Inicio' component={SchoolHomeScreen} />
 		</Stack.Navigator>
 	)
 }

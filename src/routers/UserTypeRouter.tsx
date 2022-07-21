@@ -3,33 +3,23 @@ import { StatusBar } from 'expo-status-bar'
 import React, { useContext, useState } from 'react'
 import { COLORS } from '../constants/colors'
 import { AnyScreen } from '../screens'
-import { ProfessorRootBottomTabNavigator } from './professor/ProfessorRootBottomTabNavigator'
+import { SchoolRootBottomTabNavigator } from './school/SchoolRootBottomTabNavigator'
 import { StudentRootBottomTabNavigator } from './student/StudentRootBottomTabNavigator'
 
-type UserType = 'Student' | 'Professor' | 'School' | 'Admin'
+type UserType = 'Student' | 'School'
 
 export function UserTypeRouter() {
-	const [userType, setUserType] = useState<UserType>('Professor')
+	const [userType, setUserType] = useState<UserType>('School')
 
 	return userType === 'Student' ? (
 		<NavigationContainer>
 			<StatusBar style='dark' backgroundColor='#fff' />
 			<StudentRootBottomTabNavigator />
 		</NavigationContainer>
-	) : userType === 'Professor' ? (
-		<NavigationContainer>
-			<StatusBar style='light' backgroundColor={COLORS.primary500} />
-			<ProfessorRootBottomTabNavigator />
-		</NavigationContainer>
 	) : userType === 'School' ? (
 		<NavigationContainer>
 			<StatusBar style='light' backgroundColor={COLORS.primary500} />
-			<AnyScreen />
-		</NavigationContainer>
-	) : userType === 'Admin' ? (
-		<NavigationContainer>
-			<StatusBar style='light' backgroundColor={COLORS.primary500} />
-			<AnyScreen />
+			<SchoolRootBottomTabNavigator />
 		</NavigationContainer>
 	) : (
 		<>
