@@ -194,6 +194,7 @@ export function RegisterScreen() {
 							<View style={[styles.container, { marginBottom: 32 }]}>
 								<PrimaryButton
 									isLoading={isAuthenticating}
+									innerContainerStyle={{ paddingHorizontal: 60 }}
 									title='Cadastrar'
 									onPress={signUpHandler}
 								/>

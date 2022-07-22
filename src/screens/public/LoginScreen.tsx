@@ -193,6 +193,7 @@ export function LoginScreen() {
 								<PrimaryButton
 									isLoading={isAuthenticating}
 									title='Acessar'
+									innerContainerStyle={{ paddingHorizontal: 60 }}
 									onPress={signInHandler}
 								/>
 							</View>

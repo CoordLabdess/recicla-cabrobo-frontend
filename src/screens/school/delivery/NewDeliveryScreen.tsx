@@ -110,9 +110,7 @@ export function NewDeliveryScreen() {
 				</View>
 				<PrimaryButton
 					isLoading={isLoading}
-					innerContainerStyle={{ paddingHorizontal: 35 }}
-					style={{ width: 250, marginBottom: 50 }}
-					textStyle={{ fontSize: 16 }}
+					textStyle={{ fontSize: 20 }}
 					title='Realizar Nova Entrega'
 					onPress={sendStudentNumber}
 				/>
@@ -127,7 +125,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 	title: {
-		fontSize: 24,
+		fontSize: 20,
 		color: COLORS.primary500,
 		fontWeight: '600',
 	},

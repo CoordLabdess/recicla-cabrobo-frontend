@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
 	View,
 	Text,
+	Modal,
 	StyleSheet,
 	ScrollView,
 	FlatList,
@@ -15,7 +16,7 @@ import { PrimaryButton } from '../../../components/ui/Buttons'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
 import { materials } from '../../../data/materialTable'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Ionicons } from '@expo/vector-icons'
 
 interface Material {
 	id: number
@@ -58,21 +59,21 @@ const initialMaterialsWeight = {
 }
 
 export function InformMaterialsScreen() {
+	const [isLoading, setIsLoading] = useState(false)
+	const [isModalActive, setIsModalActive] = useState(false)
 	const [materialsWeight, setMaterialsWeight] = useState([
-		'1',
-		'2',
-		'3',
-		'4',
-		'5',
-		'6',
-		'7',
-		'8',
-		'9',
-		'10',
-		'11',
+		'0',
+		'0',
+		'0',
+		'0',
+		'0',
+		'0',
+		'0',
+		'0',
+		'0',
+		'0',
+		'0',
 	])
-
-	const [a, setA] = useState(0)
 
 	function changeMaterialsWeight(index: number, value: string) {
 		setMaterialsWeight(cWeight => {
@@ -80,25 +81,26 @@ export function InformMaterialsScreen() {
 		})
 	}
 
-	function renderMaterial(itemData: ListRenderItemInfo<Material>) {
-		function setMaterialWeight(value: string) {
-			changeMaterialsWeight(itemData.index, value)
-		}
-		console.log('oiee')
-		return (
-			<View style={[styles.container]}>
-				<AddMaterialComponent
-					material={itemData.item}
-					materialWeight={materialsWeight[itemData.index]}
-					setMaterialsWeight={setMaterialWeight}
-				/>
-			</View>
-		)
+	async function sendMaterialsWeight() {
+		setIsLoading(true)
+		await new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve('')
+			}, 1000)
+		})
+			.then(() => {
+				setIsLoading(false)
+			})
+			.catch(() => {
+				setIsLoading(false)
+			})
 	}
+
 	return (
 		<SafeAreaView style={styles.root}>
 			<ScrollView
 				keyboardShouldPersistTaps='always'
+				showsVerticalScrollIndicator={false}
 				style={{ flex: 1 }}
 				contentContainerStyle={{
 					flexGrow: 1,
@@ -126,22 +128,60 @@ export function InformMaterialsScreen() {
 					)
 				})}
 			</ScrollView>
-			{/*<FlatList
-				keyboardShouldPersistTaps='always'
-				ListHeaderComponent={renderHeader}
-				data={materials}
-				renderItem={itemData => renderMaterial(itemData)}
-				style={{ flex: 1 }}
-				contentContainerStyle={{
-					flexGrow: 1,
-					justifyContent: 'flex-start',
-					paddingHorizontal: '5%',
-					alignItems: 'center',
-					paddingBottom: 40,
-				}}
-				alwaysBounceVertical={false}
-				showsVerticalScrollIndicator={false}
-			/>*/}
+			<View style={styles.buttonContainer}>
+				<PrimaryButton
+					title='Continuar'
+					isLoading={isLoading}
+					onPress={() => setIsModalActive(true)}
+				/>
+			</View>
+			<Modal visible={isModalActive} transparent>
+				<View style={styles.modalContainer}>
+					<View style={styles.modalCardShadow}>
+						<View style={styles.modalCard}>
+							<View style={styles.modalMessageContainer}>
+								<Ionicons name='information-circle' color={COLORS.primary500} size={52} />
+								<Text style={styles.modalMessage}>Confirmar{'\n'}Entrega?</Text>
+							</View>
+							<View style={styles.modalButtonsContainer}>
+								<PrimaryButton
+									avoidClick={isLoading}
+									title='Não'
+									marginRight={24}
+									outterContainerStyle={{ borderWidth: 3, borderColor: COLORS.primary500 }}
+									innerContainerStyle={{
+										backgroundColor: '#fff',
+										paddingVertical: 2,
+										paddingHorizontal: 20,
+									}}
+									textStyle={{ color: COLORS.primary500 }}
+									onPress={() => {
+										setIsModalActive(false)
+									}}
+								/>
+								<PrimaryButton
+									title='Sim'
+									isLoading={isLoading}
+									marginLeft={24}
+									innerContainerStyle={{
+										paddingVertical: 5,
+										paddingHorizontal: 23,
+									}}
+									onPress={async () => {
+										await sendMaterialsWeight()
+											.then(() => {
+												setIsModalActive(false)
+											})
+											.catch(err => {
+												setIsModalActive(false)
+											})
+									}}
+								/>
+							</View>
+						</View>
+					</View>
+				</View>
+			</Modal>
 		</SafeAreaView>
 	)
 }
@@ -156,16 +196,61 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	title: {
-		fontSize: 22,
+		fontSize: 20,
 		color: COLORS.primary500,
 		fontWeight: '600',
 	},
 	buttonContainer: {
-		paddingTop: 10,
-		marginBottom: 26,
+		paddingTop: 15,
+		marginBottom: 15,
 		width: '100%',
 		alignItems: 'center',
 		borderTopColor: COLORS.secondary200,
 		borderTopWidth: 1,
+	},
+	modalContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#00000070',
+	},
+	modalCardShadow: {
+		borderRadius: 16,
+		backgroundColor: 'transparent',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 1,
+		},
+		shadowOpacity: 0.22,
+		shadowRadius: 2.22,
+		elevation: 3,
+	},
+	modalCard: {
+		backgroundColor: '#fff',
+		overflow: 'hidden',
+		borderRadius: 16,
+		width: 300,
+		height: 210,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	modalMessageContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 20,
+	},
+	modalMessage: {
+		color: COLORS.primary500,
+		marginLeft: 20,
+		fontSize: 25,
+		textAlign: 'center',
+		fontWeight: '600',
+	},
+	modalButtonsContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 })
