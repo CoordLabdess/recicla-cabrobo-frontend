@@ -58,6 +58,12 @@ export function SchoolRootBottomTabNavigator() {
 			<BottomTab.Screen
 				name='RootNewDelivery'
 				component={DeliveryStackRouter}
+				listeners={({ navigation }) => ({
+					tabPress: event => {
+						event.preventDefault()
+						navigation.navigate('RootNewDelivery', { screen: 'Delivery1' })
+					},
+				})}
 				options={{
 					tabBarLabel: () => null,
 					tabBarIcon: tabInfo => {

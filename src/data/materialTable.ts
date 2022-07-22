@@ -79,9 +79,9 @@ export const materials: Material[] = [
 	},
 	{
 		id: 11,
-		title: '',
+		title: 'Aço Inox',
 		category: 'Metal',
-		pointsPerKg: 0.8,
+		pointsPerKg: 3.5,
 		icon: '',
 	},
 ]

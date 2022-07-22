@@ -36,6 +36,7 @@ export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 					justifyContent: 'flex-start',
 					paddingHorizontal: '5%',
 					alignItems: 'center',
+					paddingBottom: 20,
 				}}
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}

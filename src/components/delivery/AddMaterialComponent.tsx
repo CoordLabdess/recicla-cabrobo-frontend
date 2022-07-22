@@ -13,8 +13,8 @@ interface Material {
 
 interface AddMaterialComponentProps {
 	material: Material
-	value?: number
-	setValue?: (value: number) => void
+	materialWeight: string
+	setMaterialsWeight: (value: string) => void
 }
 
 export function AddMaterialComponent(props: AddMaterialComponentProps) {
@@ -37,8 +37,23 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 				</View>
 				<View>
 					<Text style={styles.title}>{props.material.title}</Text>
-					<View style={{ flexDirection: 'row' }}>
-						<TextInput placeholder='0' keyboardType='number-pad' style={styles.input} />
+					<View style={{ flexDirection: 'row', marginTop: 7 }}>
+						<TextInput
+							numberOfLines={1}
+							keyboardType='number-pad'
+							value={props.materialWeight}
+							onChangeText={text => props.setMaterialsWeight(text)}
+							style={[
+								styles.input,
+								props.material.category === 'Plastic'
+									? styles.plasticInput
+									: props.material.category === 'Metal'
+									? styles.metalInput
+									: props.material.category === 'Paper'
+									? styles.paperInput
+									: styles.glass,
+							]}
+						/>
 						<Text style={styles.title}>Kg</Text>
 					</View>
 				</View>
@@ -111,6 +126,7 @@ const styles = StyleSheet.create({
 		width: 90,
 		height: 35,
 		backgroundColor: '#fff',
+		color: '#fff',
 		borderRadius: 10,
 		textAlign: 'center',
 		fontSize: 20,
@@ -121,5 +137,17 @@ const styles = StyleSheet.create({
 		fontSize: 13,
 		fontWeight: '500',
 		color: '#fff',
+	},
+	plasticInput: {
+		backgroundColor: '#8E2941',
+	},
+	paperInput: {
+		backgroundColor: '#2B3592',
+	},
+	metalInput: {
+		backgroundColor: '#C7922C',
+	},
+	glassInput: {
+		backgroundColor: 'green',
 	},
 })

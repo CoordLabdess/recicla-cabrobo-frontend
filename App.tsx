@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { KeyboardAvoidingView, Platform, View } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { AuthContextProvider } from './src/store/context/authContext'
 import { Navigation } from './src/routers/Navigation'
