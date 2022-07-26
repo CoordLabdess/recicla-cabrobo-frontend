@@ -17,69 +17,38 @@ import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
 import { materials } from '../../../data/materialTable'
 import { Ionicons } from '@expo/vector-icons'
+import { RouteProp, useNavigation } from '@react-navigation/native'
+import { DeliveredModal } from '../../../components/delivery/DeliveredModal'
+import { ConfirmDeliveryModal } from '../../../components/delivery/ConfirmDeliveryModal'
 
-interface Material {
-	id: number
-	title: string
-	category: 'Plastic' | 'Paper' | 'Metal' | 'Glass'
-	pointsPerKg: number
-	icon: string
+interface InformMaterialScreenProps {
+	route: RouteProp<{ params: { id: string; name: string } }, 'params'>
 }
 
-interface MaterialsWeight {
-	garrafaPET: number
-	plasticoPEAD: number
-	plasticosDiversos: number
-	polipropileno: number
-	papelao: number
-	sucataDePapel: number
-	sucataDeFerro: number
-	sucataDeCobre: number
-	latinhaDeAluminio: number
-	sucataDeAluminio: number
-	acoInox: number
+interface MaterialWeight {
+	materialId: number
+	weight: string
 }
 
-function renderHeader() {
-	return <SimplePageHeader title='Informe o Peso dos Materiais' textStyle={styles.title} />
-}
-
-const initialMaterialsWeight = {
-	garrafaPET: 0,
-	plasticoPEAD: 0,
-	plasticosDiversos: 0,
-	polipropileno: 0,
-	papelao: 0,
-	sucataDePapel: 0,
-	sucataDeFerro: 0,
-	sucataDeCobre: 0,
-	latinhaDeAluminio: 0,
-	sucataDeAluminio: 0,
-	acoInox: 0,
-}
-
-export function InformMaterialsScreen() {
+export function InformMaterialsScreen(props: InformMaterialScreenProps) {
+	const { id, name } = props.route.params
 	const [isLoading, setIsLoading] = useState(false)
 	const [isModalActive, setIsModalActive] = useState(false)
-	const [materialsWeight, setMaterialsWeight] = useState([
-		'0',
-		'0',
-		'0',
-		'0',
-		'0',
-		'0',
-		'0',
-		'0',
-		'0',
-		'0',
-		'0',
-	])
+	const [dataSent, setDataSent] = useState(false)
 
-	function changeMaterialsWeight(index: number, value: string) {
-		setMaterialsWeight(cWeight => {
-			return [...cWeight.slice(0, index), value, ...cWeight.slice(index + 1)]
-		})
-	}
+	const [materialsWeight, setMaterialsWeight] = useState<MaterialWeight[]>([
+		{ materialId: 1, weight: '0' },
+		{ materialId: 2, weight: '0' },
+		{ materialId: 3, weight: '0' },
+		{ materialId: 4, weight: '0' },
+		{ materialId: 5, weight: '0' },
+		{ materialId: 6, weight: '0' },
+		{ materialId: 7, weight: '0' },
+		{ materialId: 8, weight: '0' },
+		{ materialId: 9, weight: '0' },
+		{ materialId: 10, weight: '0' },
+		{ materialId: 11, weight: '0' },
+	])
 
 	async function sendMaterialsWeight() {
 		setIsLoading(true)
@@ -89,6 +58,7 @@ export function InformMaterialsScreen() {
 			}, 1000)
 		})
 			.then(() => {
+				setDataSent(true)
 				setIsLoading(false)
 			})
 			.catch(() => {
@@ -117,10 +87,21 @@ export function InformMaterialsScreen() {
 						<View key={material.id} style={[styles.container]}>
 							<AddMaterialComponent
 								material={material}
-								materialWeight={materialsWeight[key]}
-								setMaterialsWeight={(value: string) => {
+								materialWeight={
+									materialsWeight.filter(cMaterial => cMaterial.materialId === material.id)[0]
+										.weight
+								}
+								setMaterialsWeight={(materialId: number, weight: string) => {
 									setMaterialsWeight(cWeight => {
-										return [...cWeight.slice(0, key), value, ...cWeight.slice(key + 1)]
+										const mIndex = cWeight.indexOf(
+											materialsWeight.filter(material => material.materialId === materialId)[0],
+										)
+										console.log(materialsWeight, '+')
+										return [
+											...cWeight.slice(0, mIndex),
+											{ materialId: materialId, weight: weight },
+											...cWeight.slice(mIndex + 1),
+										]
 									})
 								}}
 							/>
@@ -135,7 +116,12 @@ export function InformMaterialsScreen() {
 					onPress={() => setIsModalActive(true)}
 				/>
 			</View>
-			<Modal visible={isModalActive} transparent>
+			<ConfirmDeliveryModal
+				visible={isModalActive}
+				onCancel={() => setIsModalActive(false)}
+				onConfirm={() => setIsModalActive(false)}
+			/>
+			{/*<Modal visible={isModalActive} transparent>
 				<View style={styles.modalContainer}>
 					<View style={styles.modalCardShadow}>
 						<View style={styles.modalCard}>
@@ -161,6 +147,7 @@ export function InformMaterialsScreen() {
 								/>
 								<PrimaryButton
 									title='Sim'
+									avoidClick={dataSent}
 									isLoading={isLoading}
 									marginLeft={24}
 									innerContainerStyle={{
@@ -181,7 +168,13 @@ export function InformMaterialsScreen() {
 						</View>
 					</View>
 				</View>
-			</Modal>
+			</Modal>*/}
+			<DeliveredModal
+				id={id}
+				name={name}
+				visible={dataSent}
+				categoriesPoints={{ metal: 34, paper: 11, plastic: 26, total: 71 }}
+			/>
 		</SafeAreaView>
 	)
 }

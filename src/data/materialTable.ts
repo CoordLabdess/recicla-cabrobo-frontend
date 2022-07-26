@@ -1,10 +1,12 @@
 interface Material {
 	id: number
 	title: string
-	category: 'Plastic' | 'Paper' | 'Metal' | 'Glass'
+	category: MaterialCategory
 	pointsPerKg: number
 	icon: string
 }
+
+type MaterialCategory = 'Plastic' | 'Paper' | 'Metal' | 'Glass'
 
 export const materials: Material[] = [
 	{

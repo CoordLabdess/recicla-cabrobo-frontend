@@ -21,11 +21,12 @@ interface ConfirmStudentScreenProps {
 
 export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 	const navigation = useNavigation()
-	const [student, setStudent] = useState<Student>()
+	const student = props.route.params.student
+	/*const [student, setStudent] = useState<Student>()
 
 	useLayoutEffect(() => {
 		setStudent(props.route.params.student)
-	}, [props.route])
+	}, [props.route])*/
 
 	return (
 		<SafeAreaView style={styles.root}>
@@ -57,7 +58,7 @@ export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 						title='Continuar'
 						isLoading={false}
 						onPress={() => {
-							navigation.navigate('Delivery3' as never)
+							navigation.navigate('Delivery3' as never, {id: student.id, name: student.nome} as never)
 						}}
 					/>
 				</View>

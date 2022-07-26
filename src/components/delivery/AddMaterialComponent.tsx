@@ -14,7 +14,7 @@ interface Material {
 interface AddMaterialComponentProps {
 	material: Material
 	materialWeight: string
-	setMaterialsWeight: (value: string) => void
+	setMaterialsWeight: (materialId: number, weight: string) => void
 }
 
 export function AddMaterialComponent(props: AddMaterialComponentProps) {
@@ -42,7 +42,7 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 							numberOfLines={1}
 							keyboardType='number-pad'
 							value={props.materialWeight}
-							onChangeText={text => props.setMaterialsWeight(text)}
+							onChangeText={text => props.setMaterialsWeight(props.material.id, text)}
 							style={[
 								styles.input,
 								props.material.category === 'Plastic'
