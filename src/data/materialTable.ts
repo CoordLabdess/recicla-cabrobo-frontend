@@ -6,6 +6,11 @@ interface Material {
 	icon: string
 }
 
+interface Plastic {
+	type: 'plastic'
+	color: '#D63636'
+}
+
 type MaterialCategory = 'Plastic' | 'Paper' | 'Metal' | 'Glass'
 
 export const materials: Material[] = [

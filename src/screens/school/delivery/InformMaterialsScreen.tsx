@@ -118,57 +118,10 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 			</View>
 			<ConfirmDeliveryModal
 				visible={isModalActive}
+				addedMaterials={materialsWeight.filter(material => Number(material.weight) > 0)}
 				onCancel={() => setIsModalActive(false)}
 				onConfirm={() => setIsModalActive(false)}
 			/>
-			{/*<Modal visible={isModalActive} transparent>
-				<View style={styles.modalContainer}>
-					<View style={styles.modalCardShadow}>
-						<View style={styles.modalCard}>
-							<View style={styles.modalMessageContainer}>
-								<Ionicons name='information-circle' color={COLORS.primary500} size={52} />
-								<Text style={styles.modalMessage}>Confirmar{'\n'}Entrega?</Text>
-							</View>
-							<View style={styles.modalButtonsContainer}>
-								<PrimaryButton
-									avoidClick={isLoading}
-									title='Não'
-									marginRight={24}
-									outterContainerStyle={{ borderWidth: 3, borderColor: COLORS.primary500 }}
-									innerContainerStyle={{
-										backgroundColor: '#fff',
-										paddingVertical: 2,
-										paddingHorizontal: 20,
-									}}
-									textStyle={{ color: COLORS.primary500 }}
-									onPress={() => {
-										setIsModalActive(false)
-									}}
-								/>
-								<PrimaryButton
-									title='Sim'
-									avoidClick={dataSent}
-									isLoading={isLoading}
-									marginLeft={24}
-									innerContainerStyle={{
-										paddingVertical: 5,
-										paddingHorizontal: 23,
-									}}
-									onPress={async () => {
-										await sendMaterialsWeight()
-											.then(() => {
-												setIsModalActive(false)
-											})
-											.catch(err => {
-												setIsModalActive(false)
-											})
-									}}
-								/>
-							</View>
-						</View>
-					</View>
-				</View>
-			</Modal>*/}
 			<DeliveredModal
 				id={id}
 				name={name}

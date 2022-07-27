@@ -3,15 +3,55 @@ import { PrimaryButton } from '../ui/Buttons'
 import { COLORS } from '../../constants/colors'
 import { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
+import { materials } from '../../data/materialTable'
+
+interface MaterialWeight {
+	materialId: number
+	weight: string
+}
 
 interface ConfirmDeliveryModalProps {
 	visible: boolean
 	onCancel: () => void
 	onConfirm: () => void
+	addedMaterials: MaterialWeight[]
 }
+
+function MaterialWeightElement(props: { name: string; weight: string }) {
+	return (
+		<View style={materialWeightStyles.container}>
+			<Text style={materialWeightStyles.title}>{props.name}</Text>
+			<Text style={materialWeightStyles.title}>{props.weight}kg</Text>
+		</View>
+	)
+}
+
+const materialWeightStyles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		borderRadius: 12,
+		width: 300,
+		height: 59,
+		alignItems: 'center',
+		backgroundColor: '#D63636',
+		paddingHorizontal: 15,
+		marginBottom: 15,
+	},
+	title: {
+		color: COLORS.secondary100,
+		fontSize: 22,
+		fontWeight: '600',
+	},
+})
 
 export function ConfirmDeliveryModal(props: ConfirmDeliveryModalProps) {
 	const [isLoading, setIsLoading] = useState(false)
+
+	function getMaterialsName(materialId: number) {
+		return materials.filter(material => material.id === materialId)[0].title
+	}
+
 	return (
 		<Modal visible={props.visible} transparent>
 			<View style={styles.modalContainer}>
@@ -20,6 +60,17 @@ export function ConfirmDeliveryModal(props: ConfirmDeliveryModalProps) {
 						<View style={styles.modalMessageContainer}>
 							<Ionicons name='information-circle' color={COLORS.primary500} size={52} />
 							<Text style={styles.modalMessage}>O aluno está{'\n'}entregando:</Text>
+						</View>
+						<View>
+							{props.addedMaterials.map(material => {
+								return (
+									<MaterialWeightElement
+										key={material.materialId}
+										name={getMaterialsName(material.materialId)}
+										weight={material.weight}
+									/>
+								)
+							})}
 						</View>
 						<Text style={styles.modalMessage}>Confirmar Entrega?</Text>
 						<View style={styles.modalButtonsContainer}>
@@ -54,6 +105,7 @@ export function ConfirmDeliveryModal(props: ConfirmDeliveryModalProps) {
 		</Modal>
 	)
 }
+
 const styles = StyleSheet.create({
 	modalContainer: {
 		flex: 1,
@@ -77,8 +129,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		overflow: 'hidden',
 		borderRadius: 16,
-		width: 300,
-		height: 210,
+		paddingHorizontal: 20,
+		paddingTop: 6,
+		paddingBottom: 25,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
