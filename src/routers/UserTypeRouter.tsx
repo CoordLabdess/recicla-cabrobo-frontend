@@ -9,7 +9,7 @@ import { StudentRootBottomTabNavigator } from './student/StudentRootBottomTabNav
 type UserType = 'Student' | 'School'
 
 export function UserTypeRouter() {
-	const [userType, setUserType] = useState<UserType>('School')
+	const [userType, setUserType] = useState<UserType>('Student')
 
 	return userType === 'Student' ? (
 		<NavigationContainer>

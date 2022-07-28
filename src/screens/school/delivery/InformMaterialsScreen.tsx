@@ -96,7 +96,6 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 										const mIndex = cWeight.indexOf(
 											materialsWeight.filter(material => material.materialId === materialId)[0],
 										)
-										console.log(materialsWeight, '+')
 										return [
 											...cWeight.slice(0, mIndex),
 											{ materialId: materialId, weight: weight },

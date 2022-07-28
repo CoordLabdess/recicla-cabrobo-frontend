@@ -1,12 +1,13 @@
 import axios from 'axios'
 import { Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { ErrorMessage } from '../components/ui/ErrorMessage'
 
 const API_KEY = 'AIzaSyDSY7X0UxEzruB1q3P34dbkYuuBR35Ag6w'
 
 interface PayLoad {
 	idToken: string
-	email: string
+	identificador: string
 	refreshToken: string
 	expiresIn: string
 	localId: string
@@ -15,25 +16,40 @@ interface PayLoad {
 
 async function authenticate(
 	mode: string,
-	email: string,
+	identificador: string,
 	password: string,
 	retunSecureToken = true,
 ) {
-	const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`
+	const url =
+		mode === 'signInWithPassword'
+			? 'https://recicla-teste-back.herokuapp.com/login'
+			: `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`
 
 	const response = await axios.post(url, {
-		email,
+		identificador,
 		password,
-		retunSecureToken,
 	})
-	const token = response.data.idToken as string
+	const token = response.data.escolaAccessToken
+		? response.data.escolaAccessToken
+		: response.data.alunoAccessToken
 	return token
 }
 
-export function signUp(email: string, password: string, retunSecureToken = true) {
-	return authenticate('signUp', email, password)
+export function signUp(identificador: string, password: string, retunSecureToken = true) {
+	return authenticate('signUp', identificador, password)
 }
 
-export async function signIn(email: string, password: string, returnSecureToken = true) {
-	return authenticate('signInWithPassword', email, password)
+export async function signIn(identificador: string, password: string, returnSecureToken = true) {
+	const url = 'https://recicla-teste-back.herokuapp.com/login'
+	const response = await axios.post(url, {
+		identificador,
+		password,
+	})
+
+	const token = response.data.escolaAccessToken
+		? response.data.escolaAccessToken
+		: response.data.alunoAccessToken
+		? response.data.alunoAccessToken
+		: null
+	return token
 }

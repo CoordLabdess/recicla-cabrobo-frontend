@@ -6,7 +6,9 @@ import { ProfileHeader } from '../../../components/home/ProfileHeader'
 import { UserStatus } from '../../../components/home/UserStatus'
 import { ProfileActions } from '../../../components/home/ProfileActions'
 import { History } from '../../../components/home/History'
-import { useState } from 'react'
+import { useContext, useLayoutEffect, useState } from 'react'
+import { AuthContext } from '../../../store/context/authContext'
+import axios from 'axios'
 
 interface History {
 	date: Date
@@ -77,7 +79,24 @@ function Header() {
 }
 
 export function HomeScreen() {
-	const [modal, setModal] = useState(false)
+	const authCtx = useContext(AuthContext)
+	const [useData, setUserData] = useState()
+
+	const token = authCtx.token
+
+	useLayoutEffect(() => {
+		axios
+			.get('https://recicla-teste-back.herokuapp.com/aluno', {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then(res => {
+				setUserData(res as any)
+			})
+			.catch(err => console.log(err))
+	}, [])
+
 	return (
 		<SafeAreaView style={styles.root}>
 			<FlatList

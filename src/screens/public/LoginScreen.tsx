@@ -1,25 +1,13 @@
-import {
-	View,
-	Text,
-	Button,
-	StyleSheet,
-	ScrollView,
-	Alert,
-	TextInput,
-	ActivityIndicator,
-	Image,
-} from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TextInput, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomButton, PrimaryButton } from '../../components/ui/Buttons'
 import { COLORS } from '../../constants/colors'
-import { PrimaryTextInput } from '../../components/ui/TextInputs'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useContext, useEffect, useLayoutEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../../store/context/authContext'
 import { useNavigation } from '@react-navigation/native'
 import { signIn } from '../../utils/auth'
-import { LoadingScreen } from '../ui/LoadingScreen'
-import { isEmailValid, isPasswordLong } from '../../utils/verification'
+import { isEmailValid } from '../../utils/verification'
 import { ErrorMessage } from '../../components/ui/ErrorMessage'
 
 interface Erros {
@@ -45,7 +33,7 @@ export function LoginScreen() {
 
 	function validateData() {
 		let isDataValid = true
-		if (!isEmailValid(email)) {
+		/*if (!isEmailValid(email)) {
 			setErros(cErros => {
 				return { ...cErros, invalidEmail: true }
 			})
@@ -63,6 +51,16 @@ export function LoginScreen() {
 		} else {
 			setErros(cErros => {
 				return { ...cErros, emptyEmail: false }
+			})
+		}*/
+		if (!email.match(/^[0-9]+$/)) {
+			setErros(cErros => {
+				return { ...cErros, invalidEmail: true }
+			})
+			isDataValid = false
+		} else {
+			setErros(cErros => {
+				return { ...cErros, invalidEmail: false }
 			})
 		}
 		if (!password.trim()) {
@@ -82,7 +80,7 @@ export function LoginScreen() {
 		if (validateData()) {
 			setIsAuthenticating(true)
 			try {
-				const token = await signIn(email, password)
+				const token = await signIn(email.split(/(?:,| |-|\.)+/).join(''), password)
 				authCtx.authenticate(token)
 			} catch (error) {
 				setErros(cErros => {
@@ -140,7 +138,8 @@ export function LoginScreen() {
 
 							<View style={[styles.elementContainer, { marginBottom: 28 }]}>
 								<TextInput
-									placeholder='Digite seu e-mail'
+									placeholder='Digite seu Nº de matrícula ou CPF'
+									keyboardType='number-pad'
 									value={email}
 									onChangeText={(text: string) => setEmail(text)}
 									style={{
@@ -157,7 +156,7 @@ export function LoginScreen() {
 									O campo de e-mail não pode estar em branco!
 								</ErrorMessage>
 								<ErrorMessage isActive={errors.invalidEmail}>
-									Endereço de e-mail inválido!
+									Digite apenas números. Ex: 123456
 								</ErrorMessage>
 							</View>
 
