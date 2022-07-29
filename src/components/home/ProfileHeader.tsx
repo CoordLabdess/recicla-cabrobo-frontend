@@ -10,7 +10,6 @@ interface ProfileHeaderProps {
 
 export function ProfileHeader(props: ProfileHeaderProps) {
 	const authToken = useContext(AuthContext)
-
 	function logout() {
 		authToken.logout()
 	}

@@ -1,4 +1,4 @@
-interface Material {
+export interface Material {
 	id: number
 	title: string
 	category: MaterialCategory
@@ -11,7 +11,7 @@ interface Plastic {
 	color: '#D63636'
 }
 
-type MaterialCategory = 'Plastic' | 'Paper' | 'Metal' | 'Glass'
+export type MaterialCategory = 'Plastic' | 'Paper' | 'Metal' | 'Glass'
 
 export const materials: Material[] = [
 	{

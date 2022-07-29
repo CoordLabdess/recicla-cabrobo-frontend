@@ -15,7 +15,7 @@ export const AuthContext = createContext<Auth>({
 })
 
 export function AuthContextProvider(props: { children: React.ReactNode }) {
-	const [authToken, setAuthToken] = useState<null | string>(null)
+	const [authToken, setAuthToken] = useState<null | string>('aaa')
 
 	function authenticate(token: string) {
 		setAuthToken(token)

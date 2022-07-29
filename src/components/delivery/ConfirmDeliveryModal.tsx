@@ -1,9 +1,10 @@
-import { View, Text, Modal, StyleSheet } from 'react-native'
+import { View, Text, Modal, StyleSheet, FlatList, ListRenderItemInfo } from 'react-native'
 import { PrimaryButton } from '../ui/Buttons'
 import { COLORS } from '../../constants/colors'
 import { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { materials } from '../../data/materialTable'
+import { MaterialCategory } from '../../data/materialTable'
 
 interface MaterialWeight {
 	materialId: number
@@ -15,11 +16,31 @@ interface ConfirmDeliveryModalProps {
 	onCancel: () => void
 	onConfirm: () => void
 	addedMaterials: MaterialWeight[]
+	isLoading: boolean
 }
 
-function MaterialWeightElement(props: { name: string; weight: string }) {
+function getMaterialCategoryColor(category: MaterialCategory): string {
+	return category === 'Plastic'
+		? '#D63636'
+		: category === 'Paper'
+		? '#2367CC'
+		: category === 'Metal'
+		? '#F0C93E'
+		: 'green'
+}
+
+function MaterialWeightElement(props: {
+	name: string
+	weight: string
+	category: MaterialCategory
+}) {
 	return (
-		<View style={materialWeightStyles.container}>
+		<View
+			style={[
+				materialWeightStyles.container,
+				{ backgroundColor: getMaterialCategoryColor(props.category) },
+			]}
+		>
 			<Text style={materialWeightStyles.title}>{props.name}</Text>
 			<Text style={materialWeightStyles.title}>{props.weight}kg</Text>
 		</View>
@@ -46,10 +67,20 @@ const materialWeightStyles = StyleSheet.create({
 })
 
 export function ConfirmDeliveryModal(props: ConfirmDeliveryModalProps) {
-	const [isLoading, setIsLoading] = useState(false)
-
 	function getMaterialsName(materialId: number) {
-		return materials.filter(material => material.id === materialId)[0].title
+		return materials.filter(material => material.id === materialId)[0]
+	}
+
+	function renderElement(itemData: ListRenderItemInfo<MaterialWeight>) {
+		const { title, category } = getMaterialsName(itemData.item.materialId)
+		return (
+			<MaterialWeightElement
+				key={itemData.item.materialId}
+				name={title}
+				category={category}
+				weight={itemData.item.weight}
+			/>
+		)
 	}
 
 	return (
@@ -61,21 +92,18 @@ export function ConfirmDeliveryModal(props: ConfirmDeliveryModalProps) {
 							<Ionicons name='information-circle' color={COLORS.primary500} size={52} />
 							<Text style={styles.modalMessage}>O aluno está{'\n'}entregando:</Text>
 						</View>
-						<View>
-							{props.addedMaterials.map(material => {
-								return (
-									<MaterialWeightElement
-										key={material.materialId}
-										name={getMaterialsName(material.materialId)}
-										weight={material.weight}
-									/>
-								)
-							})}
+						<View style={{ maxHeight: 300 }}>
+							<FlatList
+								style={{ flexGrow: 0, paddingHorizontal: 5 }}
+								data={props.addedMaterials}
+								alwaysBounceVertical={false}
+								renderItem={itemData => renderElement(itemData)}
+							/>
 						</View>
 						<Text style={styles.modalMessage}>Confirmar Entrega?</Text>
 						<View style={styles.modalButtonsContainer}>
 							<PrimaryButton
-								avoidClick={isLoading}
+								avoidClick={props.isLoading}
 								title='Não'
 								marginRight={24}
 								outterContainerStyle={{ borderWidth: 3, borderColor: COLORS.primary500 }}
@@ -90,7 +118,7 @@ export function ConfirmDeliveryModal(props: ConfirmDeliveryModalProps) {
 							<PrimaryButton
 								title='Sim'
 								avoidClick={false}
-								isLoading={isLoading}
+								isLoading={props.isLoading}
 								marginLeft={24}
 								innerContainerStyle={{
 									paddingVertical: 5,

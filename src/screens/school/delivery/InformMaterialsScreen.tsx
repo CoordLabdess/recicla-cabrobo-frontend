@@ -59,6 +59,7 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 		})
 			.then(() => {
 				setDataSent(true)
+				setIsModalActive(false)
 				setIsLoading(false)
 			})
 			.catch(() => {
@@ -118,8 +119,9 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 			<ConfirmDeliveryModal
 				visible={isModalActive}
 				addedMaterials={materialsWeight.filter(material => Number(material.weight) > 0)}
+				isLoading={isLoading}
 				onCancel={() => setIsModalActive(false)}
-				onConfirm={() => setIsModalActive(false)}
+				onConfirm={() => sendMaterialsWeight()}
 			/>
 			<DeliveredModal
 				id={id}
