@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { NewDeliveryScreen } from '../../screens/school/delivery/NewDeliveryScreen'
 import { DeliveryStackRouter } from './DeliveryRouter'
+import { ManageStudentsRouter } from './ManageStudentRouter'
 
 const BottomTab = createBottomTabNavigator()
 
@@ -41,7 +42,7 @@ export function SchoolRootBottomTabNavigator() {
 			/>
 			<BottomTab.Screen
 				name='RootAlunos'
-				component={AnyScreen}
+				component={ManageStudentsRouter}
 				options={{
 					tabBarLabel: () => null,
 					tabBarIcon: tabInfo => {
