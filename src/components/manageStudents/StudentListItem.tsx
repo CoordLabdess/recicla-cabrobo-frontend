@@ -1,16 +1,28 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import { Student } from '../../data/students'
+import { useNavigation } from '@react-navigation/native'
 
 interface StudentListItemProps {
 	student: Student
 }
 
 export function StudentListItem(props: StudentListItemProps) {
+	const navigation = useNavigation()
+
 	return (
 		<View style={styles.shadowContainer}>
 			<View style={{ overflow: 'hidden', borderRadius: 27 }}>
-				<Pressable style={styles.cardContainer} android_ripple={{ color: '#ccc' }}>
+				<Pressable
+					style={styles.cardContainer}
+					android_ripple={{ color: '#ccc' }}
+					onPress={() =>
+						navigation.navigate(
+							'StudentProfileInfo' as never,
+							{ student: props.student, editable: true } as never,
+						)
+					}
+				>
 					<View style={styles.profileImageContainer}>
 						<Image
 							style={styles.profileImage}

@@ -25,7 +25,7 @@ export function SearchStudentsScreen() {
 								.toLowerCase()
 								.trim()
 								.split(/\s+/)
-								.some(name => students.nome.includes(name)),
+								.every(name => students.nome.toLowerCase().includes(name)),
 						),
 					)
 				}

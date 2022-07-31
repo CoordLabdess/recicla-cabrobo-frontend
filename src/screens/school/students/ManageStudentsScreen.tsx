@@ -9,7 +9,7 @@ export function ManageStudentsScreen() {
 	const navigation = useNavigation()
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView style={styles.root}>
 			<ScrollView
 				keyboardShouldPersistTaps='always'
 				contentContainerStyle={{
@@ -46,6 +46,10 @@ export function ManageStudentsScreen() {
 }
 
 const styles = StyleSheet.create({
+	root: {
+		flex: 1,
+		backgroundColor: '#fff',
+	},
 	outterContainer: {
 		borderWidth: 2,
 		borderRadius: 20,
