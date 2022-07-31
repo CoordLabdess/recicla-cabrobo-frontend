@@ -11,18 +11,31 @@ import { Student } from '../../../data/students'
 import { useNavigation } from '@react-navigation/native'
 
 interface StudentProfileScreenProps {
-	route: RouteProp<{ params: { student: Student } }, 'params'>
+	route: RouteProp<{ params: { mode: 'create' | 'edit'; student: Student } }, 'params'>
+}
+
+const emptyStudent = {
+	nome: '',
+	email: '',
+	image: '',
+	studentCode: '',
+	serie: '',
+	password: '',
 }
 
 export function StudentProfileScreen(props: StudentProfileScreenProps) {
 	const navigation = useNavigation()
-	const [editable, setEditable] = useState(false)
-	const student = props.route.params.student
+	const [editable, setEditable] = useState(props.route.params.mode === 'create' ? true : false)
+
+	const student =
+		props.route.params.mode === 'create'
+			? emptyStudent
+			: { ...props.route.params.student, password: '123456', serie: '5º ano' }
 	const [name, setName] = useState(student.nome)
 	const [studentNumber, setStudentNumber] = useState(student.studentCode)
-	const [serie, setSerie] = useState('5º ano')
-	const [password, setPassword] = useState('123456')
-	const [confirmModal, setConfirmModal] = useState<'off' | 'save' | 'exclude'>('off')
+	const [serie, setSerie] = useState(student.serie)
+	const [password, setPassword] = useState(student.password)
+	const [confirmModal, setConfirmModal] = useState<'off' | 'save' | 'exclude' | 'create'>('off')
 	const [isLoading, setIsLoading] = useState(false)
 
 	async function fakeFetching() {
@@ -58,7 +71,11 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
 			>
-				<SimplePageHeader title='Informações do Aluno' />
+				<SimplePageHeader
+					title={
+						props.route.params.mode === 'create' ? 'Cadastrar Novo Aluno' : 'Informações do Aluno'
+					}
+				/>
 				<View style={{ marginBottom: 27 }}>
 					<ProfileImage
 						imgUri='https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
@@ -103,7 +120,12 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 					/>
 				</View>
 			</ScrollView>
-			{!editable ? (
+
+			{props.route.params.mode === 'create' ? (
+				<View style={{ alignItems: 'center', paddingTop: 15, paddingBottom: 20 }}>
+					<PrimaryButton title='Cadastrar' onPress={() => setConfirmModal('create')} />
+				</View>
+			) : !editable ? (
 				<View style={{ alignItems: 'center', paddingTop: 15, paddingBottom: 20 }}>
 					<PrimaryButton title='Editar Informações' onPress={() => setEditable(true)} />
 				</View>
@@ -138,6 +160,14 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				title='Você tem certeza?'
 				isLoading={isLoading}
 				text='Ao confirmar, toda a pontuação do aluno será perdida. Essa ação não poderá ser revertida.'
+				onCancel={() => setConfirmModal('off')}
+				onConfirm={sendChanges}
+			/>
+			<ConfirmModal
+				visible={confirmModal === 'create'}
+				title='Cadastrar Aluno?'
+				isLoading={isLoading}
+				text='Confirmar inserção do aluno no sistema? Alunos cadastrados começam sem pontuação.'
 				onCancel={() => setConfirmModal('off')}
 				onConfirm={sendChanges}
 			/>

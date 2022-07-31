@@ -23,7 +23,13 @@ export function ManageStudentsScreen() {
 			>
 				<SimplePageHeader title='Gestão de Alunos' dontShowGoBack textStyle={styles.title} />
 				<View style={styles.outterContainer}>
-					<Pressable android_ripple={{ color: '#ccc' }} style={styles.innerContainer}>
+					<Pressable
+						android_ripple={{ color: '#ccc' }}
+						style={styles.innerContainer}
+						onPress={() => {
+							navigation.navigate('CreateStudent' as never, { mode: 'create' } as never)
+						}}
+					>
 						<Ionicons name='person-add-outline' size={60} color={COLORS.primary500} />
 						<Text style={styles.cardTitle}>Cadastrar novos alunos</Text>
 					</Pressable>

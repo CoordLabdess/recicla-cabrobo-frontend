@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { AnyScreen } from '../../screens'
+import { CreateStudentScreen } from '../../screens/school/students/CreateStudentScreen'
 import { ManageStudentsScreen } from '../../screens/school/students/ManageStudentsScreen'
 import { SearchStudentsScreen } from '../../screens/school/students/SearchStudentsScreen'
 import { StudentProfileScreen } from '../../screens/school/students/StudentProfileScreen'
@@ -16,6 +17,7 @@ export function ManageStudentsRouter() {
 		>
 			<Stack.Screen name='ManageStudents' component={ManageStudentsScreen} />
 			<Stack.Screen name='SearchStudent' component={SearchStudentsScreen} />
+			<Stack.Screen name='CreateStudent' component={StudentProfileScreen} />
 			<Stack.Screen name='StudentProfileInfo' component={StudentProfileScreen} />
 		</Stack.Navigator>
 	)
