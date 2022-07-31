@@ -3,8 +3,11 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 export function ManageStudentsScreen() {
+	const navigation = useNavigation()
+
 	return (
 		<SafeAreaView>
 			<ScrollView
@@ -26,7 +29,13 @@ export function ManageStudentsScreen() {
 					</Pressable>
 				</View>
 				<View style={styles.outterContainer}>
-					<Pressable android_ripple={{ color: '#ccc' }} style={styles.innerContainer}>
+					<Pressable
+						android_ripple={{ color: '#ccc' }}
+						style={styles.innerContainer}
+						onPress={() => {
+							navigation.navigate('SearchStudent' as never)
+						}}
+					>
 						<Ionicons name='build-outline' size={60} color={COLORS.primary500} />
 						<Text style={styles.cardTitle}>Editar dados dos alunos</Text>
 					</Pressable>

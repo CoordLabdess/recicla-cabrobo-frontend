@@ -43,6 +43,12 @@ export function SchoolRootBottomTabNavigator() {
 			<BottomTab.Screen
 				name='RootAlunos'
 				component={ManageStudentsRouter}
+				listeners={({ navigation }) => ({
+					tabPress: event => {
+						event.preventDefault()
+						navigation.navigate('RootAlunos', { screen: 'ManageStudents' })
+					},
+				})}
 				options={{
 					tabBarLabel: () => null,
 					tabBarIcon: tabInfo => {
