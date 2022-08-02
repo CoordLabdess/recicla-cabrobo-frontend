@@ -5,26 +5,26 @@ import { COLORS } from '../constants/colors'
 import { AnyScreen } from '../screens'
 import { SchoolRootBottomTabNavigator } from './school/SchoolRootBottomTabNavigator'
 import { StudentRootBottomTabNavigator } from './student/StudentRootBottomTabNavigator'
-
-type UserType = 'Student' | 'School'
+import { AuthContext, AuthType } from '../store/context/authContext'
 
 export function UserTypeRouter() {
-	const [userType, setUserType] = useState<UserType>('School')
+	const [userType, setUserType] = useState<AuthType>('School')
+	const AuthCtx = useContext(AuthContext)
 
-	return userType === 'Student' ? (
+	return AuthCtx.type === 'Student' ? (
 		<NavigationContainer>
 			<StatusBar style='dark' backgroundColor='#fff' />
 			<StudentRootBottomTabNavigator />
 		</NavigationContainer>
-	) : userType === 'School' ? (
+	) : AuthCtx.type === 'School' ? (
 		<NavigationContainer>
 			<StatusBar style='light' backgroundColor={COLORS.primary500} />
 			<SchoolRootBottomTabNavigator />
 		</NavigationContainer>
 	) : (
-		<>
+		<NavigationContainer>
 			<StatusBar style='light' backgroundColor={COLORS.primary500} />
 			<AnyScreen />
-		</>
+		</NavigationContainer>
 	)
 }

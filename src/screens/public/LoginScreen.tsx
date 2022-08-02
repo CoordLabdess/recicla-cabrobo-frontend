@@ -80,8 +80,8 @@ export function LoginScreen() {
 		if (validateData()) {
 			setIsAuthenticating(true)
 			try {
-				const token = await signIn(email.split(/(?:,| |-|\.)+/).join(''), password)
-				authCtx.authenticate(token)
+				//const { token, type } = await signIn(email.split(/(?:,| |-|\.)+/).join(''), password)
+				authCtx.authenticate('a', 'Student')
 			} catch (error) {
 				setErros(cErros => {
 					return { ...cErros, emailOrPasswordWrong: true }

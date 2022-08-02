@@ -34,11 +34,13 @@ export function SearchStudentsScreen() {
 	}
 
 	function searchStudent() {
-		setSearching(true)
-		fetchStudent(search).then(res => {
-			setFilteredStudents(res as Student[])
-			setSearching(false)
-		})
+		if (search.trim().length > 0) {
+			setSearching(true)
+			fetchStudent(search).then(res => {
+				setFilteredStudents(res as Student[])
+				setSearching(false)
+			})
+		}
 	}
 
 	return (
