@@ -1,6 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, TextInput } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { PrimaryButton } from '../../../components/ui/Buttons'
 import { ConfirmModal } from '../../../components/ui/ConfirmModal'
@@ -102,13 +103,38 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				</View>
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Série</Text>
+					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
+						<Picker
+							onValueChange={text => setSerie(text)}
+							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
+							selectedValue={serie}
+							enabled={editable}
+						>
+							<Picker.Item label='- Selecione uma turma -' value='' />
+							<Picker.Item label='1º ano' value='1º ano' />
+							<Picker.Item label='2º ano' value='2º ano' />
+							<Picker.Item label='3º ano' value='3º ano' />
+							<Picker.Item label='4º ano' value='4º ano' />
+							<Picker.Item label='5º ano' value='5º ano' />
+							<Picker.Item label='6º ano' value='6º ano' />
+							<Picker.Item label='7º ano' value='7º ano' />
+							<Picker.Item label='8º ano' value='8º ano' />
+							<Picker.Item label='9º ano' value='9º ano' />
+							<Picker.Item label='1º médio' value='1º médio' />
+							<Picker.Item label='2º médio' value='2º médio' />
+							<Picker.Item label='3º médio' value='3º médio' />
+						</Picker>
+					</View>
+				</View>
+				{/*<View style={styles.fieldContainer}>
+					<Text style={styles.label}>Série</Text>
 					<TextInput
 						style={styles.field}
 						value={serie}
 						onChangeText={text => setSerie(text)}
 						editable={editable}
 					/>
-				</View>
+				</View>*/}
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Senha</Text>
 					<TextInput

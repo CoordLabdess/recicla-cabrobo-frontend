@@ -7,6 +7,7 @@ import { COLORS } from '../../constants/colors'
 import { NewDeliveryScreen } from '../../screens/school/delivery/NewDeliveryScreen'
 import { DeliveryStackRouter } from './DeliveryRouter'
 import { ManageStudentsRouter } from './ManageStudentRouter'
+import { TurboTasksRouter } from './TurboTasksRouter'
 
 const BottomTab = createBottomTabNavigator()
 
@@ -86,7 +87,7 @@ export function SchoolRootBottomTabNavigator() {
 			/>
 			<BottomTab.Screen
 				name='RootTasks'
-				component={AnyScreen}
+				component={TurboTasksRouter}
 				options={{
 					tabBarLabel: () => null,
 					tabBarIcon: tabInfo => {
