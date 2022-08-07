@@ -8,7 +8,6 @@ import { StudentRootBottomTabNavigator } from './student/StudentRootBottomTabNav
 import { AuthContext, AuthType } from '../store/context/authContext'
 
 export function UserTypeRouter() {
-	const [userType, setUserType] = useState<AuthType>('School')
 	const AuthCtx = useContext(AuthContext)
 
 	return AuthCtx.type === 'Student' ? (

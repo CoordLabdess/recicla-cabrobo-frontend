@@ -44,7 +44,7 @@ export function signUp(identificador: string, password: string, retunSecureToken
 function getAuthType(data: any): { token: string; type: AuthType } {
 	try {
 		if (data.escolaAccessToken) {
-			return { token: data.escolaAccessToken, type: 'Student' }
+			return { token: data.escolaAccessToken, type: 'School' }
 		} else if (data.alunoAccessToken) {
 			return { token: data.alunoAccessToken, type: 'Student' }
 		} else {
@@ -55,12 +55,14 @@ function getAuthType(data: any): { token: string; type: AuthType } {
 	}
 }
 
-export async function signIn(identificador: string, password: string, returnSecureToken = true) {
+export async function signIn(identificador: string, password: string) {
 	const url = 'https://recicla-teste-back.herokuapp.com/login'
+	console.log('Id:' + identificador + ' senha:' + password)
 	const response = await axios.post(url, {
 		identificador,
 		password,
 	})
 
+	console.log(response.data)
 	return getAuthType(response.data)
 }

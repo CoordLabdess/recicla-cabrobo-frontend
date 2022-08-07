@@ -1,12 +1,31 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native'
+import { useContext } from 'react'
+import { View, Text, FlatList, StyleSheet, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { NotificationCard } from '../../../components/home/NotificationCard'
+import { PrimaryButton } from '../../../components/ui/Buttons'
 import { COLORS } from '../../../constants/colors'
+import { AuthContext } from '../../../store/context/authContext'
 
 export function SchoolHomeScreen() {
+	const authCtx = useContext(AuthContext)
 	return (
 		<SafeAreaView style={styles.root}>
-			<FlatList
+			<ScrollView
+				keyboardShouldPersistTaps='always'
+				contentContainerStyle={{
+					flexGrow: 1,
+					paddingBottom: 20,
+					justifyContent: 'flex-start',
+					paddingHorizontal: '5%',
+					alignItems: 'center',
+				}}
+				alwaysBounceVertical={false}
+				showsVerticalScrollIndicator={false}
+			>
+				<View style={{ marginTop: 50 }}>
+					<PrimaryButton title='Sair' onPress={() => authCtx.logout()} />
+				</View>
+				{/* <FlatList
 				keyboardShouldPersistTaps='always'
 				ListHeaderComponent={() => {
 					return (
@@ -33,7 +52,8 @@ export function SchoolHomeScreen() {
 				renderItem={itemData => {
 					return <NotificationCard title='oi' date={new Date()} goTo={''} />
 				}}
-			/>
+			/> */}
+			</ScrollView>
 		</SafeAreaView>
 	)
 }

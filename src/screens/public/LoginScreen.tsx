@@ -79,15 +79,17 @@ export function LoginScreen() {
 	async function signInHandler() {
 		if (validateData()) {
 			setIsAuthenticating(true)
-			try {
-				//const { token, type } = await signIn(email.split(/(?:,| |-|\.)+/).join(''), password)
-				authCtx.authenticate('a', 'Student')
-			} catch (error) {
-				setErros(cErros => {
-					return { ...cErros, emailOrPasswordWrong: true }
+			await signIn(email.trim(), password.trim())
+				.then(({ token, type }) => {
+					authCtx.authenticate(token, type)
 				})
-				setIsAuthenticating(false)
-			}
+				.catch(error => {
+					console.log(error)
+					setErros(cErros => {
+						return { ...cErros, emailOrPasswordWrong: true }
+					})
+					setIsAuthenticating(false)
+				})
 		} else {
 			console.log('Informações incorretas')
 		}
