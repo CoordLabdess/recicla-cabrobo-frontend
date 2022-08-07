@@ -98,7 +98,9 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
 			>
-				<SimplePageHeader title='Editar Atividade' />
+				<SimplePageHeader
+					title={props.route.params.mode === 'create' ? 'Criar Atividade' : 'Editar Atividade'}
+				/>
 				<View style={styles.elementContainer}>
 					<Text style={styles.label}>Título</Text>
 					<TextInput
