@@ -86,8 +86,14 @@ export function SchoolRootBottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name='RootTasks'
+				name='RootTurboTasks'
 				component={TurboTasksRouter}
+				listeners={({ navigation }) => ({
+					tabPress: event => {
+						event.preventDefault()
+						navigation.navigate('RootTurboTasks', { screen: 'TurboTasks' })
+					},
+				})}
 				options={{
 					tabBarLabel: () => null,
 					tabBarIcon: tabInfo => {

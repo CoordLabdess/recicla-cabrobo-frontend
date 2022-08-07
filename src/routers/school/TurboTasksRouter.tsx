@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { TurboTaskConfigScreen } from '../../screens/school/turboTasks/TurboTaskConfigScreen'
 import { AnyScreen } from '../../screens'
 import { ConfirmStudentScreen } from '../../screens/school/delivery/ConfirmStudentScreen'
 import { InformMaterialsScreen } from '../../screens/school/delivery/InformMaterialsScreen'
@@ -15,13 +16,8 @@ export function TurboTasksRouter() {
 				animation: 'slide_from_right',
 			}}
 		>
-			<Stack.Screen
-				name='EditTask'
-				component={TurboTasksClassesScreen}
-				options={{
-					title: 'Entrega de Materiais',
-				}}
-			/>
+			<Stack.Screen name='TurboTasks' component={TurboTasksClassesScreen} />
+			<Stack.Screen name='TurboTaskConfig' component={TurboTaskConfigScreen} />
 		</Stack.Navigator>
 	)
 }

@@ -1,29 +1,43 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { COLORS } from '../../constants/colors'
+import { TurboTask } from '../../data/turboTasks'
+import { useNavigation } from '@react-navigation/native'
 
 interface TurboTaskClasssListItemProps {
-	class: string
-	isOpen: boolean
-	lastUpdate: Date
+	turboTask: TurboTask
 }
 
 export function TurboTaskClasssListItem(props: TurboTaskClasssListItemProps) {
+	const navigation = useNavigation()
 	return (
 		<View style={styles.shadowContainer}>
 			<View style={{ overflow: 'hidden', borderRadius: 27 }}>
-				<Pressable android_ripple={{ color: '#ccc' }} style={styles.cardContainer}>
-					<View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15 }}>
-						<Text style={styles.title}>{props.class}</Text>
+				<Pressable
+					android_ripple={{ color: '#ccc' }}
+					style={styles.cardContainer}
+					onPress={() =>
+						navigation.navigate(
+							'TurboTaskConfig' as never,
+							{ mode: 'edit', turboTaskId: props.turboTask.id } as never,
+						)
+					}
+				>
+					<View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+						<View style={{ maxWidth: '70%' }}>
+							<Text style={styles.title}>{props.turboTask.title}</Text>
+						</View>
 						<Text
-							style={[styles.status, { color: props.isOpen ? COLORS.primary500 : COLORS.red500 }]}
+							style={[
+								styles.status,
+								{ color: props.turboTask.active ? COLORS.primary500 : COLORS.red500 },
+							]}
 						>
-							{props.isOpen ? 'Aberta' : 'Encerrada'}
+							{props.turboTask.active ? 'Aberta' : 'Encerrada'}
 						</Text>
 					</View>
-					<Text style={styles.description}>
-						Liberada em: {props.lastUpdate.toLocaleDateString()}
-					</Text>
+					<Text>{props.turboTask.class}</Text>
+					<Text style={styles.description}>Liberada em: {new Date().toLocaleDateString()}</Text>
 				</Pressable>
 			</View>
 		</View>
@@ -42,7 +56,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.22,
 		shadowRadius: 2.22,
 		elevation: 3,
-		marginBottom: 14,
+		marginBottom: 25,
 	},
 	cardContainer: {
 		backgroundColor: COLORS.secondary400,
@@ -59,6 +73,7 @@ const styles = StyleSheet.create({
 	},
 	description: {},
 	status: {
+		paddingLeft: 30,
 		fontSize: 16,
 		fontWeight: '600',
 	},
