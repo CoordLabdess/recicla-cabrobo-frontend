@@ -8,6 +8,7 @@ import { NewDeliveryScreen } from '../../screens/school/delivery/NewDeliveryScre
 import { DeliveryStackRouter } from './DeliveryRouter'
 import { ManageStudentsRouter } from './ManageStudentRouter'
 import { TurboTasksRouter } from './TurboTasksRouter'
+import { AwardStackRouter } from './AwardRouter'
 
 const BottomTab = createBottomTabNavigator()
 
@@ -108,8 +109,14 @@ export function SchoolRootBottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name='RootGifts'
-				component={OptionsScreen}
+				name='RootAwards'
+				component={AwardStackRouter}
+				listeners={({ navigation }) => ({
+					tabPress: event => {
+						event.preventDefault()
+						navigation.navigate('RootAwards', { screen: 'Award1' })
+					},
+				})}
 				options={{
 					tabBarLabel: () => null,
 					tabBarIcon: tabInfo => {

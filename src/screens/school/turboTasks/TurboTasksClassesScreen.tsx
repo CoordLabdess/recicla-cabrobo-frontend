@@ -5,6 +5,7 @@ import { RoundIconButton } from '../../../components/ui/RoundIconButton'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { turboTasks } from '../../../data/turboTasks'
 import { useNavigation } from '@react-navigation/native'
+import { COLORS } from '../../../constants/colors'
 
 export function TurboTasksClassesScreen() {
 	const navigation = useNavigation()
@@ -12,7 +13,7 @@ export function TurboTasksClassesScreen() {
 		<SafeAreaView style={styles.root}>
 			<FlatList
 				ListHeaderComponent={() => (
-					<SimplePageHeader dontShowGoBack title='Atividades Turbinadas' />
+					<SimplePageHeader textStyle={styles.title} dontShowGoBack title='Atividades Turbinadas' />
 				)}
 				keyboardShouldPersistTaps='always'
 				contentContainerStyle={{
@@ -44,5 +45,10 @@ const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 		backgroundColor: '#fff',
+	},
+	title: {
+		fontSize: 20,
+		color: COLORS.primary500,
+		fontWeight: '600',
 	},
 })

@@ -99,6 +99,7 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 				showsVerticalScrollIndicator={false}
 			>
 				<SimplePageHeader
+					textStyle={styles.title}
 					title={props.route.params.mode === 'create' ? 'Criar Atividade' : 'Editar Atividade'}
 				/>
 				<View style={styles.elementContainer}>
@@ -188,6 +189,11 @@ const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 		backgroundColor: '#fff',
+	},
+	title: {
+		fontSize: 20,
+		color: COLORS.primary500,
+		fontWeight: '600',
 	},
 	elementContainer: {
 		width: '100%',

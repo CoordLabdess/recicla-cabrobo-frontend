@@ -198,14 +198,14 @@ export function LoginScreen() {
 									onPress={signInHandler}
 								/>
 							</View>
-							<View style={[styles.registerContainer, { marginBottom: 34 }]}>
+							{/* <View style={[styles.registerContainer, { marginBottom: 34 }]}>
 								<Text>Não tem uma conta? </Text>
 								<CustomButton
 									title='Cadastre-se'
 									onPress={() => navigation.navigate('SignUp' as any)}
 									textStyle={{ color: '#1a6dbb' }}
 								/>
-							</View>
+							</View> */}
 						</View>
 					</LinearGradient>
 				</ScrollView>
