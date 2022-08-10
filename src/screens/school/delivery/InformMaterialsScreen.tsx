@@ -126,6 +126,7 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 			<DeliveredModal
 				id={id}
 				name={name}
+				close={() => setDataSent(false)}
 				visible={dataSent}
 				categoriesPoints={{ metal: 34, paper: 11, plastic: 26, total: 71 }}
 			/>

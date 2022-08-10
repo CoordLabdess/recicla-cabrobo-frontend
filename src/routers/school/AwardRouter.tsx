@@ -1,10 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { AnyScreen } from '../../screens'
 import { ChooseAwardScreen } from '../../screens/school/awards/ChooseAwardScreen'
 import { NewAwardScreen } from '../../screens/school/awards/NewAwardScreen'
-import { ConfirmStudentScreen } from '../../screens/school/delivery/ConfirmStudentScreen'
-import { InformMaterialsScreen } from '../../screens/school/delivery/InformMaterialsScreen'
-import { NewDeliveryScreen } from '../../screens/school/delivery/NewDeliveryScreen'
+import { ConfirmStudentScreen } from '../../screens/school/awards/ConfirmStudentScreen'
+import { AnyScreen } from '../../screens'
 
 const Stack = createNativeStackNavigator()
 
@@ -25,7 +23,21 @@ export function AwardStackRouter() {
 			/>
 			<Stack.Screen
 				name='Award2'
+				component={ConfirmStudentScreen}
+				options={{
+					title: 'Resgate de Prêmios',
+				}}
+			/>
+			<Stack.Screen
+				name='Award3'
 				component={ChooseAwardScreen}
+				options={{
+					title: 'Resgate de Prêmios',
+				}}
+			/>
+			<Stack.Screen
+				name='Award4'
+				component={AnyScreen}
 				options={{
 					title: 'Resgate de Prêmios',
 				}}

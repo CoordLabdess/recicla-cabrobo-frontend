@@ -13,9 +13,10 @@ interface DeliveredModalProps {
 		metal: number
 		total: number
 	}
+	close: () => void
 }
 
-function MaterialDetail(props: { title: string, points: number, color: string }) {
+function MaterialDetail(props: { title: string; points: number; color: string }) {
 	return (
 		<View
 			style={{
@@ -29,12 +30,14 @@ function MaterialDetail(props: { title: string, points: number, color: string })
 				marginBottom: 10,
 			}}
 		>
-			<Text style={{ color: props.color, fontSize: 16, fontWeight: '600', textAlign: 'center' }}>{props.title}</Text>
-            <View style={{flexDirection: 'row'}}>
-			<Text style={{ color: props.color, fontSize: 16, fontWeight: '600', marginLeft: 10 }}>
-				+{props.points} Pts
+			<Text style={{ color: props.color, fontSize: 16, fontWeight: '600', textAlign: 'center' }}>
+				{props.title}
 			</Text>
-            </View>
+			<View style={{ flexDirection: 'row' }}>
+				<Text style={{ color: props.color, fontSize: 16, fontWeight: '600', marginLeft: 10 }}>
+					+{props.points} Pts
+				</Text>
+			</View>
 		</View>
 	)
 }
@@ -52,7 +55,11 @@ export function DeliveredModal(props: DeliveredModalProps) {
 						</View>
 						<View style={styles.detailsContainer}>
 							<Text style={styles.minorTitle}>Pontuação:</Text>
-							<MaterialDetail title='Plástico'points={props.categoriesPoints.plastic} color='#D63636' />
+							<MaterialDetail
+								title='Plástico'
+								points={props.categoriesPoints.plastic}
+								color='#D63636'
+							/>
 							<MaterialDetail title='Papel' points={props.categoriesPoints.paper} color='#2367CC' />
 							<MaterialDetail title='Metal' points={props.categoriesPoints.metal} color='#F0C93E' />
 							<MaterialDetail title='Total' points={props.categoriesPoints.total} color='#000000' />
@@ -65,6 +72,7 @@ export function DeliveredModal(props: DeliveredModalProps) {
 									paddingHorizontal: 23,
 								}}
 								onPress={() => {
+									props.close()
 									navigation.navigate('Inicio' as never)
 								}}
 							/>
@@ -97,7 +105,7 @@ const styles = StyleSheet.create({
 	modalCard: {
 		backgroundColor: '#fff',
 		overflow: 'hidden',
-        paddingVertical: 20,
+		paddingVertical: 20,
 		borderRadius: 16,
 		width: 300,
 		alignItems: 'center',
@@ -122,15 +130,15 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-        marginTop: 20
+		marginTop: 20,
 	},
 	detailsContainer: {
 		alignItems: 'flex-start',
 	},
-    minorTitle: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: COLORS.primary500,
-        marginBottom: 5
-    }
+	minorTitle: {
+		fontSize: 16,
+		fontWeight: '600',
+		color: COLORS.primary500,
+		marginBottom: 5,
+	},
 })
