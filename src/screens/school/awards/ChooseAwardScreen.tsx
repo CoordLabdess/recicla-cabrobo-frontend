@@ -1,15 +1,20 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Modal } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
 import { Award, awards } from '../../../data/awards'
 import { Ionicons } from '@expo/vector-icons'
 import { AwardListItem } from '../../../components/awards/AwardListItem'
-import { useNavigation } from '@react-navigation/native'
+import { RouteProp, useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
 import { ConfirmAwardModal } from '../../../components/awards/ConfirmAwardModal'
+import { Student } from '../../../data/students'
 
-export function ChooseAwardScreen() {
+interface ChooseAwardScreenProps {
+	route: RouteProp<{ params: { student: Student } }, 'params'>
+}
+
+export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 	const navigation = useNavigation()
 	const [confirmModal, setConfirmModal] = useState(false)
 	const [award, setAward] = useState<Award | null>(null)
@@ -46,6 +51,7 @@ export function ChooseAwardScreen() {
 				visible={confirmModal}
 				onCancel={() => setConfirmModal(false)}
 				onConfirm={() => setConfirmModal(false)}
+				student={props.route.params.student}
 			/>
 		</SafeAreaView>
 	)

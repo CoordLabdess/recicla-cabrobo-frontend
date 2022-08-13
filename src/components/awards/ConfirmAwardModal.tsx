@@ -4,6 +4,7 @@ import { Student } from '../../data/students'
 import { PrimaryButton } from '../ui/Buttons'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
+import { RouteProp } from '@react-navigation/native'
 
 interface ConfirmAwardModalProps {
 	visible: boolean
@@ -11,20 +12,29 @@ interface ConfirmAwardModalProps {
 	onCancel: () => void
 	onConfirm: () => void
 	award: Award | null
+	student: Student
 }
 
 export function ConfirmAwardModal(props: ConfirmAwardModalProps) {
 	return (
-		<Modal visible={props.visible}>
+		<Modal transparent visible={props.visible}>
 			<View style={styles.modalContainer}>
 				<View style={styles.modalCardShadow}>
 					<View style={styles.modalCard}>
 						<View style={styles.modalMessageContainer}>
 							<Ionicons name='information-circle' color={COLORS.primary500} size={52} />
-							<Text style={styles.modalMessage}>O aluno está{'\n'}entregando:</Text>
+							<Text style={styles.modalMessage}>Você tem certeza?</Text>
 						</View>
-
-						<Text style={styles.modalMessage}>Confirmar Entrega?</Text>
+						<View style={{ width: 200 }}>
+							<Text style={styles.textDetail}>{props.student.nome}</Text>
+							<Text style={styles.textDetail}>5º ano</Text>
+							<Text style={styles.textDetail}></Text>
+						</View>
+						<View style={{ alignItems: 'center', width: 200, marginBottom: 20 }}>
+							<Text style={{ fontWeight: '600', textAlign: 'center' }}>
+								Ao continuar, essa ação não poderá ser revertida.
+							</Text>
+						</View>
 						<View style={styles.modalButtonsContainer}>
 							<PrimaryButton
 								avoidClick={props.isLoading}
@@ -104,5 +114,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	textDetail: {
+		color: COLORS.secondary500,
+		fontWeight: '600',
 	},
 })

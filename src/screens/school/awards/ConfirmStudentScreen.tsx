@@ -58,10 +58,7 @@ export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 						title='Continuar'
 						isLoading={false}
 						onPress={() => {
-							navigation.navigate(
-								'Award3' as never,
-								{ id: student.id, name: student.nome } as never,
-							)
+							navigation.navigate('Award3' as never, { student: student } as never)
 						}}
 					/>
 				</View>
