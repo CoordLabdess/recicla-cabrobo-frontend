@@ -4,7 +4,7 @@ import { COLORS } from '../../../constants/colors'
 import { PrimaryButton } from '../../../components/ui/Buttons'
 import { useState } from 'react'
 import { ErrorMessage } from '../../../components/ui/ErrorMessage'
-import { useNavigation } from '@react-navigation/native'
+import { RouteProp, useNavigation } from '@react-navigation/native'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { students } from '../../../data/students'
 
@@ -13,7 +13,11 @@ interface Errors {
 	notFound: boolean
 }
 
-export function ChooseStudentScreen() {
+interface ChooseStudentScreenProps {
+	route: RouteProp<{ params: { type: 'materials' | 'turboTasks' } }, 'params'>
+}
+
+export function ChooseStudentScreen(props: ChooseStudentScreenProps) {
 	const navigation = useNavigation()
 	const [studentNumber, setStudentNumber] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
@@ -60,7 +64,10 @@ export function ChooseStudentScreen() {
 					setErrors(cErros => {
 						return { ...cErros, notFound: false }
 					})
-					navigation.navigate('Delivery2' as never, { student: response } as never)
+					navigation.navigate(
+						'Delivery2' as never,
+						{ type: props.route.params.type, student: response } as never,
+					)
 				})
 				.catch(error => {
 					setErrors(cErros => {
@@ -84,14 +91,10 @@ export function ChooseStudentScreen() {
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
 			>
-				<SimplePageHeader
-					title='Nova Entrega de Materiais'
-					dontShowGoBack
-					textStyle={styles.title}
-				/>
+				<SimplePageHeader title='Informar Aluno' textStyle={styles.title} />
 
 				<Text style={styles.description}>
-					Adicione uma nova entrega de materiais de um aluno. Insira as informações corretas em cada
+					Associe uma nova entrega ao perfil de um aluno. Insira as informações solicitadas em cada
 					campo do formulário.
 				</Text>
 

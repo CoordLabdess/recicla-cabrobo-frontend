@@ -37,6 +37,7 @@ export function SimplePageHeader(props: SimplePageHeader) {
 			</Pressable>
 			<Text
 				style={[
+					{ fontSize: 20, color: COLORS.primary500, fontWeight: '600' },
 					{ fontSize: 22, color: COLORS.primary500, textAlign: 'center', marginVertical: 10 },
 					props.textStyle,
 				]}

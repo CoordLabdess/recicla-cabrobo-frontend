@@ -16,7 +16,7 @@ interface Student {
 }
 
 interface ConfirmStudentScreenProps {
-	route: RouteProp<{ params: { student: Student } }, 'params'>
+	route: RouteProp<{ params: { student: Student; type: 'materials' | 'turboTasks' } }, 'params'>
 }
 
 export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
@@ -58,7 +58,12 @@ export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 						title='Continuar'
 						isLoading={false}
 						onPress={() => {
-							navigation.navigate('Delivery3' as never, {id: student.id, name: student.nome} as never)
+							navigation.navigate(
+								(props.route.params.type === 'materials'
+									? 'Delivery3'
+									: 'DeliveryInformTurboTask') as never,
+								{ id: student.id, name: student.nome } as never,
+							)
 						}}
 					/>
 				</View>

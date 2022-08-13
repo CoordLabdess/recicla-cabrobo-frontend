@@ -31,7 +31,7 @@ export function NewDeliveryScreen() {
 						android_ripple={{ color: '#ccc' }}
 						style={styles.innerContainer}
 						onPress={() => {
-							navigation.navigate('DeliveryInformTurboTask' as never, { mode: 'create' } as never)
+							navigation.navigate('Delivery1' as never, { type: 'turboTasks' } as never)
 						}}
 					>
 						<Ionicons name='rocket-outline' size={60} color={COLORS.primary500} />
@@ -43,7 +43,7 @@ export function NewDeliveryScreen() {
 						android_ripple={{ color: '#ccc' }}
 						style={styles.innerContainer}
 						onPress={() => {
-							navigation.navigate('Delivery1' as never)
+							navigation.navigate('Delivery1' as never, { type: 'materials' } as never)
 						}}
 					>
 						<Ionicons name='leaf-outline' size={60} color={COLORS.primary500} />

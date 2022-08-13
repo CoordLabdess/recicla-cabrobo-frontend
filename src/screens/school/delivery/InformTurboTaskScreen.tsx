@@ -60,9 +60,15 @@ export function InformTurboTaskScreen() {
 							selectedValue={selectedTurboTask?.id || ''}
 							enabled={true}
 						>
-							<Picker.Item label='- Selecione uma turma -' value='' />
+							<Picker.Item label='- Selecione a atividade -' value='' />
 							{turboTasks.map(item => {
-								return <Picker.Item key={item.id} label={item.title} value={item.id} />
+								return (
+									<Picker.Item
+										key={item.id}
+										label={`${item.title} - ${item.class}`}
+										value={item.id}
+									/>
+								)
 							})}
 						</Picker>
 					</View>
