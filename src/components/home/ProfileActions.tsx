@@ -11,13 +11,13 @@ interface Action {
 
 const actions: Action[] = [
 	{
-		title: 'Resgate De Prêmios',
+		title: 'Prêmios Disponíveis',
 		icon: 'gift',
 		screen: '',
 	},
 	{
-		title: 'Prêmios Resgatados',
-		icon: 'arrow-down',
+		title: 'Pontuação Turbinada',
+		icon: 'rocket',
 		screen: '',
 	},
 	{
