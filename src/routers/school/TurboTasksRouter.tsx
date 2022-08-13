@@ -3,7 +3,7 @@ import { TurboTaskConfigScreen } from '../../screens/school/turboTasks/TurboTask
 import { AnyScreen } from '../../screens'
 import { ConfirmStudentScreen } from '../../screens/school/delivery/ConfirmStudentScreen'
 import { InformMaterialsScreen } from '../../screens/school/delivery/InformMaterialsScreen'
-import { NewDeliveryScreen } from '../../screens/school/delivery/NewDeliveryScreen'
+import { ChooseStudentScreen } from '../../screens/school/delivery/ChooseStudentScreen'
 import { TurboTasksClassesScreen } from '../../screens/school/turboTasks/TurboTasksClassesScreen'
 
 const Stack = createNativeStackNavigator()

@@ -1,75 +1,12 @@
-import { View, Text, ScrollView, TextInput, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS } from '../../../constants/colors'
-import { PrimaryButton } from '../../../components/ui/Buttons'
-import { useState } from 'react'
-import { ErrorMessage } from '../../../components/ui/ErrorMessage'
-import { useNavigation } from '@react-navigation/native'
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
-import { students } from '../../../data/students'
-
-interface Errors {
-	emptyId: boolean
-	notFound: boolean
-}
+import { COLORS } from '../../../constants/colors'
+import { Ionicons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 export function NewDeliveryScreen() {
 	const navigation = useNavigation()
-	const [studentNumber, setStudentNumber] = useState('')
-	const [isLoading, setIsLoading] = useState(false)
-	const [errors, setErrors] = useState<Errors>({
-		emptyId: false,
-		notFound: false,
-	})
-
-	function validateData() {
-		let isDataValid = true
-		if (!studentNumber.trim()) {
-			setErrors(cErrors => {
-				return { ...cErrors, emptyId: true }
-			})
-			isDataValid = false
-		} else {
-			setErrors(cErrors => {
-				return { ...cErrors, emptyId: false }
-			})
-		}
-		return isDataValid
-	}
-
-	async function getStudentByStudentCode(code: string) {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				const student = students.filter(student => {
-					return student.studentCode === code.trim()
-				})[0]
-				if (student) {
-					resolve(student)
-				} else {
-					reject()
-				}
-			}, 1000)
-		})
-	}
-
-	async function sendStudentNumber() {
-		if (validateData()) {
-			setIsLoading(true)
-			await getStudentByStudentCode(studentNumber)
-				.then(response => {
-					setErrors(cErros => {
-						return { ...cErros, notFound: false }
-					})
-					navigation.navigate('Delivery2' as never, { student: response } as never)
-				})
-				.catch(error => {
-					setErrors(cErros => {
-						return { ...cErros, notFound: true }
-					})
-				})
-			setIsLoading(false)
-		}
-	}
 
 	return (
 		<SafeAreaView style={styles.root}>
@@ -85,35 +22,34 @@ export function NewDeliveryScreen() {
 				showsVerticalScrollIndicator={false}
 			>
 				<SimplePageHeader
-					title='Nova Entrega de Materiais'
+					title='Escolher Tipo da Entrega'
 					dontShowGoBack
 					textStyle={styles.title}
 				/>
-
-				<Text style={styles.description}>
-					Adicione uma nova entrega de materiais de um aluno. Insira as informações corretas em cada
-					campo do formulário.
-				</Text>
-
-				<Text style={styles.label}>Número de matrícula do aluno</Text>
-				<View style={styles.inputContainer}>
-					<TextInput
-						value={studentNumber}
-						keyboardType='number-pad'
-						onChangeText={(text: string) => setStudentNumber(text)}
-						style={styles.input}
-					/>
-					<ErrorMessage isActive={errors.notFound}>
-						Id do aluno não encontrado no sistema!
-					</ErrorMessage>
-					<ErrorMessage isActive={errors.emptyId}>O campo deve ser preenchido!</ErrorMessage>
+				<View style={styles.outterContainer}>
+					<Pressable
+						android_ripple={{ color: '#ccc' }}
+						style={styles.innerContainer}
+						onPress={() => {
+							navigation.navigate('DeliveryInformTurboTask' as never, { mode: 'create' } as never)
+						}}
+					>
+						<Ionicons name='rocket-outline' size={60} color={COLORS.primary500} />
+						<Text style={styles.cardTitle}>Atividade Turbinada</Text>
+					</Pressable>
 				</View>
-				<PrimaryButton
-					isLoading={isLoading}
-					textStyle={{ fontSize: 20 }}
-					title='Realizar Nova Entrega'
-					onPress={sendStudentNumber}
-				/>
+				<View style={styles.outterContainer}>
+					<Pressable
+						android_ripple={{ color: '#ccc' }}
+						style={styles.innerContainer}
+						onPress={() => {
+							navigation.navigate('Delivery1' as never)
+						}}
+					>
+						<Ionicons name='leaf-outline' size={60} color={COLORS.primary500} />
+						<Text style={styles.cardTitle}>Entrega de Materiais</Text>
+					</Pressable>
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	)
@@ -124,34 +60,30 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 	},
+	outterContainer: {
+		borderWidth: 2,
+		borderRadius: 20,
+		marginBottom: 50,
+		height: 130,
+		width: 200,
+		overflow: 'hidden',
+		borderColor: COLORS.primary500,
+	},
+	innerContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingHorizontal: 10,
+	},
 	title: {
 		fontSize: 20,
 		color: COLORS.primary500,
 		fontWeight: '600',
 	},
-	input: {
-		fontSize: 25,
-		height: 52,
-		textAlign: 'center',
-		backgroundColor: '#EEEEEE',
-		borderRadius: 16,
-		paddingHorizontal: 21,
-	},
-	label: {
-		color: COLORS.secondary500,
-		fontSize: 18,
-		marginBottom: 10,
-	},
-	inputContainer: {
-		width: '85%',
-		marginBottom: 32,
-	},
-	description: {
-		color: COLORS.secondary500,
-		lineHeight: 22,
-		marginHorizontal: '5%',
-		marginTop: 40,
-		marginBottom: 60,
+	cardTitle: {
+		fontSize: 19,
+		fontWeight: '600',
+		color: COLORS.primary500,
 		textAlign: 'center',
 	},
 })
