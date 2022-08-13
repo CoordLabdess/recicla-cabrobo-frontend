@@ -1,4 +1,4 @@
-export type AwardCategorry = 'Eletrônico' | 'Brinquedo' | 'Outros'
+export type AwardCategorry = 'Eletrônico' | 'Brinquedo' | 'Outros' | ''
 
 export interface Award {
 	id: number

@@ -1,10 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { HomeStackRouter } from './HomeStackRouter'
-import { ProfileStackRouter } from '../ProfileStackRouter'
-import { OptionsScreen, AnyScreen } from '../../screens'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
-import { ChooseStudentScreen } from '../../screens/school/delivery/ChooseStudentScreen'
 import { DeliveryStackRouter } from './DeliveryRouter'
 import { ManageStudentsRouter } from './ManageStudentRouter'
 import { TurboTasksRouter } from './TurboTasksRouter'
@@ -114,7 +111,7 @@ export function SchoolRootBottomTabNavigator() {
 				listeners={({ navigation }) => ({
 					tabPress: event => {
 						event.preventDefault()
-						navigation.navigate('RootAwards', { screen: 'Award1' })
+						navigation.navigate('RootAwards', { screen: 'Award0' })
 					},
 				})}
 				options={{

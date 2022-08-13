@@ -13,7 +13,7 @@ interface Errors {
 	notFound: boolean
 }
 
-export function NewAwardScreen() {
+export function ChooseStudentAwardScreen() {
 	const navigation = useNavigation()
 	const [studentNumber, setStudentNumber] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
@@ -84,7 +84,7 @@ export function NewAwardScreen() {
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
 			>
-				<SimplePageHeader title='Resgate de Prêmios' dontShowGoBack textStyle={styles.title} />
+				<SimplePageHeader title='Informar Aluno' textStyle={styles.title} />
 
 				<Text style={styles.description}>
 					Digite o número de matrícula do aluno para iniciar um resgate de prêmios.

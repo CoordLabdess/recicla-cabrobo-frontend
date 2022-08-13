@@ -9,9 +9,10 @@ import { RouteProp, useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
 import { ConfirmAwardModal } from '../../../components/awards/ConfirmAwardModal'
 import { Student } from '../../../data/students'
+import { RoundIconButton } from '../../../components/ui/RoundIconButton'
 
 interface ChooseAwardScreenProps {
-	route: RouteProp<{ params: { student: Student } }, 'params'>
+	route: RouteProp<{ params: { student: Student; mode: 'get' | 'manage' } }, 'params'>
 }
 
 export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
@@ -40,19 +41,37 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 					<AwardListItem
 						award={itemData.item}
 						onPress={() => {
-							setAward(itemData.item)
-							setConfirmModal(true)
+							if (props.route.params.mode === 'manage') {
+								navigation.navigate(
+									'EditAward' as never,
+									{ mode: 'Edit', award: itemData.item } as never,
+								)
+							} else {
+								setAward(itemData.item)
+								setConfirmModal(true)
+							}
 						}}
 					/>
 				)}
 			/>
-			<ConfirmAwardModal
+			<View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+				<RoundIconButton
+					iconColor={COLORS.secondary100}
+					iconName={'add'}
+					size={52}
+					onPress={() => {
+						navigation.navigate('EditAward' as never, { mode: 'create' } as never)
+					}}
+				/>
+			</View>
+
+			{/* <ConfirmAwardModal
 				award={award}
 				visible={confirmModal}
 				onCancel={() => setConfirmModal(false)}
 				onConfirm={() => setConfirmModal(false)}
 				student={props.route.params.student}
-			/>
+			/> */}
 		</SafeAreaView>
 	)
 }
