@@ -13,7 +13,7 @@ export const students: Student[] = [
 		nome: 'Ciclano da Silva Sauro',
 		profileImg:
 			'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-		points: 1000,
+		points: 1250,
 	},
 	{
 		id: 2,
@@ -21,7 +21,7 @@ export const students: Student[] = [
 		nome: 'Beltrano da Silva Sauro',
 		profileImg:
 			'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-		points: 1000,
+		points: 800,
 	},
 	{
 		id: 3,
@@ -29,7 +29,7 @@ export const students: Student[] = [
 		nome: 'Jeremias da Silva Sauro',
 		profileImg:
 			'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-		points: 1000,
+		points: 770,
 	},
 	{
 		id: 4,
@@ -37,7 +37,7 @@ export const students: Student[] = [
 		nome: 'Malaquias da Silva Sauro',
 		profileImg:
 			'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-		points: 1000,
+		points: 2310,
 	},
 	{
 		id: 5,
@@ -45,7 +45,7 @@ export const students: Student[] = [
 		nome: 'Zacarias da Silva Sauro',
 		profileImg:
 			'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-		points: 1000,
+		points: 2500,
 	},
 	{
 		id: 6,
@@ -53,6 +53,6 @@ export const students: Student[] = [
 		nome: 'Fulano da Silva Sauro',
 		profileImg:
 			'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-		points: 1000,
+		points: 1235,
 	},
 ]

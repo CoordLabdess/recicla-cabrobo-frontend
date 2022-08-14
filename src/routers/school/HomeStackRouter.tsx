@@ -15,6 +15,7 @@ export function HomeStackRouter() {
 			}}
 		>
 			<Stack.Screen name='Inicio' component={SchoolHomeScreen} />
+			<Stack.Screen name='RankingEscolas' component={RankingScreen} />
 		</Stack.Navigator>
 	)
 }
