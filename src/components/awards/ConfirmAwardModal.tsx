@@ -25,14 +25,33 @@ export function ConfirmAwardModal(props: ConfirmAwardModalProps) {
 							<Ionicons name='information-circle' color={COLORS.primary500} size={52} />
 							<Text style={styles.modalMessage}>Você tem certeza?</Text>
 						</View>
-						<View style={{ width: 200 }}>
-							<Text style={styles.textDetail}>{props.student.nome}</Text>
-							<Text style={styles.textDetail}>5º ano</Text>
-							<Text style={styles.textDetail}></Text>
+						<View style={{ width: 250 }}>
+							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+								<Text style={styles.textDetailTitle}>Nome: </Text>
+								<Text style={styles.textDetail}>{props.student.nome}</Text>
+							</View>
+							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+								<Text style={styles.textDetailTitle}>Matrícula: </Text>
+								<Text style={styles.textDetail}>{props.student.studentCode}</Text>
+							</View>
+							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+								<Text style={styles.textDetailTitle}>Série: </Text>
+								<Text style={styles.textDetail}>5º ano</Text>
+							</View>
+							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+								<Text style={styles.textDetailTitle}>Prêmio: </Text>
+								<Text style={styles.textDetail}>{props.award?.title}</Text>
+							</View>
+							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+								<Text style={styles.textDetailTitle}>Preço: </Text>
+								<Text style={styles.textDetail}>{props.award?.price} pts</Text>
+							</View>
 						</View>
-						<View style={{ alignItems: 'center', width: 200, marginBottom: 20 }}>
+
+						<View style={{ alignItems: 'center', width: 250, marginVertical: 20 }}>
 							<Text style={{ fontWeight: '600', textAlign: 'center' }}>
-								Ao continuar, essa ação não poderá ser revertida.
+								Ao continuar, será descontando o valor do prêmio da pontuação do aluno. Essa ação
+								não pode ser desfeita.
 							</Text>
 						</View>
 						<View style={styles.modalButtonsContainer}>
@@ -115,8 +134,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	textDetailTitle: {
+		color: '#000',
+		fontWeight: '600',
+	},
 	textDetail: {
 		color: COLORS.secondary500,
 		fontWeight: '600',
+		flex: 1,
 	},
 })

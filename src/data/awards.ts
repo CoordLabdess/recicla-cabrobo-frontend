@@ -25,7 +25,7 @@ export const awards: Award[] = [
 	},
 	{
 		id: 3,
-		title: 'Tablet Positivo',
+		title: 'Tablet',
 		category: 'Eletrônico',
 		description: 'Tablet bonito',
 		price: 10000,

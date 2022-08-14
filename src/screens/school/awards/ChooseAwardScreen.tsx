@@ -19,6 +19,28 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 	const navigation = useNavigation()
 	const [confirmModal, setConfirmModal] = useState(false)
 	const [award, setAward] = useState<Award | null>(null)
+	const [isLoading, setIsLoading] = useState(false)
+
+	async function fakeFetching() {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve('')
+			}, 1000)
+		})
+	}
+
+	async function sendChanges() {
+		setIsLoading(true)
+		await fakeFetching()
+			.then(response => {
+				setIsLoading(false)
+				navigation.navigate('Award0' as never)
+			})
+			.catch(error => {
+				setIsLoading(false)
+				setConfirmModal(false)
+			})
+	}
 
 	return (
 		<SafeAreaView style={styles.root}>
@@ -54,24 +76,29 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 					/>
 				)}
 			/>
-			<View style={{ position: 'absolute', bottom: 20, right: 20 }}>
-				<RoundIconButton
-					iconColor={COLORS.secondary100}
-					iconName={'add'}
-					size={52}
-					onPress={() => {
-						navigation.navigate('EditAward' as never, { mode: 'create' } as never)
-					}}
-				/>
-			</View>
+			{props.route.params.mode !== 'get' && (
+				<View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+					<RoundIconButton
+						iconColor={COLORS.secondary100}
+						iconName={'add'}
+						size={52}
+						onPress={() => {
+							navigation.navigate('EditAward' as never, { mode: 'create' } as never)
+						}}
+					/>
+				</View>
+			)}
 
-			{/* <ConfirmAwardModal
-				award={award}
-				visible={confirmModal}
-				onCancel={() => setConfirmModal(false)}
-				onConfirm={() => setConfirmModal(false)}
-				student={props.route.params.student}
-			/> */}
+			{props.route.params.mode === 'get' && (
+				<ConfirmAwardModal
+					award={award}
+					visible={confirmModal}
+					isLoading={isLoading}
+					onCancel={() => setConfirmModal(false)}
+					onConfirm={sendChanges}
+					student={props.route.params.student}
+				/>
+			)}
 		</SafeAreaView>
 	)
 }
