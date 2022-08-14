@@ -40,7 +40,9 @@ export function RankingScreen() {
 				style={styles.contentList}
 				data={data}
 				showsVerticalScrollIndicator={false}
-				renderItem={itemData => <RankElement user={itemData.item} index={itemData.index + 1} />}
+				renderItem={itemData => (
+					<RankElement disableImage user={itemData.item} index={itemData.index + 1} />
+				)}
 			/>
 		</SafeAreaView>
 	)
