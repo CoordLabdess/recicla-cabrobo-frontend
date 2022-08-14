@@ -11,29 +11,9 @@ interface StatusItem {
 	screen: string
 }
 
-const data: StatusItem[] = [
-	{
-		title: 'Pontos Disponíveis',
-		icon: 'leaf-outline',
-		value: 1000,
-		unit: 'pts',
-		screen: 'ranking',
-	},
-	{
-		title: 'Sua classificação',
-		icon: 'medal-outline',
-		value: 1000,
-		unit: 'º Lugar',
-		screen: 'ranking',
-	},
-	{
-		title: 'Peso Total Entregue',
-		icon: 'trash-outline',
-		value: 0,
-		unit: 'kg',
-		screen: 'ranking',
-	},
-]
+interface UserStatusProps {
+	points: number
+}
 
 function StatusCard(props: { itemData: ListRenderItemInfo<StatusItem> }) {
 	const navigation = useNavigation()
@@ -58,7 +38,7 @@ function StatusCard(props: { itemData: ListRenderItemInfo<StatusItem> }) {
 	)
 }
 
-export function UserStatus() {
+export function UserStatus(props: UserStatusProps) {
 	const navigation = useNavigation()
 	return (
 		<View style={styles.root}>
@@ -76,7 +56,7 @@ export function UserStatus() {
 				<Ionicons name='leaf-outline' size={26} style={{ marginRight: 5 }} />
 				<View style={{ flex: 1 }}>
 					<Text style={styles.scoreContainerTitle}>Pontos disponíveis</Text>
-					<Text style={styles.scoreContainerText}>1000Pts</Text>
+					<Text style={styles.scoreContainerText}>{props.points} pts</Text>
 				</View>
 			</Pressable>
 			<Pressable

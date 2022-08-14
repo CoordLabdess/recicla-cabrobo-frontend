@@ -3,15 +3,18 @@ import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { AuthContext } from '../../store/context/authContext'
 import { useContext } from 'react'
+import { UserStatus } from '../../components/home/UserStatus'
+import { ProfileActions } from '../../components/home/ProfileActions'
+import { StudentContext } from '../../store/context/studentContext'
 
-interface ProfileHeaderProps {
-	children?: React.ReactNode
-}
+interface ProfileHeaderProps {}
 
 export function ProfileHeader(props: ProfileHeaderProps) {
-	const authToken = useContext(AuthContext)
+	const authCtx = useContext(AuthContext)
+	const studentCtx = useContext(StudentContext)
+	const student = studentCtx.getStudentData()
 	function logout() {
-		authToken.logout()
+		authCtx.logout()
 	}
 
 	return (
@@ -27,8 +30,8 @@ export function ProfileHeader(props: ProfileHeaderProps) {
 							}}
 						/>
 					</View>
-					<View>
-						<Text style={styles.name}>Fulano da Silva Sauro</Text>
+					<View style={{ maxWidth: 200 }}>
+						<Text style={styles.name}>{student.name}</Text>
 						<Text style={styles.tag}>Aluno</Text>
 					</View>
 				</View>
@@ -42,7 +45,8 @@ export function ProfileHeader(props: ProfileHeaderProps) {
 					</Pressable>
 				</View>
 			</View>
-			{props.children ? props.children : <></>}
+			<UserStatus points={student.points} />
+			<ProfileActions />
 		</View>
 	)
 }

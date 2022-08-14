@@ -6,9 +6,11 @@ import { ProfileHeader } from '../../../components/home/ProfileHeader'
 import { UserStatus } from '../../../components/home/UserStatus'
 import { ProfileActions } from '../../../components/home/ProfileActions'
 import { History } from '../../../components/home/History'
-import { useContext, useLayoutEffect, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { AuthContext } from '../../../store/context/authContext'
-import axios from 'axios'
+import { getStudentData, StudentData } from '../../../utils/student'
+import { LoadingScreen } from '../../ui/LoadingScreen'
+import { StudentContext } from '../../../store/context/studentContext'
 
 interface History {
 	date: Date
@@ -70,47 +72,55 @@ const historyData: History[] = [
 ]
 
 function Header() {
-	return (
-		<ProfileHeader>
-			<UserStatus />
-			<ProfileActions />
-		</ProfileHeader>
-	)
+	return <ProfileHeader />
 }
 
 export function HomeScreen() {
 	const authCtx = useContext(AuthContext)
-	const [useData, setUserData] = useState()
+	const studentCtx = useContext(StudentContext)
+	const student = studentCtx.getStudentData()
 
 	const token = authCtx.token
 
 	useLayoutEffect(() => {
-		axios
-			.get('https://recicla-teste-back.herokuapp.com/aluno', {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
-			.then(res => {
-				setUserData(res as any)
-			})
-			.catch(err => console.log(err))
+		if (token) {
+			getStudentData(token)
+				.then(res => {
+					studentCtx.updateStudentData({
+						name: res.nome,
+						points: res.pontos,
+						studentNumber: res.matricula,
+						type: 'Student',
+					})
+				})
+				.catch(err => {
+					console.log(err)
+				})
+		}
 	}, [])
 
-	return (
-		<SafeAreaView style={styles.root}>
-			<FlatList
-				ListHeaderComponent={Header}
-				showsVerticalScrollIndicator={false}
-				alwaysBounceVertical={false}
-				data={historyData}
-				style={styles.contentList}
-				renderItem={itemData => (
-					<History last={itemData.index + 1 >= historyData.length} itemData={itemData} />
-				)}
-			/>
-		</SafeAreaView>
-	)
+	useEffect(() => {
+		console.log(student)
+	}, [studentCtx.studentData])
+
+	if (!student.name || !student.studentNumber) {
+		return <LoadingScreen />
+	} else {
+		return (
+			<SafeAreaView style={styles.root}>
+				<FlatList
+					ListHeaderComponent={Header}
+					showsVerticalScrollIndicator={false}
+					alwaysBounceVertical={false}
+					data={historyData}
+					style={styles.contentList}
+					renderItem={itemData => (
+						<History last={itemData.index + 1 >= historyData.length} itemData={itemData} />
+					)}
+				/>
+			</SafeAreaView>
+		)
+	}
 }
 
 const styles = StyleSheet.create({

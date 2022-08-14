@@ -63,6 +63,5 @@ export async function signIn(identificador: string, password: string) {
 		password,
 	})
 
-	console.log(response.data)
 	return getAuthType(response.data)
 }

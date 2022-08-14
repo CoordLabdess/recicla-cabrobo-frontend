@@ -6,14 +6,17 @@ import { AnyScreen } from '../screens'
 import { SchoolRootBottomTabNavigator } from './school/SchoolRootBottomTabNavigator'
 import { StudentRootBottomTabNavigator } from './student/StudentRootBottomTabNavigator'
 import { AuthContext, AuthType } from '../store/context/authContext'
+import { StudentContext, StudentContextProvider } from '../store/context/studentContext'
 
 export function UserTypeRouter() {
 	const AuthCtx = useContext(AuthContext)
 
 	return AuthCtx.type === 'Student' ? (
 		<NavigationContainer>
-			<StatusBar style='dark' backgroundColor='#fff' />
-			<StudentRootBottomTabNavigator />
+			<StudentContextProvider>
+				<StatusBar style='dark' backgroundColor='#fff' />
+				<StudentRootBottomTabNavigator />
+			</StudentContextProvider>
 		</NavigationContainer>
 	) : AuthCtx.type === 'School' ? (
 		<NavigationContainer>
