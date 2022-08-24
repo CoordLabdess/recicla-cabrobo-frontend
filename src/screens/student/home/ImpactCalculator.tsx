@@ -149,7 +149,7 @@ export function ImpactCalculator() {
 	}
 
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
 				ItemSeparatorComponent={ImpactElementSeparator}
 				showsVerticalScrollIndicator={false}

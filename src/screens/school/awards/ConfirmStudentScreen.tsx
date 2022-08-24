@@ -29,7 +29,7 @@ export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 	}, [props.route])*/
 
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<ScrollView
 				keyboardShouldPersistTaps='handled'
 				contentContainerStyle={{

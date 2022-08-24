@@ -4,6 +4,7 @@ import { ProfileStackRouter } from '../ProfileStackRouter'
 import { OptionsScreen, AnyScreen } from '../../screens'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
+import { Platform } from 'react-native'
 
 const BottomTab = createBottomTabNavigator()
 
@@ -14,8 +15,9 @@ export function StudentRootBottomTabNavigator() {
 				headerShown: false,
 				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
+					display: 'none',
 					backgroundColor: COLORS.primary500,
-					height: 65,
+					height: Platform.OS === 'ios' ? 75 : 65,
 				},
 				tabBarInactiveTintColor: COLORS.secondary100,
 				tabBarActiveTintColor: COLORS.secondary100,

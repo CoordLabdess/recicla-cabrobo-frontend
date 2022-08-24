@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import React, { useContext } from 'react'
+import { KeyboardAvoidingView } from 'react-native'
 import { COLORS } from '../constants/colors'
 import { AuthContext } from '../store/context/authContext'
 import { PublicRouter } from './public/PublicRouter'
@@ -17,7 +18,12 @@ export function Navigation() {
 	) : (
 		<NavigationContainer>
 			<StatusBar style='light' backgroundColor={COLORS.primary500} />
-			<PublicRouter />
+			<KeyboardAvoidingView
+				behavior='padding'
+				style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'flex-end' }}
+			>
+				<PublicRouter />
+			</KeyboardAvoidingView>
 		</NavigationContainer>
 	)
 }

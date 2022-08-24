@@ -7,6 +7,7 @@ import { SchoolRootBottomTabNavigator } from './school/SchoolRootBottomTabNaviga
 import { StudentRootBottomTabNavigator } from './student/StudentRootBottomTabNavigator'
 import { AuthContext, AuthType } from '../store/context/authContext'
 import { StudentContext, StudentContextProvider } from '../store/context/studentContext'
+import { KeyboardAvoidingView } from 'react-native'
 
 export function UserTypeRouter() {
 	const AuthCtx = useContext(AuthContext)
@@ -21,6 +22,7 @@ export function UserTypeRouter() {
 	) : AuthCtx.type === 'School' ? (
 		<NavigationContainer>
 			<StatusBar style='light' backgroundColor={COLORS.primary500} />
+
 			<SchoolRootBottomTabNavigator />
 		</NavigationContainer>
 	) : (

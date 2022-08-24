@@ -107,7 +107,7 @@ export function HomeScreen() {
 		return <LoadingScreen />
 	} else {
 		return (
-			<SafeAreaView style={styles.root}>
+			<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 				<FlatList
 					ListHeaderComponent={Header}
 					showsVerticalScrollIndicator={false}

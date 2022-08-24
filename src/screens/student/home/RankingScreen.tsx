@@ -29,7 +29,7 @@ export function RankingScreen() {
 	) as []
 
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
 				ListHeaderComponent={() => (
 					<SimplePageHeader

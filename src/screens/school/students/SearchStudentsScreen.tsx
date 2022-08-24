@@ -44,7 +44,7 @@ export function SearchStudentsScreen() {
 	}
 
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<SimplePageHeader title='Pesquisar Aluno' />
 			<View style={styles.container}>
 				<TextInput

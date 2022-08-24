@@ -6,6 +6,7 @@ import { DeliveryStackRouter } from './DeliveryRouter'
 import { ManageStudentsRouter } from './ManageStudentRouter'
 import { TurboTasksRouter } from './TurboTasksRouter'
 import { AwardStackRouter } from './AwardRouter'
+import { Platform } from 'react-native'
 
 const BottomTab = createBottomTabNavigator()
 
@@ -17,7 +18,7 @@ export function SchoolRootBottomTabNavigator() {
 				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
 					backgroundColor: COLORS.primary500,
-					height: 65,
+					height: Platform.OS === 'ios' ? 75 : 65,
 				},
 				tabBarInactiveTintColor: COLORS.secondary100,
 				tabBarActiveTintColor: COLORS.secondary100,

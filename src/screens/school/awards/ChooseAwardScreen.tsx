@@ -43,7 +43,7 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 	}
 
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
 				ListHeaderComponent={() => (
 					<SimplePageHeader textStyle={styles.title} title='Selecione o Prêmio' />

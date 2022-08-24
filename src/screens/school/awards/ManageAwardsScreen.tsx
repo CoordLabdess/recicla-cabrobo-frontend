@@ -9,7 +9,7 @@ export function ManageAwardsScreen() {
 	const navigation = useNavigation()
 
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<ScrollView
 				keyboardShouldPersistTaps='always'
 				contentContainerStyle={{

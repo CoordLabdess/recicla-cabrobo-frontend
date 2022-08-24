@@ -10,7 +10,7 @@ import { COLORS } from '../../../constants/colors'
 export function TurboTasksClassesScreen() {
 	const navigation = useNavigation()
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
 				ListHeaderComponent={() => (
 					<SimplePageHeader textStyle={styles.title} dontShowGoBack title='Atividades Turbinadas' />

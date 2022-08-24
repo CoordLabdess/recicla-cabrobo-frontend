@@ -13,7 +13,7 @@ export function SchoolHomeScreen() {
 	const navigation = useNavigation()
 	const authCtx = useContext(AuthContext)
 	return (
-		<SafeAreaView style={styles.root}>
+		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<ScrollView
 				keyboardShouldPersistTaps='always'
 				contentContainerStyle={{

@@ -6,7 +6,7 @@ export interface Student {
 	points: number
 }
 
-export const students: Student[] = [
+export const students = [
 	{
 		id: 1,
 		studentCode: '1',
