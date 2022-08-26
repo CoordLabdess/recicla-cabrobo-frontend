@@ -13,7 +13,7 @@ const actions: Action[] = [
 	{
 		title: 'Prêmios Disponíveis',
 		icon: 'gift',
-		screen: '',
+		screen: 'PremiosDisponiveis',
 	},
 	{
 		title: 'Pontuação Turbinada',
