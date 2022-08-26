@@ -61,7 +61,11 @@ export function PrimaryButton(props: ButtonProps) {
 			>
 				<Pressable
 					android_ripple={{ color: !props.avoidClick ? '#ccc' : 'transparent' }}
-					style={[primaryButtonStyles.cardContainer, props.innerContainerStyle]}
+					style={[
+						primaryButtonStyles.cardContainer,
+						props.innerContainerStyle,
+						props.avoidClick && { backgroundColor: COLORS.secondary400 },
+					]}
 					onPress={props.isLoading || props.avoidClick ? () => {} : props.onPress}
 				>
 					<Text

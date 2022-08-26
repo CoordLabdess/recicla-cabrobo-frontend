@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { signIn } from '../../utils/auth'
 import { isEmailValid } from '../../utils/verification'
 import { ErrorMessage } from '../../components/ui/ErrorMessage'
+import { PrivacyPolicyModal } from '../../components/modals/PrivacyPolicyModal'
 
 interface Erros {
 	invalidEmail: boolean
@@ -20,6 +21,7 @@ interface Erros {
 
 export function LoginScreen() {
 	const [isAuthenticating, setIsAuthenticating] = useState(false)
+	const [acceptedPolicy, setAcceptedPolicy] = useState(false)
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const navigation = useNavigation()
@@ -210,6 +212,12 @@ export function LoginScreen() {
 					</LinearGradient>
 				</ScrollView>
 			</View>
+			<PrivacyPolicyModal
+				visible={!acceptedPolicy}
+				confirm
+				onCancel={() => {}}
+				onConfirm={() => setAcceptedPolicy(true)}
+			/>
 		</SafeAreaView>
 	)
 }
