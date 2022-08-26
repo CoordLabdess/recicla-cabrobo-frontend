@@ -8,7 +8,7 @@ import { ProfileActions } from '../../../components/home/ProfileActions'
 import { History } from '../../../components/home/History'
 import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { AuthContext } from '../../../store/context/authContext'
-import { getStudentData, StudentData } from '../../../utils/student'
+import { getRanking, getStudentData, StudentData } from '../../../utils/student'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 import { StudentContext } from '../../../store/context/studentContext'
 
@@ -87,10 +87,12 @@ export function HomeScreen() {
 			getStudentData(token)
 				.then(res => {
 					studentCtx.updateStudentData({
+						token: token,
 						name: res.nome,
 						points: res.pontos,
 						studentNumber: res.matricula,
 						type: 'Student',
+						rank: -1,
 					})
 				})
 				.catch(err => {

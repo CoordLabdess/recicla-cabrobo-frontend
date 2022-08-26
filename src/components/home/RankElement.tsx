@@ -5,9 +5,10 @@ import { Student } from '../../data/students'
 import { ProfileImage } from '../ui/ProfileImage'
 
 interface RankElementProps {
-	user: Student | School
+	name: string
 	index: number
 	disableImage: boolean
+	points: number
 }
 
 export function RankElement(props: RankElementProps) {
@@ -22,7 +23,7 @@ export function RankElement(props: RankElementProps) {
 						/>
 					)}
 					<View>
-						<Text>{props.user.nome}</Text>
+						<Text>{props.name}</Text>
 						<View style={{ flexDirection: 'row' }}>
 							<Text>{props.index}º Lugar</Text>
 						</View>
@@ -35,7 +36,7 @@ export function RankElement(props: RankElementProps) {
 									style={{ marginRight: 5 }}
 								/>
 							)}
-							<Text style={{ color: '#838495' }}>{props.user.points}Pts</Text>
+							<Text style={{ color: '#838495' }}>{props.points}Pts</Text>
 						</View>
 					</View>
 				</View>

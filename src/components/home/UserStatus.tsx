@@ -2,6 +2,9 @@ import { View, Text, FlatList, ListRenderItemInfo, StyleSheet, Pressable } from 
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
+import { useContext, useLayoutEffect } from 'react'
+import { StudentContext } from '../../store/context/studentContext'
+import { getRanking } from '../../utils/student'
 
 interface StatusItem {
 	title: string
@@ -40,6 +43,17 @@ function StatusCard(props: { itemData: ListRenderItemInfo<StatusItem> }) {
 
 export function UserStatus(props: UserStatusProps) {
 	const navigation = useNavigation()
+
+	const StudentCtx = useContext(StudentContext)
+	useLayoutEffect(() => {
+		getRanking(
+			StudentCtx.getStudentData().token,
+			String(StudentCtx.getStudentData().studentNumber),
+		).then(res => {
+			console.log(res)
+			StudentCtx.updateStudentData({ ...StudentCtx.getStudentData(), rank: res })
+		})
+	}, [])
 	return (
 		<View style={styles.root}>
 			{/*<FlatList
@@ -77,7 +91,9 @@ export function UserStatus(props: UserStatusProps) {
 				>
 					<View>
 						<Text style={styles.rankingContainerTitle}>Sua Classificação</Text>
-						<Text style={styles.rankingContainerText}>1º Lugar</Text>
+						<Text style={styles.rankingContainerText}>
+							{StudentCtx.getStudentData().rank}º Lugar
+						</Text>
 					</View>
 					<Ionicons name='chevron-forward' size={26} color={COLORS.secondary500} />
 				</View>
