@@ -3,13 +3,14 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { CustomButton, PrimaryButton } from '../../components/ui/Buttons'
 import { COLORS } from '../../constants/colors'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { AuthContext } from '../../store/context/authContext'
 import { useNavigation } from '@react-navigation/native'
 import { signIn } from '../../utils/auth'
 import { isEmailValid } from '../../utils/verification'
 import { ErrorMessage } from '../../components/ui/ErrorMessage'
 import { PrivacyPolicyModal } from '../../components/modals/PrivacyPolicyModal'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface Erros {
 	invalidEmail: boolean
@@ -21,9 +22,10 @@ interface Erros {
 
 export function LoginScreen() {
 	const [isAuthenticating, setIsAuthenticating] = useState(false)
-	const [acceptedPolicy, setAcceptedPolicy] = useState(false)
+	const [acceptedPolicy, setAcceptedPolicy] = useState(true)
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [viewModal, setViewModal] = useState(false)
 	const navigation = useNavigation()
 	const [errors, setErros] = useState<Erros>({
 		invalidEmail: false,
@@ -33,28 +35,40 @@ export function LoginScreen() {
 		emailOrPasswordWrong: false,
 	})
 
+	async function storeData(key: string, value: string) {
+		try {
+			await AsyncStorage.setItem(key, value)
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
+	async function getData(key: string) {
+		try {
+			const value = await AsyncStorage.getItem(key)
+			setAcceptedPolicy(value === 'true')
+			if (value) {
+				return value
+			}
+			return ''
+		} catch (e) {
+			return ''
+		}
+	}
+
+	function checkA(key: string) {
+		getData('hasAcceptedPolicy').then(value => {
+			setAcceptedPolicy(value === 'true')
+		})
+	}
+
+	useLayoutEffect(() => {
+		// storeData('hasAcceptedPolicy', 'false')
+		checkA('hasAcceptedPolicy')
+	}, [])
+
 	function validateData() {
 		let isDataValid = true
-		/*if (!isEmailValid(email)) {
-			setErros(cErros => {
-				return { ...cErros, invalidEmail: true }
-			})
-			isDataValid = false
-		} else {
-			setErros(cErros => {
-				return { ...cErros, invalidEmail: false }
-			})
-		}
-		if (!email.trim()) {
-			setErros(cErros => {
-				return { ...cErros, emptyEmail: true, invalidEmail: false }
-			})
-			isDataValid = false
-		} else {
-			setErros(cErros => {
-				return { ...cErros, emptyEmail: false }
-			})
-		}*/
 		if (!email.match(/^[0-9]+$/)) {
 			setErros(cErros => {
 				return { ...cErros, invalidEmail: true }
@@ -86,14 +100,12 @@ export function LoginScreen() {
 					authCtx.authenticate(token, type)
 				})
 				.catch(error => {
-					console.log(error)
 					setErros(cErros => {
 						return { ...cErros, emailOrPasswordWrong: true }
 					})
 					setIsAuthenticating(false)
 				})
 		} else {
-			console.log('Informações incorretas')
 		}
 	}
 
@@ -186,18 +198,30 @@ export function LoginScreen() {
 								</ErrorMessage>
 							</View>
 
-							<CustomButton
+							{/* <CustomButton
 								style={{ marginBottom: 66 }}
 								title='Esqueci minha senha'
 								onPress={() => console.log('oi')}
 								textStyle={{ color: '#1a6dbb' }}
-							/>
-							<View style={[styles.elementContainer, { marginBottom: 32, alignItems: 'center' }]}>
+							/> */}
+							<View style={[styles.elementContainer, { marginTop: 32, alignItems: 'center' }]}>
 								<PrimaryButton
 									isLoading={isAuthenticating}
 									title='Acessar'
 									innerContainerStyle={{ paddingHorizontal: 60 }}
 									onPress={signInHandler}
+								/>
+							</View>
+							<View style={[styles.elementContainer, { marginTop: 32, alignItems: 'center' }]}>
+								<CustomButton
+									style={{ marginBottom: 66 }}
+									title='Ver política de privadidade'
+									onPress={() => {
+										if (acceptedPolicy) {
+											setViewModal(true)
+										}
+									}}
+									textStyle={{ color: '#1a6dbb' }}
 								/>
 							</View>
 							{/* <View style={[styles.registerContainer, { marginBottom: 34 }]}>
@@ -213,10 +237,14 @@ export function LoginScreen() {
 				</ScrollView>
 			</View>
 			<PrivacyPolicyModal
-				visible={!acceptedPolicy}
-				confirm
+				visible={!acceptedPolicy || viewModal}
+				confirm={!viewModal}
 				onCancel={() => {}}
-				onConfirm={() => setAcceptedPolicy(true)}
+				onConfirm={() => {
+					storeData('hasAcceptedPolicy', 'true')
+					checkA('hasAcceptedPolicy')
+					setViewModal(false)
+				}}
 			/>
 		</SafeAreaView>
 	)

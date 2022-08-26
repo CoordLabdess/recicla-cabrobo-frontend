@@ -23,26 +23,40 @@ export function PrivacyPolicyModal(props: PrivacPolicyModalProps) {
 						<ScrollView
 							contentContainerStyle={{
 								justifyContent: 'flex-start',
-								padding: '5%',
+								paddingTop: '5%',
 								alignItems: 'center',
+								maxWidth: '100%',
+								padding: 15,
 							}}
 							alwaysBounceVertical={false}
-							showsVerticalScrollIndicator={false}
 						>
 							<Text style={styles.title}>Política de Privacidade</Text>
+							<Text style={styles.description}>
+								Leia nossa política de privacidade com atenção. Role para baixo, para visualizá-la
+								completamente.
+							</Text>
 							<View style={styles.textContainer}>
 								<Text style={styles.privacyText}>{privacyPolicyText}</Text>
 							</View>
-							<Pressable onPress={() => setChecked(!checked)} style={styles.checkboxContainer}>
-								<Checkbox
-									style={styles.checkbox}
-									value={checked}
-									onValueChange={() => setChecked(!checked)}
+							{props.confirm && (
+								<Pressable onPress={() => setChecked(!checked)} style={styles.checkboxContainer}>
+									<Checkbox
+										style={styles.checkbox}
+										value={checked}
+										onValueChange={() => setChecked(!checked)}
+									/>
+									<Text style={styles.checkboxText}>
+										Li e concordo com a Política de Privacidade
+									</Text>
+								</Pressable>
+							)}
+							<View>
+								<PrimaryButton
+									avoidClick={!checked && props.confirm}
+									title={props.confirm ? 'Confirmar' : 'Voltar'}
+									onPress={props.onConfirm}
 								/>
-								<Text style={styles.checkboxText}>Li e concordo com a Política de Privacidade</Text>
-							</Pressable>
-
-							<PrimaryButton avoidClick={!checked} title='Confirmar' onPress={props.onConfirm} />
+							</View>
 						</ScrollView>
 					</View>
 				</View>
@@ -60,7 +74,7 @@ const styles = StyleSheet.create({
 	},
 	modalCardShadow: {
 		borderRadius: 16,
-		maxWidth: '85%',
+		maxWidth: '90%',
 		backgroundColor: 'transparent',
 		shadowColor: '#000',
 		shadowOffset: {
@@ -78,7 +92,6 @@ const styles = StyleSheet.create({
 		maxHeight: '80%',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		paddingVertical: 10,
 	},
 
 	title: {
@@ -87,11 +100,19 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 		marginBottom: 19,
 	},
+	description: {
+		fontSize: 14,
+		fontWeight: '500',
+		textAlign: 'center',
+		color: COLORS.secondary500,
+		marginBottom: 20,
+	},
 	textContainer: {
 		borderWidth: 2,
 		overflow: 'hidden',
 		borderColor: COLORS.secondary500,
 		padding: 14,
+		marginBottom: 15,
 	},
 	privacyText: {
 		fontWeight: '500',
@@ -101,7 +122,7 @@ const styles = StyleSheet.create({
 	checkboxContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: 15,
+		marginBottom: 15,
 		padding: 10,
 	},
 	checkbox: {
