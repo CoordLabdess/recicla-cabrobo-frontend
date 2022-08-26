@@ -69,6 +69,7 @@ export function SearchStudentsScreen() {
 			>
 				{filteredStudents.length > 0 && typeof students != 'undefined' ? (
 					<FlatList
+						keyboardShouldPersistTaps='always'
 						style={{ width: '100%' }}
 						contentContainerStyle={{
 							flexGrow: 1,

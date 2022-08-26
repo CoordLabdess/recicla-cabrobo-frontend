@@ -70,7 +70,7 @@ export function UserStatus(props: UserStatusProps) {
 				<Ionicons name='leaf-outline' size={26} style={{ marginRight: 5 }} />
 				<View style={{ flex: 1 }}>
 					<Text style={styles.scoreContainerTitle}>Pontos disponíveis</Text>
-					<Text style={styles.scoreContainerText}>{props.points} pts</Text>
+					<Text style={styles.scoreContainerText}>{StudentCtx.getStudentData().points} pts</Text>
 				</View>
 			</Pressable>
 			<Pressable

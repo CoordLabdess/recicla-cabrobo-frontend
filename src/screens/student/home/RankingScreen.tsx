@@ -62,8 +62,8 @@ export function RankingScreen() {
 					renderItem={itemData => (
 						<RankElement
 							disableImage
-							name={student.name}
-							points={student.points}
+							name={itemData.item.nome}
+							points={itemData.item.pontos}
 							index={itemData.index + 1}
 						/>
 					)}

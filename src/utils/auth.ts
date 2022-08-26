@@ -57,7 +57,6 @@ function getAuthType(data: any): { token: string; type: AuthType } {
 
 export async function signIn(identificador: string, password: string) {
 	const url = 'https://recicla-teste-back.herokuapp.com/login'
-	console.log('Id:' + identificador + ' senha:' + password)
 	const response = await axios.post(url, {
 		identificador,
 		password,

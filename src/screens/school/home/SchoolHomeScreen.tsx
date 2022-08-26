@@ -62,12 +62,12 @@ export function SchoolHomeScreen() {
 					<SchoolHomeListItem
 						icon='cube'
 						title='Histórico de Entregas'
-						onPress={() => navigation.navigate('RankingEscolas' as never)}
+						onPress={() => navigation.navigate('HistoricoEntregasEscolas' as never)}
 					/>
 					<SchoolHomeListItem
 						icon='gift'
 						title='Histórico de Resgates'
-						onPress={() => navigation.navigate('RankingEscolas' as never)}
+						onPress={() => navigation.navigate('HistoricoResgatesEscolas' as never)}
 					/>
 				</View>
 			</ScrollView>
