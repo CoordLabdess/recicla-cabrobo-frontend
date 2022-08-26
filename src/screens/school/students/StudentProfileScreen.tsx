@@ -78,10 +78,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 					}
 				/>
 				<View style={{ marginBottom: 27 }}>
-					<ProfileImage
-						imgUri='https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
-						size={150}
-					/>
+					<ProfileImage imgUri='https://cdn-icons-png.flaticon.com/512/149/149071.png' size={150} />
 				</View>
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Nome</Text>

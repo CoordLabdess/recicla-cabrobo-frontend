@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { View, Text, StyleSheet, Modal, ScrollView, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Modal, ScrollView, Pressable, Linking } from 'react-native'
 import { COLORS } from '../../constants/colors'
-import { PrimaryButton } from '../ui/Buttons'
+import { CustomButton, PrimaryButton } from '../ui/Buttons'
 import { Ionicons } from '@expo/vector-icons'
 import { privacyPolicyText } from './privacyPolicyText'
 import Checkbox from 'expo-checkbox'
@@ -50,6 +50,14 @@ export function PrivacyPolicyModal(props: PrivacPolicyModalProps) {
 									</Text>
 								</Pressable>
 							)}
+							<View>
+								<CustomButton
+									style={{ marginBottom: 20 }}
+									title='Ver política de privadidade'
+									onPress={() => Linking.openURL('https://www.iubenda.com/privacy-policy/40648653')}
+									textStyle={{ color: '#1a6dbb' }}
+								/>
+							</View>
 							<View>
 								<PrimaryButton
 									avoidClick={!checked && props.confirm}

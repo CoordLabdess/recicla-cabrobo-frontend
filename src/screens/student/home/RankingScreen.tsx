@@ -25,7 +25,7 @@ export function RankingScreen() {
 	const authCtx = useContext(AuthContext)
 	const studentCtx = useContext(StudentContext)
 	const student = studentCtx.getStudentData()
-	const [data, setData] = useState<StudentRank[]>([])
+	const [data, setData] = useState<StudentRank[] | School[]>([])
 	// const data = (
 	// 	authCtx.type === 'Student'
 	// 		? students.sort((a: Student, b: Student) => b.points - a.points)
@@ -40,7 +40,7 @@ export function RankingScreen() {
 				setData(res)
 			})
 		} else {
-			setData([])
+			setData(schools)
 		}
 	}, [])
 
@@ -61,7 +61,7 @@ export function RankingScreen() {
 					showsVerticalScrollIndicator={false}
 					renderItem={itemData => (
 						<RankElement
-							disableImage
+							disableImage={authCtx.type === 'Student'}
 							name={itemData.item.nome}
 							points={itemData.item.pontos}
 							index={itemData.index + 1}
