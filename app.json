@@ -1,34 +1,37 @@
 {
-	"expo": {
-		"name": "Recicla Cabrobó",
-		"slug": "reciclaCabrobo",
-		"version": "1.0.1",
-		"orientation": "portrait",
-		"icon": "./assets/reciclaIcon.png",
-		"userInterfaceStyle": "light",
-		"splash": {
-			"image": "./assets/splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
-		},
-		"updates": {
-			"fallbackToCacheTimeout": 0
-		},
-		"assetBundlePatterns": ["**/*"],
-		"ios": {
-			"supportsTablet": true
-		},
-		"android": {
-			"package": "com.reciclaCabrobo",
-			"versionCode": 2,
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#FFFFFF"
-			},
-			"softwareKeyboardLayoutMode": "pan"
-		},
-		"web": {
-			"favicon": "./assets/favicon.png"
-		}
-	}
+  "expo": {
+    "name": "Recicla Cabrobó",
+    "slug": "reciclaCabrobo",
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/reciclaIcon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/reciclaSplash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.reciclaCabrobo"
+    },
+    "android": {
+      "package": "com.reciclaCabrobo",
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
 }
