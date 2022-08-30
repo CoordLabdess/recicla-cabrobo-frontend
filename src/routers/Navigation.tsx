@@ -17,13 +17,9 @@ export function Navigation() {
 		</>
 	) : (
 		<NavigationContainer>
-			<StatusBar style='light' backgroundColor={COLORS.primary500} />
-			<KeyboardAvoidingView
-				behavior='padding'
-				style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'flex-end' }}
-			>
-				<PublicRouter />
-			</KeyboardAvoidingView>
+			<StatusBar style='dark' backgroundColor='#fff' />
+
+			<PublicRouter />
 		</NavigationContainer>
 	)
 }

@@ -7,9 +7,15 @@ export default function App() {
 	return (
 		<SafeAreaProvider>
 			<AuthContextProvider>
-				<View style={{ flex: 1, backgroundColor: '#fff' }}>
-					<Navigation />
-				</View>
+				{Platform.OS === 'ios' ? (
+					<KeyboardAvoidingView behavior='padding' style={{ flex: 1, backgroundColor: '#fff' }}>
+						<Navigation />
+					</KeyboardAvoidingView>
+				) : (
+					<View style={{ flex: 1, backgroundColor: '#fff' }}>
+						<Navigation />
+					</View>
+				)}
 			</AuthContextProvider>
 		</SafeAreaProvider>
 	)

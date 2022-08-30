@@ -21,8 +21,7 @@ export function UserTypeRouter() {
 		</NavigationContainer>
 	) : AuthCtx.type === 'School' ? (
 		<NavigationContainer>
-			<StatusBar style='light' backgroundColor={COLORS.primary500} />
-
+			<StatusBar style='dark' backgroundColor='#fff' />
 			<SchoolRootBottomTabNavigator />
 		</NavigationContainer>
 	) : (
