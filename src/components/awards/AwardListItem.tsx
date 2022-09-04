@@ -1,8 +1,8 @@
 import { View, Pressable, Text, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Award } from '../../data/awards'
 import { COLORS } from '../../constants/colors'
 import { useNavigation } from '@react-navigation/native'
+import { Award } from '../../utils/student'
 
 interface AwardListemItemProps {
 	award: Award
@@ -20,8 +20,8 @@ export function AwardListItem(props: AwardListemItemProps) {
 					onPress={props.onPress}
 				>
 					<View>
-						<Text style={styles.title}>{props.award.title}</Text>
-						<Text>{props.award.price} pts</Text>
+						<Text style={styles.title}>{props.award.nome}</Text>
+						<Text>{props.award.preco} pts</Text>
 					</View>
 					<Ionicons name={'chevron-forward-outline'} size={32} color='#000' />
 				</Pressable>

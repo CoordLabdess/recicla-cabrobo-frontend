@@ -1,4 +1,5 @@
 import { View, Text, FlatList, Pressable, StyleSheet, ListRenderItemInfo } from 'react-native'
+import { useLayoutEffect, useContext } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { useState, useEffect } from 'react'
@@ -6,68 +7,19 @@ import { COLORS } from '../../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
 import { useLinkProps } from '@react-navigation/native'
 import { Picker } from '@react-native-picker/picker'
-import { Award, awards } from '../../../data/awards'
+import { awards } from '../../../data/awards'
 import { AwardListItem } from '../../../components/awards/AwardListItem'
 import { History } from '../../../components/home/History'
+import { Award, AwardHistory, getAwardList, getStudentAwardHistory } from '../../../utils/student'
+import { StudentContext } from '../../../store/context/studentContext'
+import { LoadingScreen } from '../../ui/LoadingScreen'
+import { AwardHistoryElement } from '../../../components/home/AwardHistoryElement'
 
 interface History {
 	date: Date
 	description: string
 	points: number
 }
-
-const historyData: History[] = [
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-]
 
 function AwardElement(props: { award: Award }) {
 	return (
@@ -83,6 +35,23 @@ function AwardElementSeparator() {
 export function PremiosDisponiveisScreen() {
 	const [action, setAction] = useState<0 | 1>(0)
 	const [awardCategory, setAwardCategory] = useState('Brinquedo')
+	const [awardHistory, setAwardHistory] = useState<AwardHistory[] | null>(null)
+	const [awards, setAwards] = useState<Award[] | null>(null)
+
+	const student = useContext(StudentContext).getStudentData()
+
+	useLayoutEffect(() => {
+		getStudentAwardHistory(student.token)
+			.then(res => setAwardHistory(res))
+			.catch(error => {
+				setAwardHistory([])
+			})
+		getAwardList(student.token)
+			.then(res => setAwards(res.sort((a, b) => Number(b.preco) - Number(a.preco))))
+			.catch(error => {
+				setAwards([])
+			})
+	}, [])
 
 	function PremiosDisponiveisHeader() {
 		return (
@@ -109,59 +78,63 @@ export function PremiosDisponiveisScreen() {
 		)
 	}
 
-	function CategoryPicker() {
-		return (
-			<View style={{ width: '100%', marginBottom: 20 }}>
-				<View style={{ alignItems: 'center' }}>
-					<View style={{ borderRadius: 20, overflow: 'hidden', width: 250 }}>
-						<Picker
-							onValueChange={text => setAwardCategory(text)}
-							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
-							selectedValue={'Brinquedo'}
-							enabled
-						>
-							<Picker.Item label='Brinquedos' value='Brinquedo' />
-							<Picker.Item label='Eletrônicos' value='Eletrônico' />
-						</Picker>
-					</View>
-				</View>
-			</View>
-		)
-	}
+	// function CategoryPicker() {
+	// 	return (
+	// 		<View style={{ width: '100%', marginBottom: 20 }}>
+	// 			<View style={{ alignItems: 'center' }}>
+	// 				<View style={{ borderRadius: 20, overflow: 'hidden', width: 250 }}>
+	// 					<Picker
+	// 						onValueChange={text => setAwardCategory(text)}
+	// 						style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
+	// 						selectedValue={'Brinquedo'}
+	// 						enabled
+	// 					>
+	// 						<Picker.Item label='Brinquedos' value='Brinquedo' />
+	// 						<Picker.Item label='Eletrônicos' value='Eletrônico' />
+	// 					</Picker>
+	// 				</View>
+	// 			</View>
+	// 		</View>
+	// 	)
+	// }
 
 	function changeActionScope(id: 0 | 1) {
 		if (action !== id) setAction(id)
 	}
 
-	return (
-		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
-			{action === 0 ? (
-				<FlatList
-					ItemSeparatorComponent={AwardElementSeparator}
-					showsVerticalScrollIndicator={false}
-					alwaysBounceVertical={false}
-					ListHeaderComponent={() => (
-						<View>
-							<PremiosDisponiveisHeader />
-							<CategoryPicker />
-						</View>
-					)}
-					data={awards.filter(award => award.category === awardCategory)}
-					renderItem={itemData => <AwardElement award={itemData.item} />}
-				/>
-			) : (
-				<FlatList
-					ListHeaderComponent={PremiosDisponiveisHeader}
-					showsVerticalScrollIndicator={false}
-					alwaysBounceVertical={false}
-					data={historyData}
-					renderItem={itemData => (
-						<History last={itemData.index + 1 >= historyData.length} itemData={itemData} />
-					)}
-				/>
-			)}
-		</SafeAreaView>
-	)
+	if (!awardHistory || !awards) {
+		return <LoadingScreen />
+	} else {
+		return (
+			<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
+				{action === 0 ? (
+					<FlatList
+						ItemSeparatorComponent={AwardElementSeparator}
+						showsVerticalScrollIndicator={false}
+						alwaysBounceVertical={false}
+						ListHeaderComponent={() => (
+							<View>
+								<PremiosDisponiveisHeader />
+								{/* <CategoryPicker /> */}
+							</View>
+						)}
+						data={awards}
+						renderItem={itemData => <AwardElement award={itemData.item} />}
+					/>
+				) : (
+					<FlatList
+						ListHeaderComponent={PremiosDisponiveisHeader}
+						showsVerticalScrollIndicator={false}
+						alwaysBounceVertical={false}
+						data={awardHistory}
+						renderItem={itemData => (
+							<AwardHistoryElement last={itemData.index + 1 >= awards.length} itemData={itemData} />
+						)}
+					/>
+				)}
+			</SafeAreaView>
+		)
+	}
 }
 
 const styles = StyleSheet.create({

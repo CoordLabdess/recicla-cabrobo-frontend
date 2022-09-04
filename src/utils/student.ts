@@ -90,3 +90,48 @@ export function getStudentHistory(token: string): Promise<History[]> {
 			return []
 		})
 }
+
+export interface AwardHistory {
+	id: string
+	status: number
+	premio: Award
+	dataEntrega?: string
+}
+
+export interface Award {
+	id: string
+	nome: string
+	preco: string
+}
+
+export function getStudentAwardHistory(token: string): Promise<AwardHistory[]> {
+	return axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/listResgates', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as AwardHistory[]
+			return x
+		})
+		.catch(error => {
+			return []
+		})
+}
+
+export function getAwardList(token: string): Promise<Award[]> {
+	return axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/premio/listar', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as Award[]
+			return x
+		})
+		.catch(error => {
+			return []
+		})
+}
