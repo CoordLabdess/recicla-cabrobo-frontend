@@ -20,7 +20,7 @@ export interface StudentData {
 
 export async function getStudentData(token: string): Promise<StudentData> {
 	return await axios
-		.get('https://recicla-teste-back.herokuapp.com/aluno', {
+		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno', {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 		.then(res => {
@@ -39,7 +39,7 @@ export interface StudentRank {
 
 export async function getRanking(token: string, studentCode: string): Promise<number> {
 	return await axios
-		.get('https://recicla-teste-back.herokuapp.com/aluno/rankingAlunos', {
+		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/rankingAlunos', {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 		.then(res => {
@@ -56,11 +56,37 @@ export async function getRanking(token: string, studentCode: string): Promise<nu
 
 export async function getGeneralRank(token: string): Promise<StudentRank[]> {
 	return await axios
-		.get('https://recicla-teste-back.herokuapp.com/aluno/rankingAlunos', {
+		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/rankingAlunos', {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 		.then(res => {
 			const rank = res.data as StudentRank[]
 			return rank.sort((a, b) => b.pontos - a.pontos)
+		})
+}
+
+export interface History {
+	id: string
+	escola: string
+	idMaterial: string
+	nomeMaterial: string
+	pesagemEntrega: string
+	pontosEntrega: string
+	dataEntrega: string
+}
+
+export function getStudentHistory(token: string): Promise<History[]> {
+	return axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/listarEntregas', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const h = res.data as History[]
+			return h
+		})
+		.catch(() => {
+			return []
 		})
 }

@@ -1,14 +1,15 @@
 import { View, Text, StyleSheet, ListRenderItemInfo, YellowBox, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
+import { History as H } from '../../utils/student'
 
-interface History {
-	date: Date
-	description: string
-	points: number
-}
+export function History(props: { itemData: ListRenderItemInfo<H>; last: boolean }) {
+	const data = {
+		day: new Date(props.itemData.item.dataEntrega).toLocaleDateString().split('/')[1],
+		month: new Date(props.itemData.item.dataEntrega).toLocaleDateString().split('/')[0],
+		year: new Date(props.itemData.item.dataEntrega).toLocaleDateString().split('/')[2],
+	}
 
-export function History(props: { itemData: ListRenderItemInfo<History>; last: boolean }) {
 	return (
 		<Pressable style={styles.root} android_ripple={{ color: '#ccc' }}>
 			<View style={styles.historyElement}>
@@ -30,16 +31,18 @@ export function History(props: { itemData: ListRenderItemInfo<History>; last: bo
 				</View>
 				<View>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-						<Text style={styles.historyDateText}>
-							{props.itemData.item.date.toLocaleDateString()}
-						</Text>
+						<Text style={styles.historyDateText}>{`${data.day}/${data.month}/${data.year}`}</Text>
 						<Text style={{ color: '#7C7C7C', fontSize: 10, marginTop: 6 }}>
 							Clique Para Visualizar
 						</Text>
 					</View>
 					<View>
-						<Text style={styles.historyDescriptionText}>{props.itemData.item.description}</Text>
-						<Text style={styles.historyPointsText}>+{props.itemData.item.points}pts</Text>
+						<Text
+							style={styles.historyDescriptionText}
+						>{`Você entregou ${props.itemData.item.pesagemEntrega}kg de ${props.itemData.item.nomeMaterial}`}</Text>
+						<Text style={styles.historyPointsText}>
+							+{Number(props.itemData.item.pontosEntrega).toFixed(1)}pts
+						</Text>
 					</View>
 				</View>
 			</View>

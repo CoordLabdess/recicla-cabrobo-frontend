@@ -44,8 +44,6 @@ export function StudentContextProvider(props: { children: React.ReactNode }) {
 	const [studentData, setStudentData] = useState<StudentData>(emptyStudent)
 
 	function updateStudentData(sData: StudentData) {
-		console.log('uvaaa')
-
 		setStudentData(sData)
 	}
 

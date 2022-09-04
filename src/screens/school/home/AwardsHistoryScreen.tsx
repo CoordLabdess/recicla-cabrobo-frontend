@@ -71,7 +71,7 @@ export function AwardsHistoryScreen() {
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
-				ListHeaderComponent={() => <SimplePageHeader title='Histórico de Entregas' />}
+				ListHeaderComponent={() => <SimplePageHeader title='Histórico de Resgates' />}
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{ width: '100%' }}
 				alwaysBounceVertical={false}

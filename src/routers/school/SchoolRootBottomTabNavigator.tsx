@@ -18,7 +18,8 @@ export function SchoolRootBottomTabNavigator() {
 				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
 					backgroundColor: COLORS.primary500,
-					height: Platform.OS === 'ios' ? 75 : 65,
+					height: Platform.OS === 'ios' ? 90 : 65,
+					paddingTop: Platform.OS === 'ios' ? 15 : 0,
 				},
 				tabBarInactiveTintColor: COLORS.secondary100,
 				tabBarActiveTintColor: COLORS.secondary100,

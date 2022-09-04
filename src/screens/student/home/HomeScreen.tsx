@@ -8,68 +8,15 @@ import { ProfileActions } from '../../../components/home/ProfileActions'
 import { History } from '../../../components/home/History'
 import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { AuthContext } from '../../../store/context/authContext'
-import { getRanking, getStudentData, StudentData } from '../../../utils/student'
+import {
+	getRanking,
+	getStudentData,
+	getStudentHistory,
+	History as H,
+	StudentData,
+} from '../../../utils/student'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 import { StudentContext } from '../../../store/context/studentContext'
-
-interface History {
-	date: Date
-	description: string
-	points: number
-}
-
-const historyData: History[] = [
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Entregues 10kg de chumbo, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-]
 
 function Header() {
 	return <ProfileHeader />
@@ -79,6 +26,7 @@ export function HomeScreen() {
 	const authCtx = useContext(AuthContext)
 	const studentCtx = useContext(StudentContext)
 	const student = studentCtx.getStudentData()
+	const [history, setHistory] = useState<H[] | null>(null)
 
 	const token = authCtx.token
 
@@ -95,17 +43,19 @@ export function HomeScreen() {
 						rank: -1,
 					})
 				})
-				.catch(err => {
-					console.log(err)
-				})
+				.catch(err => {})
 		}
 	}, [])
 
 	useEffect(() => {
-		console.log(student)
-	}, [studentCtx.studentData])
+		getStudentHistory(student.token)
+			.then(res => {
+				setHistory(res)
+			})
+			.catch(() => {})
+	}, [student.token])
 
-	if (!student.name || !student.studentNumber) {
+	if (!student.name || !student.studentNumber || !student.token || !history) {
 		return <LoadingScreen />
 	} else {
 		return (
@@ -114,10 +64,10 @@ export function HomeScreen() {
 					ListHeaderComponent={Header}
 					showsVerticalScrollIndicator={false}
 					alwaysBounceVertical={false}
-					data={historyData}
+					data={history}
 					style={styles.contentList}
 					renderItem={itemData => (
-						<History last={itemData.index + 1 >= historyData.length} itemData={itemData} />
+						<History last={itemData.index + 1 >= history.length} itemData={itemData} />
 					)}
 				/>
 			</SafeAreaView>

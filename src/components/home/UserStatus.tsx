@@ -50,7 +50,6 @@ export function UserStatus(props: UserStatusProps) {
 			StudentCtx.getStudentData().token,
 			String(StudentCtx.getStudentData().studentNumber),
 		).then(res => {
-			console.log(res)
 			StudentCtx.updateStudentData({ ...StudentCtx.getStudentData(), rank: res })
 		})
 	}, [])

@@ -8,7 +8,11 @@ export default function App() {
 		<SafeAreaProvider>
 			<AuthContextProvider>
 				{Platform.OS === 'ios' ? (
-					<KeyboardAvoidingView behavior='padding' style={{ flex: 1, backgroundColor: '#fff' }}>
+					<KeyboardAvoidingView
+						behavior='padding'
+						keyboardVerticalOffset={-50}
+						style={{ flex: 1, backgroundColor: '#fff' }}
+					>
 						<Navigation />
 					</KeyboardAvoidingView>
 				) : (
