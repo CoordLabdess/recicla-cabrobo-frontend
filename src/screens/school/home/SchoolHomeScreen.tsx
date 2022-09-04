@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useLayoutEffect } from 'react'
 import { View, Text, FlatList, StyleSheet, ScrollView, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { NotificationCard } from '../../../components/home/NotificationCard'
@@ -8,10 +8,13 @@ import { AuthContext } from '../../../store/context/authContext'
 import { Ionicons } from '@expo/vector-icons'
 import { SchoolHomeListItem } from '../../../components/home/SchoolHomeListItem'
 import { useNavigation } from '@react-navigation/native'
+import { SchoolContext } from '../../../store/context/schoolContext'
 
 export function SchoolHomeScreen() {
 	const navigation = useNavigation()
 	const authCtx = useContext(AuthContext)
+	const schoolCtx = useContext(SchoolContext)
+
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<ScrollView
