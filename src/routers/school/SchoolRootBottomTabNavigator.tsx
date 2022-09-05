@@ -7,10 +7,41 @@ import { ManageStudentsRouter } from './ManageStudentRouter'
 import { TurboTasksRouter } from './TurboTasksRouter'
 import { AwardStackRouter } from './AwardRouter'
 import { Platform } from 'react-native'
+import { useContext, useLayoutEffect } from 'react'
+import { SchoolContext } from '../../store/context/schoolContext'
+import { getSchoolDataFromToken, getSchoolPointsById } from '../../utils/school'
+import { AuthContext } from '../../store/context/authContext'
+import { LoadingScreen } from '../../screens/ui/LoadingScreen'
 
 const BottomTab = createBottomTabNavigator()
 
 export function SchoolRootBottomTabNavigator() {
+	const authCtx = useContext(AuthContext)
+	const schoolCtx = useContext(SchoolContext)
+
+	useLayoutEffect(() => {
+		if (authCtx.token) {
+			getSchoolDataFromToken(authCtx.token).then(res => {
+				getSchoolPointsById(schoolCtx.schoolData.id, authCtx.token as string).then(r => {
+					schoolCtx.updateSchoolData({
+						email: res.email,
+						id: res.id,
+						nome: res.nome,
+						nomeGestor: res.nomeGestor,
+						points: r,
+						rank: -1,
+						cpf: res.idLogin,
+						type: 'School',
+					})
+				})
+			})
+		}
+	}, [])
+
+	if (!schoolCtx.schoolData.nome) {
+		return <LoadingScreen />
+	}
+
 	return (
 		<BottomTab.Navigator
 			screenOptions={{

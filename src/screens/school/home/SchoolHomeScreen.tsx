@@ -9,11 +9,14 @@ import { Ionicons } from '@expo/vector-icons'
 import { SchoolHomeListItem } from '../../../components/home/SchoolHomeListItem'
 import { useNavigation } from '@react-navigation/native'
 import { SchoolContext } from '../../../store/context/schoolContext'
+import { getSchoolPointsById } from '../../../utils/school'
 
 export function SchoolHomeScreen() {
 	const navigation = useNavigation()
 	const authCtx = useContext(AuthContext)
 	const schoolCtx = useContext(SchoolContext)
+
+	useLayoutEffect(() => {}, [])
 
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
@@ -32,8 +35,11 @@ export function SchoolHomeScreen() {
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Ionicons name='home' color={COLORS.primary500} size={52} />
 						<View style={{ marginLeft: 10 }}>
-							<Text style={styles.name}>Escola Municipal Fulano de Tal</Text>
-							<Text style={styles.points}>Pontuação: 2403</Text>
+							<Text style={styles.name}>{schoolCtx.schoolData.nome}</Text>
+							<Text style={styles.points}>
+								Pontuação:{' '}
+								{schoolCtx.schoolData.points > -1 ? schoolCtx.schoolData.points : 'Carregando...'}
+							</Text>
 						</View>
 					</View>
 					<View>

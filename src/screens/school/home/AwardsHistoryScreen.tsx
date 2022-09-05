@@ -1,73 +1,29 @@
 import { FlatList, StyleSheet } from 'react-native'
+import { useContext, useLayoutEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { History } from '../../../components/home/History'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
-
-interface History {
-	date: Date
-	description: string
-	points: number
-}
-
-const historyData: History[] = [
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description: 'Fulano da Silva Sauro resgatou um tablet por 2100 pts.',
-		points: 120,
-	},
-]
+import { AuthContext } from '../../../store/context/authContext'
+import { getSchoolAwardsWithdrawHistory, SchoolAwardsWithdraw } from '../../../utils/school'
+import { LoadingScreen } from '../../ui/LoadingScreen'
+import { AwardWithDrawListItem } from '../../../components/awards/AwardWithdrawListItem'
 
 export function AwardsHistoryScreen() {
-	const fakeHistory = {
-		date: new Date(),
-		description: '',
-		points: 0,
+	const authCtx = useContext(AuthContext)
+	const [awardsHistory, setAwardsHistory] = useState<SchoolAwardsWithdraw[] | null>(null)
+
+	useLayoutEffect(() => {
+		if (authCtx.token) {
+			getSchoolAwardsWithdrawHistory(authCtx.token).then(res => {
+				setAwardsHistory(res)
+			})
+		}
+	}, [])
+
+	if (!awardsHistory) {
+		return <LoadingScreen />
 	}
+
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
@@ -75,10 +31,13 @@ export function AwardsHistoryScreen() {
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{ width: '100%' }}
 				alwaysBounceVertical={false}
-				data={historyData}
+				data={awardsHistory}
 				style={styles.contentList}
 				renderItem={itemData => (
-					<History last={itemData.index + 1 >= historyData.length} itemData={itemData} />
+					<AwardWithDrawListItem
+						last={itemData.index + 1 >= awardsHistory.length}
+						itemData={itemData}
+					/>
 				)}
 			/>
 		</SafeAreaView>

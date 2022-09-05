@@ -9,17 +9,23 @@ interface SchoolAuth {
 }
 
 interface SchoolData {
-	name: string
-	token: string
+	id: string
+	cpf: string
+	nome: string
 	type: 'School'
+	email: string
+	nomeGestor: string
 	points: number
 	rank: number
 }
 
 export const SchoolContext = createContext<SchoolAuth>({
 	schoolData: {
-		token: '',
-		name: '',
+		nome: '',
+		cpf: '',
+		email: '',
+		id: '',
+		nomeGestor: '',
 		type: 'School',
 		points: -1,
 		rank: -1,
@@ -29,8 +35,11 @@ export const SchoolContext = createContext<SchoolAuth>({
 })
 
 const emptySchool: SchoolData = {
-	token: '',
-	name: '',
+	cpf: '',
+	nome: '',
+	email: '',
+	id: '',
+	nomeGestor: '',
 	type: 'School',
 	points: -1,
 	rank: -1,

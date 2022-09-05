@@ -9,36 +9,22 @@ import { Student, students } from '../../../data/students'
 import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { AuthContext } from '../../../store/context/authContext'
 import { School, schools } from '../../../data/schools'
-import { getGeneralRank, StudentRank } from '../../../utils/student'
+import { getGeneralRank } from '../../../utils/student'
 import { StudentContext } from '../../../store/context/studentContext'
 import { LoadingScreen } from '../../ui/LoadingScreen'
+import { getSchoolRank, SchoolRank } from '../../../utils/school'
 
-interface Rank {
-	name: string
-	position: number
-	points: number
-	route: RouteProp<{ params: { type: 'school' | 'student' } }>
-}
-
-export function RankingScreen() {
-	const navigation = useNavigation()
+export function SchoolRankScreen() {
 	const authCtx = useContext(AuthContext)
-	const studentCtx = useContext(StudentContext)
-	const student = studentCtx.getStudentData()
-	const [data, setData] = useState<StudentRank[]>([])
-	// const data = (
-	// 	authCtx.type === 'Student'
-	// 		? students.sort((a: Student, b: Student) => b.points - a.points)
-	// 		: authCtx.type === 'School'
-	// 		? schools.sort((a: School, b: School) => b.points - a.points)
-	// 		: []
-	// ) as []
+	const [data, setData] = useState<SchoolRank[]>([])
 
 	useLayoutEffect(() => {
-		if (authCtx.type === 'Student') {
-			getGeneralRank(authCtx.token || '').then(res => {
-				setData(res)
-			})
+		if (authCtx.token) {
+			getSchoolRank(authCtx.token)
+				.then(res => {
+					setData(res.sort((a, b) => b.pontos - a.pontos))
+				})
+				.catch(err => authCtx.logout())
 		}
 	}, [])
 

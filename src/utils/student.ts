@@ -75,8 +75,8 @@ export interface History {
 	dataEntrega: string
 }
 
-export function getStudentHistory(token: string): Promise<History[]> {
-	return axios
+export async function getStudentHistory(token: string): Promise<History[]> {
+	return await axios
 		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/listarEntregas', {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -104,8 +104,8 @@ export interface Award {
 	preco: string
 }
 
-export function getStudentAwardHistory(token: string): Promise<AwardHistory[]> {
-	return axios
+export async function getStudentAwardHistory(token: string): Promise<AwardHistory[]> {
+	return await axios
 		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/listResgates', {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -120,8 +120,8 @@ export function getStudentAwardHistory(token: string): Promise<AwardHistory[]> {
 		})
 }
 
-export function getAwardList(token: string): Promise<Award[]> {
-	return axios
+export async function getAwardList(token: string): Promise<Award[]> {
+	return await axios
 		.get('https://recicla-cabrobo-backend.herokuapp.com/premio/listar', {
 			headers: {
 				Authorization: `Bearer ${token}`,
