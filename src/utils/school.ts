@@ -1,3 +1,4 @@
+import { StudentData } from './student'
 import axios from 'axios'
 
 interface SchoolData {
@@ -94,6 +95,28 @@ export async function getSchoolAwardsWithdrawHistory(
 		})
 		.then(res => {
 			const x = res.data as SchoolAwardsWithdraw[]
+			return x
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
+
+export async function getStudentByMatricula(
+	matricula: string,
+	token: string,
+): Promise<StudentData> {
+	return await axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/consultarAlunoMatricula', {
+			params: {
+				matricula: matricula,
+			},
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as StudentData
 			return x
 		})
 		.catch(err => {
