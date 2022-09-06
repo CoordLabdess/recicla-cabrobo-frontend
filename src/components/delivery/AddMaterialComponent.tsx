@@ -4,7 +4,7 @@ import { COLORS } from '../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
 
 interface Material {
-	id: number
+	id: string
 	title: string
 	category: 'Plastic' | 'Paper' | 'Metal' | 'Glass'
 	pointsPerKg: number
@@ -14,7 +14,7 @@ interface Material {
 interface AddMaterialComponentProps {
 	material: Material
 	materialWeight: string
-	setMaterialsWeight: (materialId: number, weight: string) => void
+	setMaterialsWeight: (materialId: string, weight: string) => void
 }
 
 export function AddMaterialComponent(props: AddMaterialComponentProps) {

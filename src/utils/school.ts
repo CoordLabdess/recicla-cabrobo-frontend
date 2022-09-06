@@ -107,14 +107,14 @@ export async function getStudentByMatricula(
 	token: string,
 ): Promise<StudentData> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/consultarAlunoMatricula', {
-			data: {
-				matricula: matricula,
+		.get(
+			`https://recicla-cabrobo-backend.herokuapp.com/escola/consultarAlunoMatricula/${matricula}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			},
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
+		)
 		.then(res => {
 			const x = res.data as StudentData
 			return x
@@ -159,6 +159,75 @@ export async function getStudentsList(token: string): Promise<StudentData[]> {
 		})
 		.then(res => {
 			const x = res.data as StudentData[]
+			return x
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
+
+interface CadastroAlunoForm {
+	nome: string
+	serie: string
+	matricula: string
+	sexo: string
+	idade: number
+}
+
+export async function registerStudent(
+	token: string,
+	aluno: CadastroAlunoForm,
+): Promise<StudentData[]> {
+	return await axios
+		.post(
+			'https://recicla-cabrobo-backend.herokuapp.com/escola/cadastrarAluno',
+			{
+				nome: aluno.nome,
+				serie: aluno.serie,
+				matricula: aluno.matricula,
+				sexo: aluno.sexo,
+				idade: aluno.idade,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			const x = res.data as any
+			return x
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
+
+export interface DadosEntrega {
+	idMaterial: string
+	pesagemEntrega: number
+}
+
+export async function criarEntrega(
+	token: string,
+	matricula: string,
+	dadosEntrega: DadosEntrega[],
+): Promise<{ pontosRecebidos: number; statusPontuacaoAluno: string }> {
+	return await axios
+		.post(
+			'https://recicla-cabrobo-backend.herokuapp.com/escola/criarEntrega',
+			{
+				matriculaAluno: matricula,
+				dadosEntrega: dadosEntrega,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			const x = res.data as any
 			return x
 		})
 		.catch(err => {

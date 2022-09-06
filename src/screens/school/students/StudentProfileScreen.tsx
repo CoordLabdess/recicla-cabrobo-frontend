@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, TextInput } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -10,32 +10,44 @@ import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
 import { Student } from '../../../data/students'
 import { useNavigation } from '@react-navigation/native'
+import { registerStudent } from '../../../utils/school'
+import { AuthContext } from '../../../store/context/authContext'
+import { StudentData } from '../../../utils/student'
 
 interface StudentProfileScreenProps {
-	route: RouteProp<{ params: { mode: 'create' | 'edit'; student: Student } }, 'params'>
+	route: RouteProp<{ params: { mode: 'create' | 'edit'; student: StudentData } }, 'params'>
 }
 
-const emptyStudent = {
+const emptyStudent: StudentData = {
 	nome: '',
-	email: '',
-	image: '',
-	studentCode: '',
+	matricula: 0,
+	idade: 0,
 	serie: '',
-	password: '',
+	sexo: 'Nao Definido',
+	id: '',
+	pontos: 0,
+	imagemPerfil: null,
+	escola: {
+		id: '',
+		idLogin: 0,
+		nome: '',
+		email: '',
+		nomeGestor: '',
+	},
 }
 
 export function StudentProfileScreen(props: StudentProfileScreenProps) {
 	const navigation = useNavigation()
 	const [editable, setEditable] = useState(props.route.params.mode === 'create' ? true : false)
 
-	const student =
-		props.route.params.mode === 'create'
-			? emptyStudent
-			: { ...props.route.params.student, password: '123456', serie: '5º ano' }
+	const student = props.route.params.mode === 'create' ? emptyStudent : props.route.params.student
+
 	const [name, setName] = useState(student.nome)
-	const [studentNumber, setStudentNumber] = useState(student.studentCode)
+	const [studentNumber, setStudentNumber] = useState(String(student.matricula))
+	const [idade, setIdade] = useState(String(student.idade))
 	const [serie, setSerie] = useState(student.serie)
-	const [password, setPassword] = useState(student.password)
+	const [sexo, setSexo] = useState(student.sexo)
+	const authCtx = useContext(AuthContext)
 	const [confirmModal, setConfirmModal] = useState<'off' | 'save' | 'exclude' | 'create'>('off')
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -57,6 +69,30 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 			.catch(error => {
 				setIsLoading(false)
 			})
+	}
+
+	function register() {
+		if (!isLoading && authCtx.token) {
+			setIsLoading(true)
+			registerStudent(authCtx.token, {
+				idade: Number(idade),
+				matricula: String(studentNumber),
+				sexo,
+				nome: name,
+				serie: serie,
+			})
+				.then(() => {
+					navigation.navigate('ManageStudents' as never)
+					setConfirmModal('off')
+
+					setIsLoading(false)
+				})
+				.catch(err => {
+					setConfirmModal('off')
+
+					setIsLoading(false)
+				})
+		}
 	}
 
 	return (
@@ -86,7 +122,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 						style={styles.field}
 						value={name}
 						onChangeText={text => setName(text)}
-						editable={editable}
+						editable={props.route.params.mode === 'create'}
 					/>
 				</View>
 				<View style={styles.fieldContainer}>
@@ -95,8 +131,33 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 						style={styles.field}
 						value={studentNumber}
 						onChangeText={text => setStudentNumber(text)}
+						editable={props.route.params.mode === 'create'}
+					/>
+				</View>
+				<View style={styles.fieldContainer}>
+					<Text style={styles.label}>Idade</Text>
+					<TextInput
+						style={styles.field}
+						value={idade}
+						keyboardType='number-pad'
+						onChangeText={text => setIdade(text)}
 						editable={editable}
 					/>
+				</View>
+				<View style={styles.fieldContainer}>
+					<Text style={styles.label}>Sexo</Text>
+					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
+						<Picker
+							onValueChange={text => setSexo(text)}
+							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
+							selectedValue={sexo}
+							enabled={props.route.params.mode === 'create'}
+						>
+							<Picker.Item label='- Selecione o Sexo -' value='Nao Denifido' />
+							<Picker.Item label='Masculino' value='Masc' />
+							<Picker.Item label='Femino' value='Fem' />
+						</Picker>
+					</View>
 				</View>
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Série</Text>
@@ -107,7 +168,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 							selectedValue={serie}
 							enabled={editable}
 						>
-							<Picker.Item label='- Selecione uma turma -' value='' />
+							<Picker.Item label='- Não Definida -' value='Nao Definido' />
 							<Picker.Item label='1º ano' value='1º ano' />
 							<Picker.Item label='2º ano' value='2º ano' />
 							<Picker.Item label='3º ano' value='3º ano' />
@@ -117,9 +178,6 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 							<Picker.Item label='7º ano' value='7º ano' />
 							<Picker.Item label='8º ano' value='8º ano' />
 							<Picker.Item label='9º ano' value='9º ano' />
-							<Picker.Item label='1º médio' value='1º médio' />
-							<Picker.Item label='2º médio' value='2º médio' />
-							<Picker.Item label='3º médio' value='3º médio' />
 						</Picker>
 					</View>
 				</View>
@@ -136,10 +194,9 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 					<Text style={styles.label}>Senha</Text>
 					<TextInput
 						style={styles.field}
-						value={password}
-						onChangeText={text => setPassword(text)}
+						value={String(studentNumber) + Number(idade).toFixed(0) + '2022'}
 						secureTextEntry={!editable}
-						editable={editable}
+						editable={false}
 					/>
 				</View>
 			</ScrollView>
@@ -192,7 +249,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				isLoading={isLoading}
 				text='Confirmar inserção do aluno no sistema? Alunos cadastrados começam sem pontuação.'
 				onCancel={() => setConfirmModal('off')}
-				onConfirm={sendChanges}
+				onConfirm={register}
 			/>
 		</SafeAreaView>
 	)

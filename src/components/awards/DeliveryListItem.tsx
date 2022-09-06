@@ -5,6 +5,12 @@ import { History as H } from '../../utils/student'
 import { Entrega, SchoolAwardsWithdraw } from '../../utils/school'
 
 export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>; last: boolean }) {
+	function formatDate(date: string) {
+		const month = new Date(props.itemData.item.created_at).toLocaleDateString().split('/')[0]
+		const day = new Date(props.itemData.item.created_at).toLocaleDateString().split('/')[1]
+		const year = new Date(props.itemData.item.created_at).toLocaleDateString().split('/')[2]
+		return `${day}/${month}/${year}`
+	}
 	return (
 		<Pressable style={styles.root} android_ripple={{ color: '#ccc' }}>
 			<View style={styles.historyElement}>
@@ -26,7 +32,7 @@ export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>;
 				</View>
 				<View>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-						<Text style={styles.historyDateText}>{new Date().toLocaleDateString()}</Text>
+						<Text style={styles.historyDateText}>{formatDate(props.itemData.item.created_at)}</Text>
 						<Text style={{ color: '#7C7C7C', fontSize: 10, marginTop: 6 }}>
 							Clique Para Visualizar
 						</Text>

@@ -35,7 +35,7 @@ export function StudentListItem(props: StudentListItemProps) {
 					<View style={{ flex: 1 }}>
 						<Text style={styles.profileInfoName}>{props.student.nome}</Text>
 						<Text style={styles.profileMinorInfo}>Nº de Matrícula: {props.student.matricula}</Text>
-						<Text style={styles.profileMinorInfo}>Série: {'5º ano'}</Text>
+						<Text style={styles.profileMinorInfo}>Série: {props.student.serie}</Text>
 					</View>
 				</Pressable>
 			</View>

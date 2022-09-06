@@ -8,12 +8,6 @@ import { AuthContext } from '../../../store/context/authContext'
 import { Entrega, getSchoolDeliveryHistory } from '../../../utils/school'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 
-interface History {
-	date: Date
-	description: string
-	points: number
-}
-
 export function DeliveryHistoryScreen() {
 	const [deliveryHistory, setDeliveryHistory] = useState<Entrega[] | null>(null)
 	const authCtx = useContext(AuthContext)
@@ -21,7 +15,9 @@ export function DeliveryHistoryScreen() {
 	useLayoutEffect(() => {
 		if (authCtx.token) {
 			getSchoolDeliveryHistory(authCtx.token).then(res => {
-				setDeliveryHistory(res)
+				setDeliveryHistory(
+					res.sort((b, a) => Number(new Date(a.created_at)) - Number(new Date(b.created_at))),
+				)
 			})
 		}
 	}, [])

@@ -6,17 +6,11 @@ import { RouteProp, useNavigation } from '@react-navigation/native'
 import { useLayoutEffect, useState } from 'react'
 import { ProfileInfoCard } from '../../../components/delivery/ProfileInfoCard'
 import { PrimaryButton } from '../../../components/ui/Buttons'
-
-interface Student {
-	id: number
-	studentCode: string
-	nome: string
-	profileImg: string
-	points: number
-}
+import { StudentData } from '../../../utils/student'
+import { genericImgSrc } from '../../../constants/general'
 
 interface ConfirmStudentScreenProps {
-	route: RouteProp<{ params: { student: Student; type: 'materials' | 'turboTasks' } }, 'params'>
+	route: RouteProp<{ params: { student: StudentData; type: 'materials' | 'turboTasks' } }, 'params'>
 }
 
 export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
@@ -47,9 +41,10 @@ export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 				<View style={[styles.container, { marginTop: 40, marginBottom: 50 }]}>
 					<ProfileInfoCard
 						name={student?.nome}
-						points={student?.points}
-						profileImg={student?.profileImg}
-						uniqueCode={student?.studentCode}
+						escola={student.escola.nome}
+						points={student.pontos}
+						profileImg={genericImgSrc}
+						uniqueCode={String(student.matricula)}
 						type='Student'
 					/>
 				</View>
@@ -62,7 +57,11 @@ export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 								(props.route.params.type === 'materials'
 									? 'Delivery3'
 									: 'DeliveryInformTurboTask') as never,
-								{ id: student.id, name: student.nome } as never,
+								{
+									id: student.id,
+									name: student.nome,
+									matricula: String(student.matricula),
+								} as never,
 							)
 						}}
 					/>

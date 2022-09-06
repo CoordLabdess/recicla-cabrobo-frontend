@@ -7,7 +7,7 @@ import { materials } from '../../data/materialTable'
 import { MaterialCategory } from '../../data/materialTable'
 
 interface MaterialWeight {
-	materialId: number
+	materialId: string
 	weight: string
 }
 
@@ -67,7 +67,7 @@ const materialWeightStyles = StyleSheet.create({
 })
 
 export function ConfirmDeliveryModal(props: ConfirmDeliveryModalProps) {
-	function getMaterialsName(materialId: number) {
+	function getMaterialsName(materialId: string) {
 		return materials.filter(material => material.id === materialId)[0]
 	}
 

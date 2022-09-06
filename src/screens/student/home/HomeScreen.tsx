@@ -50,7 +50,9 @@ export function HomeScreen() {
 	useEffect(() => {
 		getStudentHistory(student.token)
 			.then(res => {
-				setHistory(res)
+				setHistory(
+					res.sort((b, a) => Number(new Date(a.dataEntrega)) - Number(new Date(b.dataEntrega))),
+				)
 			})
 			.catch(() => {})
 	}, [student.token])

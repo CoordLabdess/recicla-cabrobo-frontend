@@ -38,7 +38,7 @@ export function SchoolRootBottomTabNavigator() {
 		}
 	}, [])
 
-	if (!schoolCtx.schoolData.nome) {
+	if (!schoolCtx.schoolData.nome || !schoolCtx.schoolData.points) {
 		return <LoadingScreen />
 	}
 

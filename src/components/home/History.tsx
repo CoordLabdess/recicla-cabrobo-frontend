@@ -29,7 +29,7 @@ export function History(props: { itemData: ListRenderItemInfo<H>; last: boolean 
 						<View style={{ width: 3, flex: 1 }} />
 					)}
 				</View>
-				<View>
+				<View style={{ flex: 1 }}>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						<Text style={styles.historyDateText}>{`${data.day}/${data.month}/${data.year}`}</Text>
 						<Text style={{ color: '#7C7C7C', fontSize: 10, marginTop: 6 }}>

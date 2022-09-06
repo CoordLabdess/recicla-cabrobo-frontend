@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import { COLORS } from '../../constants/colors'
 
 interface ProfileInfoCardProps {
+	escola?: string
 	name?: string
 	serie?: string
 	profileImg?: string
@@ -36,7 +37,7 @@ export function ProfileInfoCard(props: ProfileInfoCardProps) {
 					</View>
 					<View style={styles.topicContainer}>
 						<Text style={styles.topicTitle}>Escola:</Text>
-						<Text style={styles.topicText}>Escola das Flores</Text>
+						<Text style={styles.topicText}>{props.escola}</Text>
 					</View>
 				</View>
 			</View>

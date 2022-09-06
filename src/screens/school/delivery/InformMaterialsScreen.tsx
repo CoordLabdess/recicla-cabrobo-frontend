@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
 	View,
 	Text,
@@ -20,51 +20,77 @@ import { Ionicons } from '@expo/vector-icons'
 import { RouteProp, useNavigation } from '@react-navigation/native'
 import { DeliveredModal } from '../../../components/delivery/DeliveredModal'
 import { ConfirmDeliveryModal } from '../../../components/delivery/ConfirmDeliveryModal'
+import { criarEntrega } from '../../../utils/school'
+import { AuthContext } from '../../../store/context/authContext'
 
 interface InformMaterialScreenProps {
-	route: RouteProp<{ params: { id: string; name: string } }, 'params'>
+	route: RouteProp<{ params: { id: string; name: string; matricula: string } }, 'params'>
 }
 
 interface MaterialWeight {
-	materialId: number
+	materialId: string
 	weight: string
 }
 
 export function InformMaterialsScreen(props: InformMaterialScreenProps) {
-	const { id, name } = props.route.params
+	const { id, name, matricula } = props.route.params
 	const [isLoading, setIsLoading] = useState(false)
 	const [isModalActive, setIsModalActive] = useState(false)
 	const [dataSent, setDataSent] = useState(false)
 
 	const [materialsWeight, setMaterialsWeight] = useState<MaterialWeight[]>([
-		{ materialId: 1, weight: '0' },
-		{ materialId: 2, weight: '0' },
-		{ materialId: 3, weight: '0' },
-		{ materialId: 4, weight: '0' },
-		{ materialId: 5, weight: '0' },
-		{ materialId: 6, weight: '0' },
-		{ materialId: 7, weight: '0' },
-		{ materialId: 8, weight: '0' },
-		{ materialId: 9, weight: '0' },
-		{ materialId: 10, weight: '0' },
-		{ materialId: 11, weight: '0' },
+		{ materialId: '27552729-bedf-42ec-9254-6a3c4a6730df', weight: '0' },
+		{ materialId: 'da5258a4-138d-4e4c-b32a-8ff02f049878', weight: '0' },
+		{ materialId: 'f0d6a223-11a6-4d75-836d-2f596e61f63b', weight: '0' },
+		{ materialId: '07ea2ebe-d40a-45a2-ae5d-cb6b172e4203', weight: '0' },
+		{ materialId: '56968a7b-fb08-48f0-8010-607324d05685', weight: '0' },
+		{ materialId: '6e9d4de0-ef49-4b40-8a00-768f5abd8323', weight: '0' },
+		{ materialId: '8b311f78-4400-4f76-909a-259681f1dae0', weight: '0' },
+		{ materialId: 'b346c87d-fcf4-48d8-a7cc-22a0a701f61c', weight: '0' },
+		{ materialId: '4b2dd6c4-072b-4274-824b-1ceb43fdc813', weight: '0' },
+		{ materialId: '74c16d5b-45c7-467b-8e5b-7e59def0e151', weight: '0' },
 	])
 
+	const [total, setTotal] = useState(0)
+
+	const authCtx = useContext(AuthContext)
 	async function sendMaterialsWeight() {
-		setIsLoading(true)
-		await new Promise((resolve, reject) => {
-			setTimeout(() => {
-				resolve('')
-			}, 1000)
-		})
-			.then(() => {
-				setDataSent(true)
-				setIsModalActive(false)
-				setIsLoading(false)
-			})
-			.catch(() => {
-				setIsLoading(false)
-			})
+		if (!isLoading) {
+			setIsLoading(true)
+			await criarEntrega(
+				authCtx.token as string,
+				matricula,
+				materialsWeight.map(mw => {
+					return {
+						idMaterial: mw.materialId,
+						pesagemEntrega: Number(mw.weight),
+					}
+				}),
+			)
+				.then(res => {
+					setTotal(res.pontosRecebidos)
+					setDataSent(true)
+					setIsModalActive(false)
+					setIsLoading(false)
+				})
+				.catch(err => {
+					setIsLoading(false)
+					console.log('aaa')
+				})
+			// await new Promise((resolve, reject) => {
+			// 	setTimeout(() => {
+			// 		resolve('')
+			// 	}, 1000)
+			// })
+			// 	.then(() => {
+			// 		setDataSent(true)
+			// 		setIsModalActive(false)
+			// 		setIsLoading(false)
+			// 	})
+			// 	.catch(() => {
+			// 		setIsLoading(false)
+			// 	})
+		}
 	}
 
 	return (
@@ -92,7 +118,7 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 									materialsWeight.filter(cMaterial => cMaterial.materialId === material.id)[0]
 										.weight
 								}
-								setMaterialsWeight={(materialId: number, weight: string) => {
+								setMaterialsWeight={(materialId: string, weight: string) => {
 									setMaterialsWeight(cWeight => {
 										const mIndex = cWeight.indexOf(
 											materialsWeight.filter(material => material.materialId === materialId)[0],
@@ -128,7 +154,7 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 				name={name}
 				close={() => setDataSent(false)}
 				visible={dataSent}
-				categoriesPoints={{ metal: 34, paper: 11, plastic: 26, total: 71 }}
+				categoriesPoints={{ metal: 0, paper: 0, plastic: 0, total: total }}
 			/>
 		</SafeAreaView>
 	)

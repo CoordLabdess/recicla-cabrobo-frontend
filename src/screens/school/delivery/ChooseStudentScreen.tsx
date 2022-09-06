@@ -2,11 +2,13 @@ import { View, Text, ScrollView, TextInput, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS } from '../../../constants/colors'
 import { PrimaryButton } from '../../../components/ui/Buttons'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ErrorMessage } from '../../../components/ui/ErrorMessage'
 import { RouteProp, useNavigation } from '@react-navigation/native'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { students } from '../../../data/students'
+import { getStudentByMatricula } from '../../../utils/school'
+import { AuthContext } from '../../../store/context/authContext'
 
 interface Errors {
 	emptyId: boolean
@@ -20,6 +22,7 @@ interface ChooseStudentScreenProps {
 export function ChooseStudentScreen(props: ChooseStudentScreenProps) {
 	const navigation = useNavigation()
 	const [studentNumber, setStudentNumber] = useState('')
+	const authCtx = useContext(AuthContext)
 	const [isLoading, setIsLoading] = useState(false)
 	const [errors, setErrors] = useState<Errors>({
 		emptyId: false,
@@ -59,7 +62,7 @@ export function ChooseStudentScreen(props: ChooseStudentScreenProps) {
 	async function sendStudentNumber() {
 		if (validateData()) {
 			setIsLoading(true)
-			await getStudentByStudentCode(studentNumber)
+			await getStudentByMatricula(studentNumber, authCtx.token as string)
 				.then(response => {
 					setErrors(cErros => {
 						return { ...cErros, notFound: false }
