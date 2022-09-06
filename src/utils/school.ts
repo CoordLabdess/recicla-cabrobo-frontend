@@ -108,7 +108,7 @@ export async function getStudentByMatricula(
 ): Promise<StudentData> {
 	return await axios
 		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/consultarAlunoMatricula', {
-			params: {
+			data: {
 				matricula: matricula,
 			},
 			headers: {
@@ -117,6 +117,32 @@ export async function getStudentByMatricula(
 		})
 		.then(res => {
 			const x = res.data as StudentData
+			return x
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
+
+export interface Entrega {
+	id: string
+	escola: string
+	idMaterial: string
+	pesagemEntrega: string
+	pontosEntrega: string
+	created_at: string
+	aluno: StudentData
+}
+
+export async function getSchoolDeliveryHistory(token: string): Promise<Entrega[]> {
+	return await axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/consultarEntregasCompletas', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as Entrega[]
 			return x
 		})
 		.catch(err => {

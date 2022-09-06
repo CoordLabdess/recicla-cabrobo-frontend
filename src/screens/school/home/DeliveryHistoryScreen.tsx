@@ -1,7 +1,12 @@
+import { useContext, useLayoutEffect, useState } from 'react'
 import { FlatList, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { DeliveryListItem } from '../../../components/awards/DeliveryListItem'
 import { History } from '../../../components/home/History'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
+import { AuthContext } from '../../../store/context/authContext'
+import { Entrega, getSchoolDeliveryHistory } from '../../../utils/school'
+import { LoadingScreen } from '../../ui/LoadingScreen'
 
 interface History {
 	date: Date
@@ -9,75 +14,22 @@ interface History {
 	points: number
 }
 
-const historyData: History[] = [
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-	{
-		date: new Date(),
-		description:
-			'Fulano da Silva Sauro, 8º ano, entregou 10kg de metal, 5kg de plástico, 2kg de pilha e 1k de papel.',
-		points: 120,
-	},
-]
-
 export function DeliveryHistoryScreen() {
-	const fakeHistory = {
-		date: new Date(),
-		description: '',
-		points: 0,
+	const [deliveryHistory, setDeliveryHistory] = useState<Entrega[] | null>(null)
+	const authCtx = useContext(AuthContext)
+
+	useLayoutEffect(() => {
+		if (authCtx.token) {
+			getSchoolDeliveryHistory(authCtx.token).then(res => {
+				setDeliveryHistory(res)
+			})
+		}
+	}, [])
+
+	if (!deliveryHistory) {
+		return <LoadingScreen />
 	}
+
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
@@ -85,10 +37,13 @@ export function DeliveryHistoryScreen() {
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{ width: '100%' }}
 				alwaysBounceVertical={false}
-				data={historyData}
+				data={deliveryHistory}
 				style={styles.contentList}
 				renderItem={itemData => (
-					<History last={itemData.index + 1 >= historyData.length} itemData={itemData} />
+					<DeliveryListItem
+						last={itemData.index + 1 >= deliveryHistory.length}
+						itemData={itemData}
+					/>
 				)}
 			/>
 		</SafeAreaView>
