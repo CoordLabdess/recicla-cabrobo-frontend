@@ -2,9 +2,10 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import { Student } from '../../data/students'
 import { useNavigation } from '@react-navigation/native'
+import { StudentData } from '../../utils/student'
 
 interface StudentListItemProps {
-	student: Student
+	student: StudentData
 }
 
 export function StudentListItem(props: StudentListItemProps) {
@@ -33,9 +34,7 @@ export function StudentListItem(props: StudentListItemProps) {
 					</View>
 					<View style={{ flex: 1 }}>
 						<Text style={styles.profileInfoName}>{props.student.nome}</Text>
-						<Text style={styles.profileMinorInfo}>
-							Nº de Matrícula: {props.student.studentCode}
-						</Text>
+						<Text style={styles.profileMinorInfo}>Nº de Matrícula: {props.student.matricula}</Text>
 						<Text style={styles.profileMinorInfo}>Série: {'5º ano'}</Text>
 					</View>
 				</Pressable>

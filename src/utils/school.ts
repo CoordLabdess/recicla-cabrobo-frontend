@@ -149,3 +149,19 @@ export async function getSchoolDeliveryHistory(token: string): Promise<Entrega[]
 			throw new Error(err)
 		})
 }
+
+export async function getStudentsList(token: string): Promise<StudentData[]> {
+	return await axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/listarAlunos', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as StudentData[]
+			return x
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}

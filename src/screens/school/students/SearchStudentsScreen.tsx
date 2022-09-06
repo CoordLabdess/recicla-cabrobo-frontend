@@ -3,44 +3,52 @@ import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS } from '../../../constants/colors'
 import { StudentListItem } from '../../../components/manageStudents/StudentListItem'
-import { useState } from 'react'
+import { useContext, useLayoutEffect, useState } from 'react'
 import { PrimaryButton } from '../../../components/ui/Buttons'
-import { Student, students } from '../../../data/students'
+import { Student } from '../../../data/students'
+import { AuthContext } from '../../../store/context/authContext'
+import { getStudentsList } from '../../../utils/school'
+import { StudentData } from '../../../utils/student'
+import { LoadingScreen } from '../../ui/LoadingScreen'
 
 export function SearchStudentsScreen() {
-	const [filteredStudents, setFilteredStudents] = useState<Student[]>([])
+	const [filteredStudents, setFilteredStudents] = useState<StudentData[]>([])
 
 	const [search, setSearch] = useState('')
 	const [searching, setSearching] = useState(false)
-
-	async function fetchStudent(filter: string) {
-		return new Promise((resolve, reject) => {
-			return setTimeout(() => {
-				if (/^\d+$/.test(filter)) {
-					resolve(students.filter(students => students.id === parseInt(filter)))
-				} else {
-					resolve(
-						students.filter(students =>
-							filter
-								.toLowerCase()
-								.trim()
-								.split(/\s+/)
-								.every(name => students.nome.toLowerCase().includes(name)),
-						),
-					)
-				}
-			}, 1000)
-		})
-	}
+	const [allStudents, setAllStudents] = useState<StudentData[] | null>(null)
+	const authCtx = useContext(AuthContext)
 
 	function searchStudent() {
-		if (search.trim().length > 0) {
+		if (search.trim().length > 0 && allStudents) {
 			setSearching(true)
-			fetchStudent(search).then(res => {
-				setFilteredStudents(res as Student[])
-				setSearching(false)
+			if (/^\d+$/.test(search)) {
+				setFilteredStudents(allStudents.filter(student => String(student.matricula).match(search)))
+			} else {
+				setFilteredStudents(
+					allStudents.filter(student =>
+						search
+							.toLowerCase()
+							.trim()
+							.split(/\s+/)
+							.every(name => student.nome.toLowerCase().includes(name)),
+					),
+				)
+			}
+			setSearching(false)
+		}
+	}
+
+	useLayoutEffect(() => {
+		if (authCtx.token) {
+			getStudentsList(authCtx.token).then(res => {
+				setAllStudents(res)
 			})
 		}
+	}, [])
+
+	if (!allStudents) {
+		return <LoadingScreen />
 	}
 
 	return (
@@ -67,7 +75,7 @@ export function SearchStudentsScreen() {
 					justifyContent: 'center',
 				}}
 			>
-				{filteredStudents.length > 0 && typeof students != 'undefined' ? (
+				{filteredStudents.length > 0 && typeof allStudents != 'undefined' ? (
 					<FlatList
 						keyboardShouldPersistTaps='always'
 						style={{ width: '100%' }}
