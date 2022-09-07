@@ -60,12 +60,14 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 			await criarEntrega(
 				authCtx.token as string,
 				matricula,
-				materialsWeight.map(mw => {
-					return {
-						idMaterial: mw.materialId,
-						pesagemEntrega: Number(mw.weight),
-					}
-				}),
+				materialsWeight
+					.filter(mw => Number(mw.weight) > 0)
+					.map(mw => {
+						return {
+							idMaterial: mw.materialId,
+							pesagemEntrega: Number(mw.weight),
+						}
+					}),
 			)
 				.then(res => {
 					setTotal(res.pontosRecebidos)

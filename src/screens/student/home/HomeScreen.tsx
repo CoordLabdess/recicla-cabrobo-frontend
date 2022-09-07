@@ -63,11 +63,15 @@ export function HomeScreen() {
 		return (
 			<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 				<FlatList
-					ListHeaderComponent={Header}
-					showsVerticalScrollIndicator={false}
+					contentContainerStyle={{
+						flexGrow: 1,
+						paddingBottom: 20,
+					}}
 					alwaysBounceVertical={false}
+					showsVerticalScrollIndicator={false}
+					ListHeaderComponent={Header}
+					ListEmptyComponent={() => <LoadingScreen />}
 					data={history}
-					style={styles.contentList}
 					renderItem={itemData => (
 						<History last={itemData.index + 1 >= history.length} itemData={itemData} />
 					)}
@@ -80,9 +84,9 @@ export function HomeScreen() {
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
+		backgroundColor: '#fff',
 	},
 	contentList: {
-		backgroundColor: '#fff',
 		flexGrow: 1,
 	},
 })

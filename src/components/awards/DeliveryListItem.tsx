@@ -7,8 +7,8 @@ import { materials } from '../../data/materialTable'
 
 export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>; last: boolean }) {
 	function formatDate(date: string) {
-		const month = new Date(date).toLocaleDateString().split('/')[1]
-		const day = new Date(date).toLocaleDateString().split('/')[0]
+		const month = new Date(date).toLocaleDateString().split('/')[0]
+		const day = new Date(date).toLocaleDateString().split('/')[1]
 		const year = new Date(date).toLocaleDateString().split('/')[2]
 		return `${day}/${month}/${year}`
 	}

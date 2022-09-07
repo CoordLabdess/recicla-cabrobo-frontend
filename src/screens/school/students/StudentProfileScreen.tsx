@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native'
 import { registerStudent } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
 import { StudentData } from '../../../utils/student'
+import { ErrorMessage } from '../../../components/ui/ErrorMessage'
 
 interface StudentProfileScreenProps {
 	route: RouteProp<{ params: { mode: 'create' | 'edit'; student: StudentData } }, 'params'>
@@ -50,6 +51,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 	const authCtx = useContext(AuthContext)
 	const [confirmModal, setConfirmModal] = useState<'off' | 'save' | 'exclude' | 'create'>('off')
 	const [isLoading, setIsLoading] = useState(false)
+	const [creationError, setCreationError] = useState(false)
 
 	async function fakeFetching() {
 		return new Promise((resolve, reject) => {
@@ -84,13 +86,13 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				.then(() => {
 					navigation.navigate('ManageStudents' as never)
 					setConfirmModal('off')
-
 					setIsLoading(false)
+					setCreationError(false)
 				})
 				.catch(err => {
 					setConfirmModal('off')
-
 					setIsLoading(false)
+					setCreationError(true)
 				})
 		}
 	}
@@ -199,6 +201,9 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 					/>
 				</View>
 			</ScrollView>
+			<View style={{ width: '100%', alignItems: 'center', marginTop: 5 }}>
+				<ErrorMessage isActive={creationError}>Não foi possível cadastrar o aluno!</ErrorMessage>
+			</View>
 
 			{props.route.params.mode === 'create' ? (
 				<View style={{ alignItems: 'center', paddingTop: 15, paddingBottom: 20 }}>

@@ -69,7 +69,7 @@ export function UserStatus(props: UserStatusProps) {
 				<Ionicons name='leaf-outline' size={26} style={{ marginRight: 5 }} />
 				<View style={{ flex: 1 }}>
 					<Text style={styles.scoreContainerTitle}>Pontos disponíveis</Text>
-					<Text style={styles.scoreContainerText}>{StudentCtx.getStudentData().points} pts</Text>
+					<Text style={styles.scoreContainerText}>{StudentCtx.studentData.points}Pts</Text>
 				</View>
 			</Pressable>
 			<Pressable
@@ -91,7 +91,9 @@ export function UserStatus(props: UserStatusProps) {
 					<View>
 						<Text style={styles.rankingContainerTitle}>Sua Classificação</Text>
 						<Text style={styles.rankingContainerText}>
-							{StudentCtx.getStudentData().rank}º Lugar
+							{StudentCtx.studentData.rank < 0
+								? 'Carregando...'
+								: StudentCtx.studentData.rank + 'º Lugar'}
 						</Text>
 					</View>
 					<Ionicons name='chevron-forward' size={26} color={COLORS.secondary500} />
