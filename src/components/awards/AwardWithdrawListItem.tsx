@@ -8,6 +8,12 @@ export function AwardWithDrawListItem(props: {
 	itemData: ListRenderItemInfo<SchoolAwardsWithdraw>
 	last: boolean
 }) {
+	function formatDate(date: string) {
+		const month = new Date(date).toLocaleDateString().split('/')[1]
+		const day = new Date(date).toLocaleDateString().split('/')[0]
+		const year = new Date(date).toLocaleDateString().split('/')[2]
+		return `${day}/${month}/${year}`
+	}
 	return (
 		<Pressable style={styles.root} android_ripple={{ color: '#ccc' }}>
 			<View style={styles.historyElement}>
@@ -29,7 +35,9 @@ export function AwardWithDrawListItem(props: {
 				</View>
 				<View>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-						<Text style={styles.historyDateText}>{new Date().toLocaleDateString()}</Text>
+						<Text style={styles.historyDateText}>
+							{formatDate(props.itemData.item.created_at || new Date().toDateString())}
+						</Text>
 						<Text style={{ color: '#7C7C7C', fontSize: 10, marginTop: 6 }}>
 							Clique Para Visualizar
 						</Text>

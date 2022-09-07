@@ -68,6 +68,7 @@ export async function getSchoolPointsById(id: string, token: string): Promise<nu
 export interface SchoolAwardsWithdraw {
 	id: string
 	status: number
+	created_at: string
 	aluno: {
 		id: string
 		matricula: string
