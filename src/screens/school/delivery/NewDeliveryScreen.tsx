@@ -11,7 +11,6 @@ export function NewDeliveryScreen() {
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<ScrollView
-				keyboardShouldPersistTaps='always'
 				contentContainerStyle={{
 					flexGrow: 1,
 					justifyContent: 'flex-start',

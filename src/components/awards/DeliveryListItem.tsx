@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { History as H } from '../../utils/student'
 import { Entrega, SchoolAwardsWithdraw } from '../../utils/school'
+import { materials } from '../../data/materialTable'
 
 export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>; last: boolean }) {
 	function formatDate(date: string) {
@@ -38,9 +39,11 @@ export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>;
 						</Text>
 					</View>
 					<View>
-						<Text
-							style={styles.historyDescriptionText}
-						>{`${props.itemData.item.aluno.nome} entregou ${props.itemData.item.pesagemEntrega}kg de ${props.itemData.item.idMaterial} `}</Text>
+						<Text style={styles.historyDescriptionText}>{`${
+							props.itemData.item.aluno.nome
+						} entregou ${props.itemData.item.pesagemEntrega}kg de ${
+							materials.filter(m => m.id === props.itemData.item.idMaterial)[0].title
+						} `}</Text>
 
 						<Text style={styles.historyPointsText}>
 							+{Number(props.itemData.item.pontosEntrega).toFixed(1)}pts

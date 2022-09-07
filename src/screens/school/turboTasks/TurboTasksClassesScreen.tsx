@@ -15,7 +15,6 @@ export function TurboTasksClassesScreen() {
 				ListHeaderComponent={() => (
 					<SimplePageHeader textStyle={styles.title} dontShowGoBack title='Atividades Turbinadas' />
 				)}
-				keyboardShouldPersistTaps='always'
 				contentContainerStyle={{
 					flexGrow: 1,
 					justifyContent: 'flex-start',

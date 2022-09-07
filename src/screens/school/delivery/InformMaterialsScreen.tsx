@@ -96,7 +96,6 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<ScrollView
-				keyboardShouldPersistTaps='always'
 				showsVerticalScrollIndicator={false}
 				style={{ flex: 1 }}
 				contentContainerStyle={{

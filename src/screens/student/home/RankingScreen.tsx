@@ -59,6 +59,7 @@ export function RankingScreen() {
 					showsVerticalScrollIndicator={false}
 					renderItem={itemData => (
 						<RankElement
+							highlight={itemData.item.matricula === String(studentCtx.studentData.studentNumber)}
 							disableImage={authCtx.type === 'Student'}
 							name={itemData.item.nome}
 							points={itemData.item.pontos}

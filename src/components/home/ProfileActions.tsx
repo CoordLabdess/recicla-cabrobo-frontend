@@ -23,7 +23,7 @@ const actions: Action[] = [
 	{
 		title: 'Pontuações Por Material',
 		icon: 'trophy',
-		screen: '',
+		screen: 'PontuacaoPorMaterial',
 	},
 	{
 		title: 'Calculadora de Impacto',

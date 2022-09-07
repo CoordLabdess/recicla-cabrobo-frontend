@@ -1,33 +1,25 @@
 export type AwardCategorry = 'Eletrônico' | 'Brinquedo' | 'Outros' | ''
 
 export interface Award {
-	id: number
-	title: string
-	description: string
-	category: AwardCategorry
-	price: number
+	id: string
+	nome: string
+	preco: string
 }
 
 export const awards: Award[] = [
 	{
-		id: 1,
-		title: 'Bola de Futebol',
-		category: 'Brinquedo',
-		description: 'Bola maneira',
-		price: 1000,
+		id: '1',
+		nome: 'Bola de Futebol',
+		preco: '1000',
 	},
 	{
-		id: 2,
-		title: 'Hoverboard',
-		category: 'Eletrônico',
-		description: 'Skate chique de guarda do shopping',
-		price: 20000,
+		id: '2',
+		nome: 'Hoverboard',
+		preco: '20000',
 	},
 	{
-		id: 3,
-		title: 'Tablet',
-		category: 'Eletrônico',
-		description: 'Tablet bonito',
-		price: 10000,
+		id: '3',
+		nome: 'Tablet',
+		preco: '10000',
 	},
 ]

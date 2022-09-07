@@ -7,6 +7,7 @@ import { SchoolHomeScreen } from '../../screens/school/home/SchoolHomeScreen'
 import { DeliveryHistoryScreen } from '../../screens/school/home/DeliveryHistoryScreen'
 import { AwardsHistoryScreen } from '../../screens/school/home/AwardsHistoryScreen'
 import { SchoolRankScreen } from '../../screens/school/home/SchoolRankScreen'
+import { PontuacaoPorMaterialScreen } from '../../screens/student/home/PontuacoesPorMaterialScreen'
 
 const Stack = createNativeStackNavigator()
 

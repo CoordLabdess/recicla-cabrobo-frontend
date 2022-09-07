@@ -13,9 +13,11 @@ import { getGeneralRank } from '../../../utils/student'
 import { StudentContext } from '../../../store/context/studentContext'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 import { getSchoolRank, SchoolRank } from '../../../utils/school'
+import { SchoolContext } from '../../../store/context/schoolContext'
 
 export function SchoolRankScreen() {
 	const authCtx = useContext(AuthContext)
+	const schoolCtx = useContext(SchoolContext)
 	const [data, setData] = useState<SchoolRank[]>([])
 
 	useLayoutEffect(() => {
@@ -45,6 +47,7 @@ export function SchoolRankScreen() {
 					showsVerticalScrollIndicator={false}
 					renderItem={itemData => (
 						<RankElement
+							highlight={itemData.item.nome === schoolCtx.schoolData.nome}
 							disableImage={authCtx.type === 'Student'}
 							name={itemData.item.nome}
 							points={itemData.item.pontos}

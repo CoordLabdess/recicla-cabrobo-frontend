@@ -5,6 +5,7 @@ import { Student } from '../../data/students'
 import { ProfileImage } from '../ui/ProfileImage'
 
 interface RankElementProps {
+	highlight?: boolean
 	name: string
 	index: number
 	disableImage: boolean
@@ -15,7 +16,7 @@ export function RankElement(props: RankElementProps) {
 	return (
 		<View style={styles.root}>
 			<View style={styles.outterRankElement}>
-				<View style={styles.innerRankElement}>
+				<View style={[styles.innerRankElement, props.highlight && { backgroundColor: '#B3FFAB' }]}>
 					{props.disableImage && (
 						<ProfileImage
 							imgUri='https://cdn-icons-png.flaticon.com/512/149/149071.png'

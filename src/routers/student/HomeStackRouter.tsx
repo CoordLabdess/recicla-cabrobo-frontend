@@ -4,6 +4,7 @@ import { RankingScreen } from '../../screens/student/home/RankingScreen'
 import { ImpactCalculator } from '../../screens/student/home/ImpactCalculator'
 import { COLORS } from '../../constants/colors'
 import { PremiosDisponiveisScreen } from '../../screens/student/home/PremiosDisponiveisScreen'
+import { PontuacaoPorMaterialScreen } from '../../screens/student/home/PontuacoesPorMaterialScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -39,6 +40,17 @@ export function HomeStackRouter() {
 				component={PremiosDisponiveisScreen}
 				options={{
 					title: 'Prêmios Disponíveis',
+					headerShown: false,
+					headerTintColor: COLORS.secondary500,
+					headerTitleAlign: 'center',
+					animation: 'slide_from_right',
+				}}
+			/>
+			<Stack.Screen
+				name='PontuacaoPorMaterial'
+				component={PontuacaoPorMaterialScreen}
+				options={{
+					title: 'Pontuação por Material',
 					headerShown: false,
 					headerTintColor: COLORS.secondary500,
 					headerTitleAlign: 'center',

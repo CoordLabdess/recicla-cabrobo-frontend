@@ -16,21 +16,18 @@ interface EditAwardScreenProps {
 }
 
 const emptyAward: Award = {
-	id: 0,
-	title: '',
-	category: '',
-	price: 0,
-	description: '',
+	id: '0',
+	nome: '',
+	preco: '0',
 }
 
 export function EditAwardScreen(props: EditAwardScreenProps) {
 	const navigation = useNavigation()
-	const [editable, setEditable] = useState(props.route.params.mode === 'create' ? true : false)
+	const [editable, setEditable] = useState(props.route.params.mode === 'create')
 
 	const award = props.route.params.mode === 'create' ? emptyAward : props.route.params.award
-	const [title, setTitle] = useState(award.title)
-	const [awardPrice, setAwardPrice] = useState(award.price)
-	const [awardDescription, setAwardDescription] = useState(award.description)
+	const [title, setTitle] = useState(award.nome)
+	const [awardPrice, setAwardPrice] = useState(award.preco)
 	const [confirmModal, setConfirmModal] = useState<'off' | 'save' | 'exclude' | 'create'>('off')
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -57,7 +54,6 @@ export function EditAwardScreen(props: EditAwardScreenProps) {
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<ScrollView
-				keyboardShouldPersistTaps='always'
 				contentContainerStyle={{
 					flexGrow: 1,
 					justifyContent: 'flex-start',
@@ -80,42 +76,17 @@ export function EditAwardScreen(props: EditAwardScreenProps) {
 						editable={editable}
 					/>
 				</View>
-				<View style={styles.fieldContainer}>
-					<Text style={styles.label}>Descrição</Text>
-					<TextInput
-						numberOfLines={4}
-						multiline
-						style={[styles.field, { textAlignVertical: 'top' }]}
-						value={awardDescription}
-						onChangeText={text => setAwardDescription(text)}
-						editable={editable}
-					/>
-				</View>
+
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>{'Custo (pts)'}</Text>
 					<TextInput
 						style={styles.field}
 						value={String(awardPrice)}
-						onChangeText={text => setAwardPrice(Number(text))}
+						onChangeText={text => setAwardPrice(text)}
 						editable={editable}
 					/>
 				</View>
-				<View style={styles.fieldContainer}>
-					<Text style={styles.label}>Categoria</Text>
-					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-						<Picker
-							onValueChange={text => setAwardDescription(text)}
-							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
-							selectedValue={awardDescription}
-							enabled={editable}
-						>
-							<Picker.Item label='- Selecione uma categoria -' value='' />
-							<Picker.Item label='Eletrônico' value='Electronic' />
-							<Picker.Item label='Brinquedo' value='Toy' />
-							<Picker.Item label='Outros' value='Others' />
-						</Picker>
-					</View>
-				</View>
+
 				{/*<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Série</Text>
 					<TextInput
