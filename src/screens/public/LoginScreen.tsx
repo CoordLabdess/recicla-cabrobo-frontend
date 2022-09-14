@@ -169,7 +169,7 @@ export function LoginScreen() {
 								/>
 
 								<ErrorMessage isActive={errors.emptyEmail}>
-									O campo de e-mail não pode estar em branco!
+									CPF ou Matrícula em branco!
 								</ErrorMessage>
 								<ErrorMessage isActive={errors.invalidEmail}>
 									Digite apenas números. Ex: 123456
