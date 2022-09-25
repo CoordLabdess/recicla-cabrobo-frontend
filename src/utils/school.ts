@@ -235,3 +235,36 @@ export async function criarEntrega(
 			throw new Error(err)
 		})
 }
+
+interface AlterarAlunoData {
+	matriculaAluno: string
+	novaIdade: number
+	novoNome: string
+	novaSerie: string
+	novoSexo: string
+}
+
+export async function editarAluno(token: string, data: AlterarAlunoData) {
+	await axios
+		.patch(
+			'https://recicla-cabrobo-backend.herokuapp.com/escola/alterarAlunos',
+			{
+				matriculaAluno: data.matriculaAluno,
+				novaIdade: data.novaIdade,
+				novaSerie: data.novaSerie,
+				novoNome: data.novoNome,
+				novoSexo: data.novoSexo,
+			} as AlterarAlunoData,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			return
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}

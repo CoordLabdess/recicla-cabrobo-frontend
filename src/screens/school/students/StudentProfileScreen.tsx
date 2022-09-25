@@ -10,7 +10,7 @@ import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
 import { Student } from '../../../data/students'
 import { useNavigation } from '@react-navigation/native'
-import { registerStudent } from '../../../utils/school'
+import { editarAluno, registerStudent } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
 import { StudentData } from '../../../utils/student'
 import { ErrorMessage } from '../../../components/ui/ErrorMessage'
@@ -71,6 +71,27 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 			.catch(error => {
 				setIsLoading(false)
 			})
+	}
+
+	function editStudent() {
+		if (!isLoading) {
+			setIsLoading(true)
+			editarAluno(authCtx.token || '', {
+				novoNome: name,
+				matriculaAluno: String(student.matricula),
+				novaIdade: Number(idade),
+				novaSerie: serie,
+				novoSexo: sexo,
+			})
+				.then(res => {
+					setIsLoading(false)
+					navigation.navigate('ManageStudents' as never)
+				})
+				.catch(err => {
+					console.log('aaa')
+					setIsLoading(false)
+				})
+		}
 	}
 
 	function register() {
@@ -227,7 +248,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				isLoading={isLoading}
 				text='As alterações serão salvas no sistema. A pontuação do aluno não será alterada.'
 				onCancel={() => setConfirmModal('off')}
-				onConfirm={sendChanges}
+				onConfirm={editStudent}
 			/>
 			<ConfirmModal
 				visible={confirmModal === 'exclude'}
