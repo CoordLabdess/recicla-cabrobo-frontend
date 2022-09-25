@@ -154,7 +154,8 @@ export function LoginScreen() {
 
 							<View style={[styles.elementContainer, { marginBottom: 28 }]}>
 								<TextInput
-									placeholder='Digite seu Nº de matrícula ou CPF'
+									placeholder='Número de Matrícula'
+									returnKeyType='next'
 									keyboardType='number-pad'
 									value={email}
 									onChangeText={(text: string) => setEmail(text)}
@@ -178,8 +179,10 @@ export function LoginScreen() {
 
 							<View style={[styles.elementContainer, { marginBottom: 12 }]}>
 								<TextInput
-									placeholder='Digite sua senha'
+									placeholder='Senha'
+									returnKeyType='go'
 									secureTextEntry
+									onSubmitEditing={signInHandler}
 									value={password}
 									onChangeText={(text: string) => setPassword(text)}
 									style={{
