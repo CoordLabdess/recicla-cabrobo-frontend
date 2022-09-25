@@ -53,50 +53,41 @@ export function SearchStudentsScreen() {
 
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
-			<SimplePageHeader title='Pesquisar Aluno' />
-			<View style={styles.container}>
-				<TextInput
-					style={styles.searchInput}
-					placeholder='Pesquisar por nome ou Nº de matrícula'
-					value={search}
-					onChangeText={text => setSearch(text)}
-				/>
-				<PrimaryButton
-					title='Pesquisar'
-					isLoading={searching}
-					onPress={searchStudent}
-					textStyle={{ fontSize: 18 }}
-				/>
-			</View>
-			<View
-				style={{
-					flex: 1,
-					alignItems: 'center',
-					justifyContent: 'center',
+			<FlatList
+				ListHeaderComponent={() => {
+					return (
+						<>
+							<SimplePageHeader title='Pesquisar Aluno' />
+							<View style={styles.container}>
+								<TextInput
+									style={styles.searchInput}
+									placeholder='Pesquisar por nome ou Nº de matrícula'
+									value={search}
+									onChangeText={text => setSearch(text)}
+								/>
+								<PrimaryButton
+									title='Pesquisar'
+									isLoading={searching}
+									onPress={searchStudent}
+									textStyle={{ fontSize: 18 }}
+								/>
+							</View>
+						</>
+					)
 				}}
-			>
-				{filteredStudents.length > 0 && typeof allStudents != 'undefined' ? (
-					<FlatList
-						keyboardShouldPersistTaps='always'
-						style={{ width: '100%' }}
-						contentContainerStyle={{
-							flexGrow: 1,
-							justifyContent: 'flex-start',
-							paddingVertical: 20,
-							paddingHorizontal: '5%',
-							alignItems: 'center',
-						}}
-						alwaysBounceVertical={false}
-						showsVerticalScrollIndicator={false}
-						data={filteredStudents}
-						renderItem={itemData => <StudentListItem student={itemData.item} />}
-					/>
-				) : (
-					<Text style={{ fontSize: 19, color: COLORS.secondary400 }}>
-						Sem resultados correspondentes
-					</Text>
-				)}
-			</View>
+				style={{ width: '100%' }}
+				contentContainerStyle={{
+					flexGrow: 1,
+					justifyContent: 'flex-start',
+					paddingBottom: 20,
+					paddingHorizontal: '5%',
+					alignItems: 'center',
+				}}
+				alwaysBounceVertical={false}
+				showsVerticalScrollIndicator={false}
+				data={filteredStudents}
+				renderItem={itemData => <StudentListItem student={itemData.item} />}
+			/>
 		</SafeAreaView>
 	)
 }
@@ -112,6 +103,7 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		paddingBottom: 23,
 		borderColor: COLORS.secondary400,
+		marginBottom: 20,
 	},
 	searchInput: {
 		backgroundColor: COLORS.secondary400,

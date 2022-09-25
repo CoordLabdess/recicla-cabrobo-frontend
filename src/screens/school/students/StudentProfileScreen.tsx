@@ -170,27 +170,17 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 							enabled={editable}
 						>
 							<Picker.Item label='- Não Definida -' value='Nao Definido' />
-							<Picker.Item label='1º ano' value='1º ano' />
-							<Picker.Item label='2º ano' value='2º ano' />
-							<Picker.Item label='3º ano' value='3º ano' />
 							<Picker.Item label='4º ano' value='4º ano' />
 							<Picker.Item label='5º ano' value='5º ano' />
 							<Picker.Item label='6º ano' value='6º ano' />
 							<Picker.Item label='7º ano' value='7º ano' />
 							<Picker.Item label='8º ano' value='8º ano' />
 							<Picker.Item label='9º ano' value='9º ano' />
+							<Picker.Item label='Multisérie' value='Multiserie' />
 						</Picker>
 					</View>
 				</View>
-				{/*<View style={styles.fieldContainer}>
-					<Text style={styles.label}>Série</Text>
-					<TextInput
-						style={styles.field}
-						value={serie}
-						onChangeText={text => setSerie(text)}
-						editable={editable}
-					/>
-				</View>*/}
+
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Senha</Text>
 					<TextInput
