@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import { TurboTask } from '../../data/turboTasks'
 import { useNavigation } from '@react-navigation/native'
+import { AtividadeData } from '../../utils/school'
 
 interface TurboTaskClasssListItemProps {
-	turboTask: TurboTask
+	turboTask: AtividadeData
 }
 
 export function TurboTaskClasssListItem(props: TurboTaskClasssListItemProps) {
@@ -19,24 +20,19 @@ export function TurboTaskClasssListItem(props: TurboTaskClasssListItemProps) {
 					onPress={() =>
 						navigation.navigate(
 							'TurboTaskConfig' as never,
-							{ mode: 'edit', turboTaskId: props.turboTask.id } as never,
+							{ mode: 'edit', atividade: props.turboTask } as never,
 						)
 					}
 				>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
 						<View style={{ maxWidth: '70%' }}>
-							<Text style={styles.title}>{props.turboTask.title}</Text>
+							<Text style={styles.title}>{props.turboTask.nome}</Text>
 						</View>
-						<Text
-							style={[
-								styles.status,
-								{ color: props.turboTask.active ? COLORS.primary500 : COLORS.red500 },
-							]}
-						>
-							{props.turboTask.active ? 'Aberta' : 'Encerrada'}
+						<Text style={[styles.status, { color: true ? COLORS.primary500 : COLORS.red500 }]}>
+							{true ? 'Aberta' : 'Encerrada'}
 						</Text>
 					</View>
-					<Text>{props.turboTask.class}</Text>
+					<Text>{props.turboTask.serie}</Text>
 					<Text style={styles.description}>Liberada em: {new Date().toLocaleDateString()}</Text>
 				</Pressable>
 			</View>

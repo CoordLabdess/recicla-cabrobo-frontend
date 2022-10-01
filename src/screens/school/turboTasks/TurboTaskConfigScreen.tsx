@@ -1,5 +1,5 @@
 import { RouteProp } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
 	View,
 	Text,
@@ -18,35 +18,41 @@ import { Picker } from '@react-native-picker/picker'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { PrimaryButton } from '../../../components/ui/Buttons'
 import { useNavigation } from '@react-navigation/native'
+import {
+	AtividadeData,
+	atualizarAtividade,
+	criarAtividade,
+	CriarAtividadeData,
+	excluirAtividade,
+} from '../../../utils/school'
+import { AuthContext } from '../../../store/context/authContext'
 
 interface TurboTaskConfigScreenProps {
-	route: RouteProp<{ params: { mode: 'create' | 'edit'; turboTaskId: number } }, 'params'>
+	route: RouteProp<{ params: { mode: 'create' | 'edit'; atividade: AtividadeData } }, 'params'>
 }
 
-const emptyTurboTask: TurboTask = {
-	active: false,
-	deadline: new Date(),
-	description: '',
-	id: 0,
-	points: 0,
-	class: '',
-	title: '',
+const emptyTurboTask: CriarAtividadeData = {
+	nomeAtividade: '',
+	pontos: 0,
+	serie: 'Nao Definida',
 }
 
 export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
+	const authCtx = useContext(AuthContext)
 	const navigation = useNavigation()
 	const [date, setDate] = useState(new Date())
 	const [show, setShow] = useState(false)
-	const [turboTask, setTurboTask] = useState<TurboTask>(
+	const [turboTask, setTurboTask] = useState<CriarAtividadeData>(
 		props.route.params.mode === 'edit'
-			? getTurboTaskById(props.route.params.turboTaskId)
+			? {
+					...props.route.params.atividade,
+					nomeAtividade: props.route.params.atividade.nome,
+					id: props.route.params.atividade.id,
+			  }
 			: emptyTurboTask,
 	)
 	const [isLoading, setIsLoading] = useState(false)
-
-	function getTurboTaskById(id: number) {
-		return turboTasks.filter(tTask => tTask.id === id)[0]
-	}
+	const [isLoading2, setIsLoading2] = useState(false)
 
 	function onChangeDate(event: DateTimePickerEvent, currentDate?: Date) {
 		const d = currentDate || date
@@ -64,24 +70,54 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 		)
 	}
 
-	async function fakePromise() {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				resolve('')
-			}, 1000)
-		})
+	async function updateTurboTask() {
+		if (!isLoading) {
+			setIsLoading(true)
+			await atualizarAtividade(authCtx.token || '', {
+				idAtividade: turboTask.id as string,
+				newPoints: turboTask.pontos,
+				newSerie: turboTask.serie,
+			})
+				.then(res => {
+					setIsLoading(false)
+					navigation.navigate('TurboTasks' as never)
+				})
+				.catch(err => {
+					setIsLoading(false)
+				})
+		}
 	}
 
-	async function updateTurboTask() {
-		setIsLoading(true)
-		await fakePromise()
-			.then(() => {
-				setIsLoading(false)
-				navigation.navigate('TurboTasks' as never)
+	async function deleteTurboTask() {
+		if (!isLoading2) {
+			setIsLoading2(true)
+			await excluirAtividade(authCtx.token || '', turboTask.id || '')
+				.then(res => {
+					setIsLoading2(false)
+					navigation.navigate('TurboTasks' as never)
+				})
+				.catch(err => {
+					setIsLoading2(false)
+				})
+		}
+	}
+
+	async function createTask() {
+		if (!isLoading) {
+			setIsLoading(true)
+			await criarAtividade(authCtx.token || '', {
+				nomeAtividade: turboTask.nomeAtividade,
+				pontos: turboTask.pontos,
+				serie: turboTask.serie,
 			})
-			.catch(() => {
-				setIsLoading(false)
-			})
+				.then(res => {
+					setIsLoading(false)
+					navigation.navigate('TurboTasks' as never)
+				})
+				.catch(err => {
+					setIsLoading(false)
+				})
+		}
 	}
 
 	return (
@@ -104,15 +140,17 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 				/>
 				<View style={styles.elementContainer}>
 					<Text style={styles.label}>Título</Text>
+
 					<TextInput
+						editable={props.route.params.mode === 'create'}
 						onChangeText={text => {
-							setTurboTask({ ...turboTask, title: text })
+							setTurboTask({ ...turboTask, nomeAtividade: text })
 						}}
 						style={styles.textInput}
-						value={turboTask.title}
+						value={turboTask.nomeAtividade}
 					/>
 				</View>
-				<View style={styles.elementContainer}>
+				{/* <View style={styles.elementContainer}>
 					<Text style={styles.label}>Descrição</Text>
 					<TextInput
 						onChangeText={text => {
@@ -124,16 +162,16 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 						multiline
 						value={turboTask.description}
 					/>
-				</View>
+				</View> */}
 
 				<View style={styles.elementContainer}>
 					<Text style={styles.label}>Série</Text>
 					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
 						<Picker
 							style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
-							selectedValue={turboTask.class}
+							selectedValue={turboTask.serie}
 							onValueChange={value => {
-								setTurboTask({ ...turboTask, class: value })
+								setTurboTask({ ...turboTask, serie: value })
 							}}
 							enabled={true}
 						>
@@ -144,9 +182,7 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 							<Picker.Item label='7º ano' value='7º ano' />
 							<Picker.Item label='8º ano' value='8º ano' />
 							<Picker.Item label='9º ano' value='9º ano' />
-							<Picker.Item label='1º médio' value='1º médio' />
-							<Picker.Item label='2º médio' value='2º médio' />
-							<Picker.Item label='3º médio' value='3º médio' />
+							<Picker.Item label='Multisérie' value='Multiserie' />
 						</Picker>
 					</View>
 				</View>
@@ -158,9 +194,9 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 								keyboardType='number-pad'
 								style={styles.points}
 								onChangeText={text => {
-									setTurboTask({ ...turboTask, points: Number(text) })
+									setTurboTask({ ...turboTask, pontos: Number(text) })
 								}}
-								value={turboTask.points.toString()}
+								value={turboTask.pontos.toString()}
 							/>
 						</View>
 					</View>
@@ -177,9 +213,29 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 					</View>
 					{show && <DateTimePicker value={date} onChange={onChangeDate} />}
 				</View>
-				<View style={{ marginTop: 20 }}>
-					<PrimaryButton title='Salvar Atividade' isLoading={isLoading} onPress={updateTurboTask} />
-				</View>
+				{props.route.params.mode === 'create' ? (
+					<View style={{ marginTop: 20 }}>
+						<PrimaryButton title={'Criar'} isLoading={isLoading} onPress={createTask} />
+					</View>
+				) : (
+					<View style={{ marginTop: 20, flexDirection: 'row' }}>
+						<PrimaryButton
+							marginRight={10}
+							title={'Salvar'}
+							isLoading={isLoading}
+							avoidClick={isLoading2}
+							onPress={updateTurboTask}
+						/>
+						<PrimaryButton
+							innerContainerStyle={{ backgroundColor: '#8E2941' }}
+							marginLeft={10}
+							title={'Excluir'}
+							isLoading={isLoading2}
+							avoidClick={isLoading}
+							onPress={deleteTurboTask}
+						/>
+					</View>
+				)}
 			</ScrollView>
 		</SafeAreaView>
 	)

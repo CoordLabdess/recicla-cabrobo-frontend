@@ -268,3 +268,105 @@ export async function editarAluno(token: string, data: AlterarAlunoData) {
 			throw new Error(err)
 		})
 }
+
+export interface CriarAtividadeData {
+	id?: string
+	nomeAtividade: string
+	pontos: number
+	serie: string
+}
+
+export async function criarAtividade(token: string, data: CriarAtividadeData) {
+	await axios
+		.post(
+			'https://recicla-cabrobo-backend.herokuapp.com/escola/criarAtividade',
+			{
+				nomeAtividade: data.nomeAtividade,
+				pontos: data.pontos,
+				serie: data.serie,
+			} as CriarAtividadeData,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			return
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
+
+export interface AtividadeData {
+	id: string
+	nome: string
+	pontos: number
+	serie: string
+	escola: SchoolData
+	entregas: { id: string; matricuka: string }[]
+}
+
+export async function listarAtividades(token: string): Promise<AtividadeData[]> {
+	return await axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/listarAtividades', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as AtividadeData[]
+			return x
+		})
+		.catch(err => {
+			throw new Error('aaa')
+		})
+}
+
+export interface AtualizarAtividadeInput {
+	idAtividade: string
+	newSerie: string
+	newPoints: number
+}
+
+export async function atualizarAtividade(token: string, data: AtualizarAtividadeInput) {
+	await axios
+		.patch(
+			'https://recicla-cabrobo-backend.herokuapp.com/escola/alterarAtividade',
+			{
+				idAtividade: data.idAtividade,
+				newPoints: data.newPoints,
+				newSerie: data.newSerie,
+			} as AtualizarAtividadeInput,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			return
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
+
+export async function excluirAtividade(token: string, atividadeId: string) {
+	await axios
+		.delete('https://recicla-cabrobo-backend.herokuapp.com/escola/atividade', {
+			headers: {
+				Authorization: 'Bearer ' + token,
+			},
+			data: {
+				idAtividade: atividadeId,
+			},
+		})
+		.then(res => {
+			return
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
