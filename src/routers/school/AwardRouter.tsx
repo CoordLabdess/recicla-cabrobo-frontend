@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ChooseAwardScreen } from '../../screens/school/awards/ChooseAwardScreen'
 import { ChooseStudentAwardScreen } from '../../screens/school/awards/ChooseStudentAwardScreen'
-import { ConfirmStudentScreen } from '../../screens/school/awards/ConfirmStudentScreen'
+import { ConfirmStudentAwardScreen } from '../../screens/school/awards/ConfirmStudentScreen'
 import { AnyScreen } from '../../screens'
 import { ManageAwardsScreen } from '../../screens/school/awards/ManageAwardsScreen'
 import { EditAwardScreen } from '../../screens/school/awards/EditAwardScreen'
@@ -32,7 +32,7 @@ export function AwardStackRouter() {
 			/>
 			<Stack.Screen
 				name='Award2'
-				component={ConfirmStudentScreen}
+				component={ConfirmStudentAwardScreen}
 				options={{
 					title: 'Resgate de Prêmios',
 				}}

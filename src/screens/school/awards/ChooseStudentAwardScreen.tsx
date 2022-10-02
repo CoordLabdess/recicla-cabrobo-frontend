@@ -2,20 +2,27 @@ import { View, Text, ScrollView, TextInput, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS } from '../../../constants/colors'
 import { PrimaryButton } from '../../../components/ui/Buttons'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ErrorMessage } from '../../../components/ui/ErrorMessage'
-import { useNavigation } from '@react-navigation/native'
+import { RouteProp, useNavigation } from '@react-navigation/native'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { students } from '../../../data/students'
+import { getStudentByMatricula } from '../../../utils/school'
+import { AuthContext } from '../../../store/context/authContext'
 
 interface Errors {
 	emptyId: boolean
 	notFound: boolean
 }
 
-export function ChooseStudentAwardScreen() {
+interface ChooseStudentAwardScreenProps {
+	route: RouteProp<{ params: { type: 'materials' | 'turboTasks' } }, 'params'>
+}
+
+export function ChooseStudentAwardScreen(props: ChooseStudentAwardScreenProps) {
 	const navigation = useNavigation()
 	const [studentNumber, setStudentNumber] = useState('')
+	const authCtx = useContext(AuthContext)
 	const [isLoading, setIsLoading] = useState(false)
 	const [errors, setErrors] = useState<Errors>({
 		emptyId: false,
@@ -37,32 +44,19 @@ export function ChooseStudentAwardScreen() {
 		return isDataValid
 	}
 
-	async function getStudentByStudentCode(code: string) {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				const student = students.filter(student => {
-					return student.studentCode === code.trim()
-				})[0]
-				if (student) {
-					resolve(student)
-				} else {
-					reject()
-				}
-			}, 1000)
-		})
-	}
-
 	async function sendStudentNumber() {
 		if (validateData()) {
 			setIsLoading(true)
-			await getStudentByStudentCode(studentNumber)
+			await getStudentByMatricula(studentNumber, authCtx.token as string)
 				.then(response => {
 					setErrors(cErros => {
 						return { ...cErros, notFound: false }
 					})
+					console.log('aaaa')
 					navigation.navigate('Award2' as never, { student: response } as never)
 				})
 				.catch(error => {
+					console.log('bbbbb')
 					setErrors(cErros => {
 						return { ...cErros, notFound: true }
 					})
@@ -86,7 +80,8 @@ export function ChooseStudentAwardScreen() {
 				<SimplePageHeader title='Informar Aluno' textStyle={styles.title} />
 
 				<Text style={styles.description}>
-					Digite o número de matrícula do aluno para iniciar um resgate de prêmios.
+					Associe uma nova entrega ao perfil de um aluno. Insira as informações solicitadas em cada
+					campo do formulário.
 				</Text>
 
 				<Text style={styles.label}>Número de matrícula do aluno</Text>
@@ -105,7 +100,7 @@ export function ChooseStudentAwardScreen() {
 				<PrimaryButton
 					isLoading={isLoading}
 					textStyle={{ fontSize: 20 }}
-					title='Visualizar Prêmios'
+					title='Realizar Nova Entrega'
 					onPress={sendStudentNumber}
 				/>
 			</ScrollView>

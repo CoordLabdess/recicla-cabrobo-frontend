@@ -5,14 +5,15 @@ import { PrimaryButton } from '../ui/Buttons'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { RouteProp } from '@react-navigation/native'
+import { StudentData } from '../../utils/student'
 
 interface ConfirmAwardModalProps {
 	visible: boolean
 	isLoading?: boolean
 	onCancel: () => void
-	onConfirm: () => void
-	award: Award | null
-	student: Student
+	onConfirm: (premioId: string) => void
+	award: Award
+	student: StudentData
 }
 
 export function ConfirmAwardModal(props: ConfirmAwardModalProps) {
@@ -32,7 +33,7 @@ export function ConfirmAwardModal(props: ConfirmAwardModalProps) {
 							</View>
 							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
 								<Text style={styles.textDetailTitle}>Matrícula: </Text>
-								<Text style={styles.textDetail}>{props.student.studentCode}</Text>
+								<Text style={styles.textDetail}>{props.student.matricula}</Text>
 							</View>
 							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
 								<Text style={styles.textDetailTitle}>Série: </Text>
@@ -40,11 +41,15 @@ export function ConfirmAwardModal(props: ConfirmAwardModalProps) {
 							</View>
 							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
 								<Text style={styles.textDetailTitle}>Prêmio: </Text>
-								<Text style={styles.textDetail}>{props.award?.title}</Text>
+								<Text style={styles.textDetail}>{props.award?.nome}</Text>
+							</View>
+							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+								<Text style={styles.textDetailTitle}>Prêmio: </Text>
+								<Text style={styles.textDetail}>{props.award?.especificacao}</Text>
 							</View>
 							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
 								<Text style={styles.textDetailTitle}>Preço: </Text>
-								<Text style={styles.textDetail}>{props.award?.price} pts</Text>
+								<Text style={styles.textDetail}>{props.award?.preco} pts</Text>
 							</View>
 						</View>
 
@@ -77,7 +82,7 @@ export function ConfirmAwardModal(props: ConfirmAwardModalProps) {
 									paddingVertical: 5,
 									paddingHorizontal: 23,
 								}}
-								onPress={props.onConfirm}
+								onPress={() => props.onConfirm(props.award?.id)}
 							/>
 						</View>
 					</View>

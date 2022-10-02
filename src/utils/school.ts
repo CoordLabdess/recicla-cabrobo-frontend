@@ -370,3 +370,49 @@ export async function excluirAtividade(token: string, atividadeId: string) {
 			throw new Error(err)
 		})
 }
+
+export interface PremioReturnData {
+	id: string
+	nome: string
+	preco: number
+}
+
+export async function listarPremios(token: string): Promise<PremioReturnData[]> {
+	return await axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/premio/listar', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as PremioReturnData[]
+			return x
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
+
+export async function resgatarPremio(token: string, matriculaAluno: string, premio: string) {
+	await axios
+		.post(
+			'https://recicla-cabrobo-backend.herokuapp.com/escola/criarResgatePremios',
+			{
+				matriculaAluno: matriculaAluno,
+				premio: premio,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			console.log(res.data)
+			return
+		})
+		.catch(err => {
+			console.log(err)
+			throw new Error(err)
+		})
+}

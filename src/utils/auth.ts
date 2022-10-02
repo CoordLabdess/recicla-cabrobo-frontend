@@ -42,6 +42,7 @@ export function signUp(identificador: string, password: string, retunSecureToken
 }
 
 function getAuthType(data: any): { token: string; type: AuthType } {
+	console.log(data)
 	try {
 		if (data.escolaAccessToken) {
 			return { token: data.escolaAccessToken, type: 'School' }

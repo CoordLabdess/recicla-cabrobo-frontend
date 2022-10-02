@@ -101,6 +101,7 @@ export interface AwardHistory {
 export interface Award {
 	id: string
 	nome: string
+	especificacao: string
 	preco: string
 }
 

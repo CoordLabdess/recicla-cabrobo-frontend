@@ -2,23 +2,30 @@ import { View, Text, StyleSheet, FlatList, Modal } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
-import { Award, awards } from '../../../data/awards'
+import { Award } from '../../../data/awards'
 import { Ionicons } from '@expo/vector-icons'
 import { AwardListItem } from '../../../components/awards/AwardListItem'
 import { RouteProp, useNavigation } from '@react-navigation/native'
-import { useState } from 'react'
+import { useContext, useLayoutEffect, useState } from 'react'
 import { ConfirmAwardModal } from '../../../components/awards/ConfirmAwardModal'
 import { Student } from '../../../data/students'
 import { RoundIconButton } from '../../../components/ui/RoundIconButton'
+import { getAwardList, StudentData } from '../../../utils/student'
+import { listarPremios, PremioReturnData, resgatarPremio } from '../../../utils/school'
+import { AuthContext } from '../../../store/context/authContext'
+import { LoadingScreen } from '../../ui/LoadingScreen'
 
 interface ChooseAwardScreenProps {
-	route: RouteProp<{ params: { student: Student; mode: 'get' | 'manage' } }, 'params'>
+	route: RouteProp<{ params: { student: StudentData; mode: 'get' | 'manage' } }, 'params'>
 }
 
 export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 	const navigation = useNavigation()
+	const student = props.route.params.student
 	const [confirmModal, setConfirmModal] = useState(false)
 	const [award, setAward] = useState<Award | null>(null)
+	const [premios, setPremios] = useState<Award[] | null>(null)
+	const authCtx = useContext(AuthContext)
 	const [isLoading, setIsLoading] = useState(false)
 
 	async function fakeFetching() {
@@ -29,17 +36,29 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 		})
 	}
 
-	async function sendChanges() {
-		setIsLoading(true)
-		await fakeFetching()
-			.then(response => {
-				setIsLoading(false)
-				navigation.navigate('Award0' as never)
-			})
-			.catch(error => {
-				setIsLoading(false)
-				setConfirmModal(false)
-			})
+	async function sendChanges(premioId: string) {
+		if (!isLoading) {
+			setIsLoading(true)
+			console.log(premioId)
+			resgatarPremio(authCtx.token || '', String(student.matricula), premioId)
+				.then(() => {
+					navigation.navigate('Award1' as never)
+					setIsLoading(false)
+					setConfirmModal(false)
+				})
+				.catch(() => {
+					setConfirmModal(false)
+					setIsLoading(false)
+				})
+		}
+	}
+
+	useLayoutEffect(() => {
+		getAwardList(authCtx.token || '').then(res => setPremios(res))
+	}, [])
+
+	if (!premios) {
+		return <LoadingScreen />
 	}
 
 	return (
@@ -58,7 +77,7 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 				}}
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
-				data={awards}
+				data={premios}
 				renderItem={itemData => (
 					<AwardListItem
 						award={itemData.item}
@@ -89,7 +108,7 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 				</View>
 			)}
 
-			{props.route.params.mode === 'get' && (
+			{props.route.params.mode === 'get' && award && (
 				<ConfirmAwardModal
 					award={award}
 					visible={confirmModal}
