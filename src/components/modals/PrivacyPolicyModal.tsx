@@ -97,9 +97,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		overflow: 'hidden',
 		borderRadius: 16,
-		maxHeight: '80%',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
+		height: 450,
 	},
 
 	title: {
