@@ -23,7 +23,7 @@ export function AwardListItem(props: AwardListemItemProps) {
 						<Text style={styles.title}>{props.award.nome}</Text>
 						<Text>{props.award.preco} pts</Text>
 					</View>
-					<Ionicons name={'chevron-forward-outline'} size={32} color='#000' />
+					<Text style={{ fontSize: 16 }}>{props.award.estoque}</Text>
 				</Pressable>
 			</View>
 		</View>

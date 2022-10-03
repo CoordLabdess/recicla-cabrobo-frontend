@@ -33,18 +33,6 @@ export function ManageAwardsScreen() {
 						<Text style={styles.cardTitle}>Resgatar Prêmios</Text>
 					</Pressable>
 				</View>
-				<View style={styles.outterContainer}>
-					<Pressable
-						android_ripple={{ color: '#ccc' }}
-						style={styles.innerContainer}
-						onPress={() => {
-							navigation.navigate('Award3' as never, { mode: 'manage' } as never)
-						}}
-					>
-						<Ionicons name='build-outline' size={60} color={COLORS.primary500} />
-						<Text style={styles.cardTitle}>Gerenciar Prêmios</Text>
-					</Pressable>
-				</View>
 			</ScrollView>
 		</SafeAreaView>
 	)

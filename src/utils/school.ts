@@ -431,3 +431,20 @@ export async function atualizarEstoque(token: string, premioId: string, quantida
 			throw new Error(err)
 		})
 }
+
+export async function deletarAluno(token: string, studentId: string) {
+	console.log(studentId)
+	await axios
+		.patch(`https://recicla-cabrobo-backend.herokuapp.com/escola/deletarAluno/${studentId}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			return
+		})
+		.catch(err => {
+			console.log(err)
+			throw new Error(err)
+		})
+}

@@ -15,7 +15,9 @@ export function AwardsHistoryScreen() {
 	useLayoutEffect(() => {
 		if (authCtx.token) {
 			getSchoolAwardsWithdrawHistory(authCtx.token).then(res => {
-				setAwardsHistory(res)
+				setAwardsHistory(
+					res.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()),
+				)
 			})
 		}
 	}, [])

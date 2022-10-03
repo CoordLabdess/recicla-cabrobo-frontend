@@ -10,7 +10,7 @@ import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
 import { Student } from '../../../data/students'
 import { useNavigation } from '@react-navigation/native'
-import { editarAluno, registerStudent } from '../../../utils/school'
+import { deletarAluno, editarAluno, registerStudent } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
 import { StudentData } from '../../../utils/student'
 import { ErrorMessage } from '../../../components/ui/ErrorMessage'
@@ -89,6 +89,20 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				})
 				.catch(err => {
 					console.log('aaa')
+					setIsLoading(false)
+				})
+		}
+	}
+
+	function deleteStudent() {
+		if (!isLoading) {
+			setIsLoading(true)
+			deletarAluno(authCtx.token || '', String(student.matricula))
+				.then(res => {
+					setIsLoading(false)
+					navigation.navigate('ManageStudents' as never)
+				})
+				.catch(err => {
 					setIsLoading(false)
 				})
 		}
@@ -256,7 +270,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				isLoading={isLoading}
 				text='Ao confirmar, toda a pontuação do aluno será perdida. Essa ação não poderá ser revertida.'
 				onCancel={() => setConfirmModal('off')}
-				onConfirm={sendChanges}
+				onConfirm={deleteStudent}
 			/>
 			<ConfirmModal
 				visible={confirmModal === 'create'}

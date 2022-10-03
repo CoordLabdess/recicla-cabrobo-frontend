@@ -31,7 +31,7 @@ export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>;
 						<View style={{ width: 3, flex: 1 }} />
 					)}
 				</View>
-				<View>
+				<View style={{ width: '100%' }}>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						<Text style={styles.historyDateText}>{formatDate(props.itemData.item.created_at)}</Text>
 						<Text style={{ color: '#7C7C7C', fontSize: 10, marginTop: 6 }}>
@@ -63,7 +63,9 @@ const styles = StyleSheet.create({
 	},
 	historyElement: {
 		width: '80%',
+
 		alignItems: 'center',
+		justifyContent: 'space-between',
 		flexDirection: 'row',
 	},
 	historyDateText: {
