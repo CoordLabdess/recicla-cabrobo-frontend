@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react'
 
-export type AuthType = 'Student' | 'School' | null
+export type AuthType = 'Student' | 'School' | 'Admin' | null
 
 interface Auth {
 	token: string | null

@@ -1,4 +1,4 @@
-import { StudentData } from './student'
+import { Award, StudentData } from './student'
 import axios from 'axios'
 
 interface SchoolData {
@@ -371,13 +371,7 @@ export async function excluirAtividade(token: string, atividadeId: string) {
 		})
 }
 
-export interface PremioReturnData {
-	id: string
-	nome: string
-	preco: number
-}
-
-export async function listarPremios(token: string): Promise<PremioReturnData[]> {
+export async function listarPremios(token: string): Promise<Award[]> {
 	return await axios
 		.get('https://recicla-cabrobo-backend.herokuapp.com/premio/listar', {
 			headers: {
@@ -385,7 +379,7 @@ export async function listarPremios(token: string): Promise<PremioReturnData[]> 
 			},
 		})
 		.then(res => {
-			const x = res.data as PremioReturnData[]
+			const x = res.data as Award[]
 			return x
 		})
 		.catch(err => {
@@ -413,6 +407,27 @@ export async function resgatarPremio(token: string, matriculaAluno: string, prem
 		})
 		.catch(err => {
 			console.log(err)
+			throw new Error(err)
+		})
+}
+
+export async function atualizarEstoque(token: string, premioId: string, quantidade: number) {
+	await axios
+		.patch(
+			`https://recicla-cabrobo-backend.herokuapp.com/escola/addEstoque/${premioId}`,
+			{
+				quantidadeAdicionada: quantidade,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			return
+		})
+		.catch(err => {
 			throw new Error(err)
 		})
 }

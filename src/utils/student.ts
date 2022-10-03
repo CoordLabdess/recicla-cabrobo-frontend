@@ -102,6 +102,7 @@ export interface Award {
 	id: string
 	nome: string
 	especificacao: string
+	estoque: number
 	preco: string
 }
 

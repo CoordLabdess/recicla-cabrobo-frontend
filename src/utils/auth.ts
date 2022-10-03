@@ -48,6 +48,9 @@ function getAuthType(data: any): { token: string; type: AuthType } {
 			return { token: data.escolaAccessToken, type: 'School' }
 		} else if (data.alunoAccessToken) {
 			return { token: data.alunoAccessToken, type: 'Student' }
+		} else if (data.admAccessToken) {
+			console.log('aaaaa')
+			return { token: data.admAccessToken, type: 'Admin' }
 		} else {
 			return { token: '', type: null }
 		}
