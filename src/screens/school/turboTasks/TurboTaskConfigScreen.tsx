@@ -23,6 +23,7 @@ import {
 	atualizarAtividade,
 	criarAtividade,
 	CriarAtividadeData,
+	deletarAtividade,
 	excluirAtividade,
 } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
@@ -91,7 +92,7 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 	async function deleteTurboTask() {
 		if (!isLoading2) {
 			setIsLoading2(true)
-			await excluirAtividade(authCtx.token || '', turboTask.id || '')
+			await deletarAtividade(authCtx.token || '', turboTask.id || '')
 				.then(res => {
 					setIsLoading2(false)
 					navigation.navigate('TurboTasks' as never)
@@ -106,7 +107,7 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 		if (!isLoading) {
 			setIsLoading(true)
 			await criarAtividade(authCtx.token || '', {
-				nomeAtividade: turboTask.nomeAtividade,
+				nomeAtividade: turboTask.nomeAtividade + 'aaaa',
 				pontos: turboTask.pontos,
 				serie: turboTask.serie,
 			})
@@ -150,20 +151,6 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 						value={turboTask.nomeAtividade}
 					/>
 				</View>
-				{/* <View style={styles.elementContainer}>
-					<Text style={styles.label}>Descrição</Text>
-					<TextInput
-						onChangeText={text => {
-							setTurboTask({ ...turboTask, description: text })
-						}}
-						style={styles.textInput}
-						numberOfLines={4}
-						textAlignVertical={'top'}
-						multiline
-						value={turboTask.description}
-					/>
-				</View> */}
-
 				<View style={styles.elementContainer}>
 					<Text style={styles.label}>Série</Text>
 					<View style={{ overflow: 'hidden', borderRadius: 15 }}>

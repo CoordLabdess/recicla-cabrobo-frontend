@@ -9,6 +9,7 @@ export interface StudentData {
 	serie: string
 	pontos: number
 	imagemPerfil: null
+	status: string | null
 	escola: {
 		id: string
 		idLogin: number

@@ -305,6 +305,7 @@ export interface AtividadeData {
 	pontos: number
 	serie: string
 	escola: SchoolData
+	status: string | null
 	entregas: { id: string; matricuka: string }[]
 }
 
@@ -346,6 +347,7 @@ export async function atualizarAtividade(token: string, data: AtualizarAtividade
 			},
 		)
 		.then(res => {
+			console.log('aa')
 			return
 		})
 		.catch(err => {
@@ -433,13 +435,38 @@ export async function atualizarEstoque(token: string, premioId: string, quantida
 }
 
 export async function deletarAluno(token: string, studentId: string) {
-	console.log(studentId)
 	await axios
-		.patch(`https://recicla-cabrobo-backend.herokuapp.com/escola/deletarAluno/${studentId}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
+		.patch(
+			`https://recicla-cabrobo-backend.herokuapp.com/escola/deletarAluno/${studentId}`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			},
+		)
+		.then(res => {
+			return
 		})
+		.catch(err => {
+			console.log(err)
+			throw new Error(err)
+		})
+}
+
+export async function deletarAtividade(token: string, atividadeId: string) {
+	await axios
+		.patch(
+			`https://recicla-cabrobo-backend.herokuapp.com/escola/deletarAtividade`,
+			{
+				idAtividade: atividadeId,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
 		.then(res => {
 			return
 		})

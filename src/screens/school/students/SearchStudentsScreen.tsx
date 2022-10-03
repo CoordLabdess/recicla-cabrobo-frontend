@@ -42,7 +42,11 @@ export function SearchStudentsScreen() {
 	useLayoutEffect(() => {
 		if (authCtx.token) {
 			getStudentsList(authCtx.token).then(res => {
-				setAllStudents(res)
+				setAllStudents(
+					res
+						.filter(s => s.status !== 'Inativo')
+						.sort((a, b) => (a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0)),
+				)
 			})
 		}
 	}, [])

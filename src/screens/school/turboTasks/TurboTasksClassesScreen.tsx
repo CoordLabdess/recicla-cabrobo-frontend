@@ -22,7 +22,11 @@ export function TurboTasksClassesScreen() {
 	useLayoutEffect(() => {
 		listarAtividades(authCtx.token || '')
 			.then(res => {
-				setAtividades(res)
+				setAtividades(
+					res
+						.filter(s => s.status !== 'Inativo')
+						.sort((a, b) => (a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0)),
+				)
 			})
 			.catch(err => {
 				console.log(err)
