@@ -3,17 +3,12 @@ import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { History as H } from '../../utils/student'
 import { SchoolAwardsWithdraw } from '../../utils/school'
+import { formatDate } from '../../utils/formatData'
 
 export function AwardWithDrawListItem(props: {
 	itemData: ListRenderItemInfo<SchoolAwardsWithdraw>
 	last: boolean
 }) {
-	function formatDate(date: string) {
-		const month = new Date(date).toLocaleDateString().split('/')[0]
-		const day = new Date(date).toLocaleDateString().split('/')[1]
-		const year = new Date(date).toLocaleDateString().split('/')[2]
-		return `${day}/${month}/${year}`
-	}
 	return (
 		<Pressable style={styles.root} android_ripple={{ color: '#ccc' }}>
 			<View style={styles.historyElement}>

@@ -2,14 +2,9 @@ import { View, Text, StyleSheet, ListRenderItemInfo, YellowBox, Pressable } from
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { History as H } from '../../utils/student'
+import { formatDate } from '../../utils/formatData'
 
 export function History(props: { itemData: ListRenderItemInfo<H>; last: boolean }) {
-	const data = {
-		day: new Date(props.itemData.item.dataEntrega).toLocaleDateString().split('/')[1],
-		month: new Date(props.itemData.item.dataEntrega).toLocaleDateString().split('/')[0],
-		year: new Date(props.itemData.item.dataEntrega).toLocaleDateString().split('/')[2],
-	}
-
 	return (
 		<Pressable style={styles.root} android_ripple={{ color: '#ccc' }}>
 			<View style={styles.historyElement}>
@@ -31,7 +26,9 @@ export function History(props: { itemData: ListRenderItemInfo<H>; last: boolean 
 				</View>
 				<View style={{ flex: 1 }}>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-						<Text style={styles.historyDateText}>{`${data.day}/${data.month}/${data.year}`}</Text>
+						<Text style={styles.historyDateText}>
+							{formatDate(props.itemData.item.dataEntrega)}
+						</Text>
 						<Text style={{ color: '#7C7C7C', fontSize: 10, marginTop: 6 }}>
 							Clique Para Visualizar
 						</Text>

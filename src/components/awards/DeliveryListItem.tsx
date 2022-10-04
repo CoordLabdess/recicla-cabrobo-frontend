@@ -4,14 +4,9 @@ import { COLORS } from '../../constants/colors'
 import { History as H } from '../../utils/student'
 import { Entrega, SchoolAwardsWithdraw } from '../../utils/school'
 import { materials } from '../../data/materialTable'
+import { formatDate } from '../../utils/formatData'
 
 export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>; last: boolean }) {
-	function formatDate(date: string) {
-		const month = new Date(date).toLocaleDateString().split('/')[0]
-		const day = new Date(date).toLocaleDateString().split('/')[1]
-		const year = new Date(date).toLocaleDateString().split('/')[2]
-		return `${day}/${month}/${year}`
-	}
 	return (
 		<Pressable style={styles.root} android_ripple={{ color: '#ccc' }}>
 			<View style={styles.historyElement}>
