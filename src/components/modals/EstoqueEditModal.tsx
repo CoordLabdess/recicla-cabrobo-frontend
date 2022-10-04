@@ -15,7 +15,7 @@ interface PrivacPolicyModalProps {
 }
 
 export function EstoqueEditModal(props: PrivacPolicyModalProps) {
-	const [ammount, setAmmount] = useState(0)
+	const [ammount, setAmmount] = useState('0')
 
 	return (
 		<Modal visible={props.visible} transparent>
@@ -60,7 +60,7 @@ export function EstoqueEditModal(props: PrivacPolicyModalProps) {
 							</Text>
 							<PrimaryTextInput
 								keyboardType='number-pad'
-								onChangeText={text => setAmmount(Number(text))}
+								onChangeText={text => setAmmount(text)}
 								value={String(ammount)}
 								style={{ fontSize: 30, marginBottom: 20, width: 100, textAlign: 'center' }}
 								placeholder='0'
@@ -68,7 +68,7 @@ export function EstoqueEditModal(props: PrivacPolicyModalProps) {
 							<PrimaryButton
 								isLoading={props.isLoading}
 								title='Salvar'
-								onPress={() => props.onSave(ammount)}
+								onPress={() => props.onSave(Number(ammount))}
 								outterContainerStyle={{ width: 160 }}
 							/>
 						</ScrollView>

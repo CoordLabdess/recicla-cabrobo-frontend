@@ -26,6 +26,7 @@ const emptyStudent: StudentData = {
 	serie: '',
 	sexo: 'Nao Definido',
 	id: '',
+	status: null,
 	pontos: 0,
 	imagemPerfil: null,
 	escola: {
@@ -59,18 +60,6 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				resolve('')
 			}, 1000)
 		})
-	}
-
-	function sendChanges() {
-		setIsLoading(true)
-		fakeFetching()
-			.then(response => {
-				setIsLoading(false)
-				navigation.navigate('ManageStudents' as never)
-			})
-			.catch(error => {
-				setIsLoading(false)
-			})
 	}
 
 	function editStudent() {
@@ -158,7 +147,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 						style={styles.field}
 						value={name}
 						onChangeText={text => setName(text)}
-						editable={props.route.params.mode === 'create'}
+						editable={editable}
 					/>
 				</View>
 				<View style={styles.fieldContainer}>
@@ -187,7 +176,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 							onValueChange={text => setSexo(text)}
 							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
 							selectedValue={sexo}
-							enabled={props.route.params.mode === 'create'}
+							enabled={editable}
 						>
 							<Picker.Item label='- Selecione o Sexo -' value='Nao Denifido' />
 							<Picker.Item label='Masculino' value='Masc' />
@@ -219,10 +208,10 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Senha</Text>
 					<TextInput
+						editable={false}
 						style={styles.field}
 						value={String(studentNumber) + Number(idade).toFixed(0) + '2022'}
 						secureTextEntry={!editable}
-						editable={false}
 					/>
 				</View>
 			</ScrollView>

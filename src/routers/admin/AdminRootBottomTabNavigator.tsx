@@ -44,6 +44,7 @@ export function AdminRootBottomTabNavigator() {
 				headerShown: false,
 				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
+					display: 'none',
 					backgroundColor: COLORS.primary500,
 					height: Platform.OS === 'ios' ? 75 : 65,
 				},

@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
 		height: 70,
 		width: 340,
 		marginBottom: 20,
+		marginLeft: 'auto',
+		marginRight: 'auto',
 	},
 	pressable: {
 		flex: 1,
