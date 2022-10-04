@@ -13,47 +13,40 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
-import { TurboTask, turboTasks } from '../../../data/turboTasks'
 import { Picker } from '@react-native-picker/picker'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { PrimaryButton } from '../../../components/ui/Buttons'
 import { useNavigation } from '@react-navigation/native'
 import {
-	AtividadeData,
 	atualizarAtividade,
 	criarAtividade,
-	CriarAtividadeData,
 	deletarAtividade,
 	excluirAtividade,
 } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
+import { AtividadeDataOutput, CriarAtividadeDataInput } from '../../../types/atividades.type'
 
-interface TurboTaskConfigScreenProps {
-	route: RouteProp<{ params: { mode: 'create' | 'edit'; atividade: AtividadeData } }, 'params'>
-}
-
-const emptyTurboTask: CriarAtividadeData = {
+const atividadeEmBranco: CriarAtividadeDataInput = {
 	nomeAtividade: '',
 	pontos: 0,
 	serie: 'Nao Definida',
+	descricao: '',
+	prazoFinal:
+		String(new Date().getDay()) +
+		'-' +
+		String(new Date().getMonth()) +
+		'-' +
+		String(new Date().getFullYear()),
 }
 
-export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
+export function CriarAtividadeScreen() {
 	const authCtx = useContext(AuthContext)
 	const navigation = useNavigation()
 	const [date, setDate] = useState(new Date())
 	const [show, setShow] = useState(false)
-	const [turboTask, setTurboTask] = useState<CriarAtividadeData>(
-		props.route.params.mode === 'edit'
-			? {
-					...props.route.params.atividade,
-					nomeAtividade: props.route.params.atividade.nome,
-					id: props.route.params.atividade.id,
-			  }
-			: emptyTurboTask,
-	)
+	const [atividade, setAtividade] = useState<CriarAtividadeDataInput>(atividadeEmBranco)
+
 	const [isLoading, setIsLoading] = useState(false)
-	const [isLoading2, setIsLoading2] = useState(false)
 
 	function onChangeDate(event: DateTimePickerEvent, currentDate?: Date) {
 		const d = currentDate || date
@@ -63,59 +56,31 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 
 	function formatDate(d: Date) {
 		return (
-			d.getDate().toString().padStart(2, '0') +
-			'/' +
+			d.getDay().toString().padStart(2, '0') +
+			'-' +
 			(d.getMonth() + 1).toString().padStart(2, '0') +
-			'/' +
+			'-' +
 			d.getFullYear().toString()
 		)
-	}
-
-	async function updateTurboTask() {
-		if (!isLoading) {
-			setIsLoading(true)
-			await atualizarAtividade(authCtx.token || '', {
-				idAtividade: turboTask.id as string,
-				newPoints: turboTask.pontos,
-				newSerie: turboTask.serie,
-			})
-				.then(res => {
-					setIsLoading(false)
-					navigation.navigate('TurboTasks' as never)
-				})
-				.catch(err => {
-					setIsLoading(false)
-				})
-		}
-	}
-
-	async function deleteTurboTask() {
-		if (!isLoading2) {
-			setIsLoading2(true)
-			await deletarAtividade(authCtx.token || '', turboTask.id || '')
-				.then(res => {
-					setIsLoading2(false)
-					navigation.navigate('TurboTasks' as never)
-				})
-				.catch(err => {
-					setIsLoading2(false)
-				})
-		}
 	}
 
 	async function createTask() {
 		if (!isLoading) {
 			setIsLoading(true)
 			await criarAtividade(authCtx.token || '', {
-				nomeAtividade: turboTask.nomeAtividade + 'aaaa',
-				pontos: turboTask.pontos,
-				serie: turboTask.serie,
+				nomeAtividade: atividade.nomeAtividade,
+				descricao: atividade.descricao,
+				serie: atividade.serie,
+				pontos: atividade.pontos,
+				prazoFinal: formatDate(date),
 			})
 				.then(res => {
+					console.log(res)
 					setIsLoading(false)
-					navigation.navigate('TurboTasks' as never)
+					navigation.navigate('Atividades' as never)
 				})
 				.catch(err => {
+					console.log(err)
 					setIsLoading(false)
 				})
 		}
@@ -135,20 +100,17 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
 			>
-				<SimplePageHeader
-					textStyle={styles.title}
-					title={props.route.params.mode === 'create' ? 'Criar Atividade' : 'Editar Atividade'}
-				/>
+				<SimplePageHeader textStyle={styles.title} title={'Criar Atividade'} />
 				<View style={styles.elementContainer}>
 					<Text style={styles.label}>Título</Text>
 
 					<TextInput
-						editable={props.route.params.mode === 'create'}
+						editable
 						onChangeText={text => {
-							setTurboTask({ ...turboTask, nomeAtividade: text })
+							setAtividade({ ...atividade, nomeAtividade: text })
 						}}
 						style={styles.textInput}
-						value={turboTask.nomeAtividade}
+						value={atividade.nomeAtividade}
 					/>
 				</View>
 				<View style={styles.elementContainer}>
@@ -156,9 +118,9 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
 						<Picker
 							style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
-							selectedValue={turboTask.serie}
+							selectedValue={atividade.serie}
 							onValueChange={value => {
-								setTurboTask({ ...turboTask, serie: value })
+								setAtividade({ ...atividade, serie: value })
 							}}
 							enabled={true}
 						>
@@ -181,9 +143,9 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 								keyboardType='number-pad'
 								style={styles.points}
 								onChangeText={text => {
-									setTurboTask({ ...turboTask, pontos: Number(text) })
+									setAtividade({ ...atividade, pontos: Number(text) })
 								}}
-								value={turboTask.pontos.toString()}
+								value={atividade.pontos.toString()}
 							/>
 						</View>
 					</View>
@@ -200,29 +162,9 @@ export function TurboTaskConfigScreen(props: TurboTaskConfigScreenProps) {
 					</View>
 					{show && <DateTimePicker value={date} onChange={onChangeDate} />}
 				</View>
-				{props.route.params.mode === 'create' ? (
-					<View style={{ marginTop: 20 }}>
-						<PrimaryButton title={'Criar'} isLoading={isLoading} onPress={createTask} />
-					</View>
-				) : (
-					<View style={{ marginTop: 20, flexDirection: 'row' }}>
-						<PrimaryButton
-							marginRight={10}
-							title={'Salvar'}
-							isLoading={isLoading}
-							avoidClick={isLoading2}
-							onPress={updateTurboTask}
-						/>
-						<PrimaryButton
-							innerContainerStyle={{ backgroundColor: '#8E2941' }}
-							marginLeft={10}
-							title={'Excluir'}
-							isLoading={isLoading2}
-							avoidClick={isLoading}
-							onPress={deleteTurboTask}
-						/>
-					</View>
-				)}
+				<View style={{ marginTop: 20 }}>
+					<PrimaryButton title={'Criar'} isLoading={isLoading} onPress={createTask} />
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	)

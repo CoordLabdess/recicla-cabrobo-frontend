@@ -1,5 +1,10 @@
 import { Award, StudentData } from './student'
 import axios from 'axios'
+import {
+	AtividadeDataOutput,
+	AtualizarAtividadeDataInput,
+	CriarAtividadeDataInput,
+} from '../types/atividades.type'
 
 interface SchoolData {
 	id: string
@@ -269,14 +274,7 @@ export async function editarAluno(token: string, data: AlterarAlunoData) {
 		})
 }
 
-export interface CriarAtividadeData {
-	id?: string
-	nomeAtividade: string
-	pontos: number
-	serie: string
-}
-
-export async function criarAtividade(token: string, data: CriarAtividadeData) {
+export async function criarAtividade(token: string, data: CriarAtividadeDataInput) {
 	await axios
 		.post(
 			'https://recicla-cabrobo-backend.herokuapp.com/escola/criarAtividade',
@@ -284,7 +282,9 @@ export async function criarAtividade(token: string, data: CriarAtividadeData) {
 				nomeAtividade: data.nomeAtividade,
 				pontos: data.pontos,
 				serie: data.serie,
-			} as CriarAtividadeData,
+				descricao: data.descricao,
+				prazoFinal: data.prazoFinal,
+			} as CriarAtividadeDataInput,
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -299,17 +299,7 @@ export async function criarAtividade(token: string, data: CriarAtividadeData) {
 		})
 }
 
-export interface AtividadeData {
-	id: string
-	nome: string
-	pontos: number
-	serie: string
-	escola: SchoolData
-	status: string | null
-	entregas: { id: string; matricuka: string }[]
-}
-
-export async function listarAtividades(token: string): Promise<AtividadeData[]> {
+export async function listarAtividades(token: string): Promise<AtividadeDataOutput[]> {
 	return await axios
 		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/listarAtividades', {
 			headers: {
@@ -317,7 +307,7 @@ export async function listarAtividades(token: string): Promise<AtividadeData[]> 
 			},
 		})
 		.then(res => {
-			const x = res.data as AtividadeData[]
+			const x = res.data as AtividadeDataOutput[]
 			return x
 		})
 		.catch(err => {
@@ -325,21 +315,18 @@ export async function listarAtividades(token: string): Promise<AtividadeData[]> 
 		})
 }
 
-export interface AtualizarAtividadeInput {
-	idAtividade: string
-	newSerie: string
-	newPoints: number
-}
-
-export async function atualizarAtividade(token: string, data: AtualizarAtividadeInput) {
+export async function atualizarAtividade(token: string, data: AtualizarAtividadeDataInput) {
 	await axios
 		.patch(
 			'https://recicla-cabrobo-backend.herokuapp.com/escola/alterarAtividade',
 			{
 				idAtividade: data.idAtividade,
-				newPoints: data.newPoints,
-				newSerie: data.newSerie,
-			} as AtualizarAtividadeInput,
+				novoNome: data.novoNome,
+				novaDescricao: data.novaDescricao,
+				novaSerie: data.novaSerie,
+				novaPontuacao: data.novaPontuacao,
+				novoPrazo: data.novoPrazo,
+			} as AtualizarAtividadeDataInput,
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,

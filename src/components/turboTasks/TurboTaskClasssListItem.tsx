@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import { TurboTask } from '../../data/turboTasks'
 import { useNavigation } from '@react-navigation/native'
-import { AtividadeData } from '../../utils/school'
+import { AtividadeDataOutput } from '../../types/atividades.type'
 
 interface TurboTaskClasssListItemProps {
-	turboTask: AtividadeData
+	turboTask: AtividadeDataOutput
 }
 
 export function TurboTaskClasssListItem(props: TurboTaskClasssListItemProps) {
@@ -19,7 +19,7 @@ export function TurboTaskClasssListItem(props: TurboTaskClasssListItemProps) {
 					style={styles.cardContainer}
 					onPress={() =>
 						navigation.navigate(
-							'TurboTaskConfig' as never,
+							'EditarAtividade' as never,
 							{ mode: 'edit', atividade: props.turboTask } as never,
 						)
 					}
@@ -33,7 +33,7 @@ export function TurboTaskClasssListItem(props: TurboTaskClasssListItemProps) {
 						</Text>
 					</View>
 					<Text>{props.turboTask.serie}</Text>
-					<Text style={styles.description}>Liberada em: {new Date().toLocaleDateString()}</Text>
+					<Text style={styles.description}>Liberada em: {props.turboTask.prazofinal}</Text>
 				</Pressable>
 			</View>
 		</View>

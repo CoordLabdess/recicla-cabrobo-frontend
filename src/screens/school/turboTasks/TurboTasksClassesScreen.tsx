@@ -8,16 +8,17 @@ import { turboTasks } from '../../../data/turboTasks'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { COLORS } from '../../../constants/colors'
 import { useLayoutEffect } from 'react'
-import { AtividadeData, listarAtividades } from '../../../utils/school'
+import { listarAtividades } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
 import { LoadingScreen } from '../../ui/LoadingScreen'
+import { AtividadeDataOutput } from '../../../types/atividades.type'
 
 export function TurboTasksClassesScreen() {
 	const authCtx = useContext(AuthContext)
 	const navigation = useNavigation()
 	const isFocused = useIsFocused()
 
-	const [atividades, setAtividades] = useState<AtividadeData[] | null>(null)
+	const [atividades, setAtividades] = useState<AtividadeDataOutput[] | null>(null)
 
 	useLayoutEffect(() => {
 		listarAtividades(authCtx.token || '')
@@ -57,12 +58,7 @@ export function TurboTasksClassesScreen() {
 			<View
 				style={{ position: 'absolute', bottom: 0, right: 0, marginRight: 25, marginBottom: 25 }}
 			>
-				<RoundIconButton
-					size={52}
-					onPress={() =>
-						navigation.navigate('TurboTaskConfig' as never, { mode: 'create' } as never)
-					}
-				/>
+				<RoundIconButton size={52} onPress={() => navigation.navigate('CriarAtividade' as never)} />
 			</View>
 		</SafeAreaView>
 	)
