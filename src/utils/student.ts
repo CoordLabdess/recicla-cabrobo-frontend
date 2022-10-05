@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { AtividadeDataOutput } from '../types/atividades.type'
 
 export interface StudentData {
 	id: string
@@ -132,6 +133,22 @@ export async function getAwardList(token: string): Promise<Award[]> {
 		})
 		.then(res => {
 			const x = res.data as Award[]
+			return x
+		})
+		.catch(error => {
+			return []
+		})
+}
+
+export async function listarAtividadesDoAluno(token: string): Promise<AtividadeDataOutput[]> {
+	return await axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/listarAtividades', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as AtividadeDataOutput[]
 			return x
 		})
 		.catch(error => {

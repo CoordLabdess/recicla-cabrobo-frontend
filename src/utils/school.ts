@@ -26,6 +26,7 @@ export async function getSchoolDataFromToken(token: string): Promise<SchoolData>
 			return x
 		})
 		.catch(err => {
+			console.log(err)
 			throw new Error(err)
 		})
 }

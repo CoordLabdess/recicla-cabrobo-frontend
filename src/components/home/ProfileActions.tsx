@@ -18,7 +18,7 @@ const actions: Action[] = [
 	{
 		title: 'Pontuação Turbinada',
 		icon: 'rocket',
-		screen: '',
+		screen: 'PontuacaoTurbinada',
 	},
 	{
 		title: 'Pontuações Por Material',

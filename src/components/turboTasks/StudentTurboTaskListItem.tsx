@@ -10,7 +10,7 @@ interface TurboTaskClasssListItemProps {
 	turboTask: AtividadeDataOutput
 }
 
-export function TurboTaskClasssListItem(props: TurboTaskClasssListItemProps) {
+export function StudentTurboTaskListItem(props: TurboTaskClasssListItemProps) {
 	const navigation = useNavigation()
 	return (
 		<View style={styles.shadowContainer}>
@@ -20,8 +20,8 @@ export function TurboTaskClasssListItem(props: TurboTaskClasssListItemProps) {
 					style={styles.cardContainer}
 					onPress={() =>
 						navigation.navigate(
-							'EditarAtividade' as never,
-							{ mode: 'edit', atividade: props.turboTask } as never,
+							'PontuacaoTurbinadaDetalhes' as never,
+							{ atividade: props.turboTask } as never,
 						)
 					}
 				>
