@@ -155,3 +155,38 @@ export async function listarAtividadesDoAluno(token: string): Promise<AtividadeD
 			return []
 		})
 }
+
+export interface CalculadoraImapctoOutput {
+	totalEconomia: {
+		economiaEnergia: number
+		litrosAgua: number
+		gee: number
+		espacoAterro: number
+		litrosPetroleo: number
+	}
+	totalEconomiaEscola: {
+		economiaEnergia: number
+		litrosAgua: number
+		gee: number
+		espacoAterro: number
+		litrosPetroleo: number
+	}
+}
+
+export async function valoresCalculadoraImpactoAluno(
+	token: string,
+): Promise<CalculadoraImapctoOutput> {
+	return await axios
+		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/calculadoraImpacto', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as CalculadoraImapctoOutput
+			return x
+		})
+		.catch(error => {
+			throw new Error(error)
+		})
+}
