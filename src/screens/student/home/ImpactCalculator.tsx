@@ -61,7 +61,11 @@ const allActions: Economy[] = [
 	},
 ]
 
-function ImpactElement(props: { itemData: ListRenderItemInfo<Economy> }) {
+function ImpactElement(props: {
+	itemData: ListRenderItemInfo<Economy>
+	values: CalculadoraImapctoOutput
+	profile: 0 | 1
+}) {
 	const iconName =
 		props.itemData.item.alias === 'energy'
 			? 'flash'
@@ -78,9 +82,32 @@ function ImpactElement(props: { itemData: ListRenderItemInfo<Economy> }) {
 			: props.itemData.item.alias === 'water'
 			? 'Litro(s)'
 			: 'm³'
+
+	console.log(props.values)
+	const value =
+		props.profile === 0
+			? props.itemData.item.alias === 'energy'
+				? props.values.totalEconomiaAluno.economiaEnergia
+				: props.itemData.item.alias === 'gas'
+				? props.values.totalEconomiaAluno.gee
+				: props.itemData.item.alias === 'water'
+				? props.values.totalEconomiaAluno.litrosAgua
+				: props.itemData.item.alias === 'space'
+				? props.values.totalEconomiaAluno.espacoAterro
+				: props.values.totalEconomiaAluno.litrosPetroleo
+			: props.itemData.item.alias === 'energy'
+			? props.values.totalEconomiaEscola.economiaEnergia
+			: props.itemData.item.alias === 'gas'
+			? props.values.totalEconomiaEscola.gee
+			: props.itemData.item.alias === 'water'
+			? props.values.totalEconomiaEscola.litrosAgua
+			: props.itemData.item.alias === 'space'
+			? props.values.totalEconomiaEscola.espacoAterro
+			: props.values.totalEconomiaEscola.litrosPetroleo
+
 	const description =
 		props.itemData.item.alias === 'energy'
-			? `Isso corresponde a ${((26 / 1.28) * props.itemData.item.value).toFixed(
+			? `Isso corresponde a ${((26 / 1.28) * value).toFixed(
 					0,
 			  )} minuto(s) de consumo de uma TV LED ligada.`
 			: props.itemData.item.alias === 'gas'
@@ -89,10 +116,10 @@ function ImpactElement(props: { itemData: ListRenderItemInfo<Economy> }) {
 					props.itemData.item.value
 			  ).toFixed(0)} minuto(s).`
 			: props.itemData.item.alias === 'water'
-			? `Isso corresponde a ${((2 / 1) * props.itemData.item.value).toFixed(
+			? `Isso corresponde a ${((2 / 1) * value).toFixed(
 					0,
 			  )} unidade(s) pequena(s) de água mineral de 500ml.`
-			: `Isso corresponde ao espaço que ${((2 / 2.4) * props.itemData.item.value).toFixed(
+			: `Isso corresponde ao espaço que ${((2 / 2.4) * value).toFixed(
 					0,
 			  )} unidade(s) de papel higiênico ocupam num aterro.`
 
@@ -105,7 +132,7 @@ function ImpactElement(props: { itemData: ListRenderItemInfo<Economy> }) {
 			<View style={styles2.impactValueContainer}>
 				<Text style={styles2.impactValueText}>Economia total de:</Text>
 				<Text style={styles2.impactValueText}>
-					{props.itemData.item.value + ' '}
+					{value + ' '}
 					{unit}
 				</Text>
 			</View>
@@ -172,7 +199,9 @@ export function ImpactCalculator() {
 				alwaysBounceVertical={false}
 				ListHeaderComponent={ImpactCalculatorHeader}
 				data={action === 0 ? myActions : allActions}
-				renderItem={itemData => <ImpactElement itemData={itemData} />}
+				renderItem={itemData => (
+					<ImpactElement itemData={itemData} values={economia} profile={action} />
+				)}
 			/>
 		</SafeAreaView>
 	)

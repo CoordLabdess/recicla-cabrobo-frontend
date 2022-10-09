@@ -157,7 +157,7 @@ export async function listarAtividadesDoAluno(token: string): Promise<AtividadeD
 }
 
 export interface CalculadoraImapctoOutput {
-	totalEconomia: {
+	totalEconomiaAluno: {
 		economiaEnergia: number
 		litrosAgua: number
 		gee: number
