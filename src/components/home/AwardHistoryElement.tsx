@@ -1,14 +1,19 @@
 import { View, Text, StyleSheet, ListRenderItemInfo, YellowBox, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
-import { AwardHistory } from '../../utils/student'
+import { Award, AwardHistory } from '../../utils/student'
 
 export function AwardHistoryElement(props: {
 	itemData: ListRenderItemInfo<AwardHistory>
 	last: boolean
+	onPress?: (award: AwardHistory) => void
 }) {
 	return (
-		<Pressable style={styles.root} android_ripple={{ color: '#ccc' }}>
+		<Pressable
+			style={styles.root}
+			android_ripple={{ color: '#ccc' }}
+			onPress={() => props.onPress && props.onPress(props.itemData.item)}
+		>
 			<View style={styles.historyElement}>
 				<View style={{ alignItems: 'center', marginRight: 10 }}>
 					<View
@@ -38,6 +43,14 @@ export function AwardHistoryElement(props: {
 						>{`Você resgatou ${props.itemData.item.premio.nome}`}</Text>
 						<Text style={styles.historyPointsText}>
 							-{Number(props.itemData.item.premio.preco).toFixed(1)}pts
+						</Text>
+						<Text
+							style={[
+								styles.historyPointsText,
+								{ color: props.itemData.item.status === 1 ? 'green' : '#7C7C7C' },
+							]}
+						>
+							{props.itemData.item.status === 1 ? 'Confirmado' : 'Não Confirmado'}
 						</Text>
 					</View>
 				</View>

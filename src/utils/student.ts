@@ -190,3 +190,25 @@ export async function valoresCalculadoraImpactoAluno(
 			throw new Error(error)
 		})
 }
+
+export async function confirmarResgate(token: string, idPremio: string) {
+	return await axios
+		.put(
+			'https://recicla-cabrobo-backend.herokuapp.com/aluno/confResgate',
+			{
+				idResgate: idPremio,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			return
+		})
+		.catch(error => {
+			console.log(error)
+			throw new Error(error)
+		})
+}

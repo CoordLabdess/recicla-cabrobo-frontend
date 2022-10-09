@@ -7,13 +7,20 @@ import { COLORS } from '../../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
 import { useLinkProps } from '@react-navigation/native'
 import { Picker } from '@react-native-picker/picker'
-import { awards } from '../../../data/awards'
 import { AwardListItem } from '../../../components/awards/AwardListItem'
 import { History } from '../../../components/home/History'
-import { Award, AwardHistory, getAwardList, getStudentAwardHistory } from '../../../utils/student'
+import {
+	Award,
+	AwardHistory,
+	confirmarResgate,
+	getAwardList,
+	getStudentAwardHistory,
+} from '../../../utils/student'
 import { StudentContext } from '../../../store/context/studentContext'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 import { AwardHistoryElement } from '../../../components/home/AwardHistoryElement'
+import { ConfirmModal } from '../../../components/ui/ConfirmModal'
+import { AuthContext } from '../../../store/context/authContext'
 
 interface History {
 	date: Date
@@ -33,10 +40,12 @@ function AwardElementSeparator() {
 }
 
 export function PremiosDisponiveisScreen() {
+	const authCtx = useContext(AuthContext)
 	const [action, setAction] = useState<0 | 1>(0)
-	const [awardCategory, setAwardCategory] = useState('Brinquedo')
 	const [awardHistory, setAwardHistory] = useState<AwardHistory[] | null>(null)
 	const [awards, setAwards] = useState<Award[] | null>(null)
+	const [confirmModal, setConfirmModal] = useState<AwardHistory | null>(null)
+	const [isLoading, setIsLoading] = useState(false)
 
 	const student = useContext(StudentContext).getStudentData()
 
@@ -52,6 +61,22 @@ export function PremiosDisponiveisScreen() {
 				setAwards([])
 			})
 	}, [])
+
+	function handleConfirm() {
+		if (!isLoading && confirmModal) {
+			setIsLoading(true)
+			confirmarResgate(authCtx.token || '', confirmModal.id)
+				.then(() => {
+					setIsLoading(false)
+					setConfirmModal(null)
+					console.log('sucesso')
+				})
+				.catch(() => {
+					setIsLoading(false)
+					console.log('error')
+				})
+		}
+	}
 
 	function PremiosDisponiveisHeader() {
 		return (
@@ -77,26 +102,6 @@ export function PremiosDisponiveisScreen() {
 			</View>
 		)
 	}
-
-	// function CategoryPicker() {
-	// 	return (
-	// 		<View style={{ width: '100%', marginBottom: 20 }}>
-	// 			<View style={{ alignItems: 'center' }}>
-	// 				<View style={{ borderRadius: 20, overflow: 'hidden', width: 250 }}>
-	// 					<Picker
-	// 						onValueChange={text => setAwardCategory(text)}
-	// 						style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
-	// 						selectedValue={'Brinquedo'}
-	// 						enabled
-	// 					>
-	// 						<Picker.Item label='Brinquedos' value='Brinquedo' />
-	// 						<Picker.Item label='Eletrônicos' value='Eletrônico' />
-	// 					</Picker>
-	// 				</View>
-	// 			</View>
-	// 		</View>
-	// 	)
-	// }
 
 	function changeActionScope(id: 0 | 1) {
 		if (action !== id) setAction(id)
@@ -128,10 +133,22 @@ export function PremiosDisponiveisScreen() {
 						alwaysBounceVertical={false}
 						data={awardHistory}
 						renderItem={itemData => (
-							<AwardHistoryElement last={itemData.index + 1 >= awards.length} itemData={itemData} />
+							<AwardHistoryElement
+								last={itemData.index + 1 >= awards.length}
+								itemData={itemData}
+								onPress={e => e.status === 0 && setConfirmModal(e)}
+							/>
 						)}
 					/>
 				)}
+				<ConfirmModal
+					isLoading={isLoading}
+					visible={confirmModal != null}
+					onCancel={() => setConfirmModal(null)}
+					onConfirm={handleConfirm}
+					title='Confirmar Resgate?'
+					text='Deseja confirmar o resgate desse prêmio?'
+				/>
 			</SafeAreaView>
 		)
 	}
