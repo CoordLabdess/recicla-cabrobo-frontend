@@ -136,7 +136,7 @@ function ImpactElement(props: {
 					{unit}
 				</Text>
 			</View>
-			<Text>{description}</Text>
+			{/* <Text>{description}</Text> */}
 		</View>
 	)
 }

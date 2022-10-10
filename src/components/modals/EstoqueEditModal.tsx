@@ -40,7 +40,7 @@ export function EstoqueEditModal(props: PrivacPolicyModalProps) {
 										<Ionicons name='close' size={30} />
 									</Pressable>
 								</View>
-								<Text style={styles.title}>Insira o Estoque</Text>
+								<Text style={styles.title}>Adicionar Estoque</Text>
 								<View
 									style={{
 										borderRadius: 200,

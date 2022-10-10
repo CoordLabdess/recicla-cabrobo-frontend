@@ -114,6 +114,19 @@ export function CriarAtividadeScreen() {
 					/>
 				</View>
 				<View style={styles.elementContainer}>
+					<Text style={styles.label}>Descrição</Text>
+
+					<TextInput
+						numberOfLines={3}
+						editable
+						onChangeText={text => {
+							setAtividade({ ...atividade, descricao: text })
+						}}
+						style={[styles.textInput, { textAlignVertical: 'top' }]}
+						value={atividade.descricao}
+					/>
+				</View>
+				<View style={styles.elementContainer}>
 					<Text style={styles.label}>Série</Text>
 					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
 						<Picker

@@ -74,7 +74,7 @@ export function SchoolRootBottomTabNavigator() {
 				listeners={({ navigation }) => ({
 					tabPress: event => {
 						event.preventDefault()
-						navigation.navigate('RootTurboTasks', { screen: 'Inicio' })
+						navigation.navigate('RootInicio', { screen: 'Inicio' })
 					},
 				})}
 			/>

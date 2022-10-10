@@ -23,7 +23,7 @@ export function RankElement(props: RankElementProps) {
 							size={70}
 						/>
 					)}
-					<View>
+					<View style={{ flex: 1 }}>
 						<Text>{props.name}</Text>
 						<View style={{ flexDirection: 'row' }}>
 							<Text>{props.index}º Lugar</Text>

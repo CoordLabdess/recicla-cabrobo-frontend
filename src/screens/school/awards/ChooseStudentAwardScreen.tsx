@@ -80,7 +80,7 @@ export function ChooseStudentAwardScreen(props: ChooseStudentAwardScreenProps) {
 				<SimplePageHeader title='Informar Aluno' textStyle={styles.title} />
 
 				<Text style={styles.description}>
-					Associe uma nova entrega ao perfil de um aluno. Insira as informações solicitadas em cada
+					Inicie o resgate de um prêmio para um aluno. Insira as informações solicitadas em cada
 					campo do formulário.
 				</Text>
 
@@ -100,7 +100,7 @@ export function ChooseStudentAwardScreen(props: ChooseStudentAwardScreenProps) {
 				<PrimaryButton
 					isLoading={isLoading}
 					textStyle={{ fontSize: 20 }}
-					title='Realizar Nova Entrega'
+					title='Resgatar Prêmio'
 					onPress={sendStudentNumber}
 				/>
 			</ScrollView>

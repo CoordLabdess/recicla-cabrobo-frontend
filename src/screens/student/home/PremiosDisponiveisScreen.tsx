@@ -5,7 +5,7 @@ import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { useState, useEffect } from 'react'
 import { COLORS } from '../../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
-import { useLinkProps } from '@react-navigation/native'
+import { useIsFocused, useLinkProps, useNavigation } from '@react-navigation/native'
 import { Picker } from '@react-native-picker/picker'
 import { AwardListItem } from '../../../components/awards/AwardListItem'
 import { History } from '../../../components/home/History'
@@ -40,6 +40,8 @@ function AwardElementSeparator() {
 }
 
 export function PremiosDisponiveisScreen() {
+	const navigation = useNavigation()
+	const isFocused = useIsFocused()
 	const authCtx = useContext(AuthContext)
 	const [action, setAction] = useState<0 | 1>(0)
 	const [awardHistory, setAwardHistory] = useState<AwardHistory[] | null>(null)
@@ -51,7 +53,7 @@ export function PremiosDisponiveisScreen() {
 
 	useLayoutEffect(() => {
 		getStudentAwardHistory(student.token)
-			.then(res => setAwardHistory(res))
+			.then(res => setAwardHistory(res.sort((a, b) => a.status - b.status)))
 			.catch(error => {
 				setAwardHistory([])
 			})
@@ -60,7 +62,7 @@ export function PremiosDisponiveisScreen() {
 			.catch(error => {
 				setAwards([])
 			})
-	}, [])
+	}, [isFocused])
 
 	function handleConfirm() {
 		if (!isLoading && confirmModal) {
@@ -69,11 +71,10 @@ export function PremiosDisponiveisScreen() {
 				.then(() => {
 					setIsLoading(false)
 					setConfirmModal(null)
-					console.log('sucesso')
+					navigation.navigate('PremiosDisponiveis' as never)
 				})
 				.catch(() => {
 					setIsLoading(false)
-					console.log('error')
 				})
 		}
 	}
@@ -114,6 +115,10 @@ export function PremiosDisponiveisScreen() {
 			<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 				{action === 0 ? (
 					<FlatList
+						contentContainerStyle={{
+							flexGrow: 1,
+							paddingBottom: 20,
+						}}
 						ItemSeparatorComponent={AwardElementSeparator}
 						showsVerticalScrollIndicator={false}
 						alwaysBounceVertical={false}

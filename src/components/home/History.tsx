@@ -25,7 +25,12 @@ export function History(props: { itemData: ListRenderItemInfo<H>; last: boolean 
 					)}
 				</View>
 				<View style={{ flex: 1 }}>
-					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+					<View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+						}}
+					>
 						<Text style={styles.historyDateText}>
 							{formatDate(props.itemData.item.dataEntrega)}
 						</Text>
@@ -54,7 +59,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 5,
 	},
 	historyElement: {
-		width: '80%',
+		width: '85%',
 		alignItems: 'center',
 		flexDirection: 'row',
 	},

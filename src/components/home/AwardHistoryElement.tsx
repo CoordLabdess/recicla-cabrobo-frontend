@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, ListRenderItemInfo, YellowBox, Pressable } from
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { Award, AwardHistory } from '../../utils/student'
+import { formatDate } from '../../utils/formatData'
 
 export function AwardHistoryElement(props: {
 	itemData: ListRenderItemInfo<AwardHistory>
@@ -22,32 +23,47 @@ export function AwardHistoryElement(props: {
 							borderRadius: 100,
 							padding: 4,
 							borderWidth: 4,
-							borderColor: COLORS.primary500,
+							borderColor: props.itemData.item.status === 0 ? '#FFB727' : COLORS.primary500,
 						}}
 					/>
 					{!props.last ? (
-						<View style={{ backgroundColor: COLORS.primary500, width: 3, flex: 1, marginTop: 5 }} />
+						<View
+							style={{
+								backgroundColor: props.itemData.item.status === 0 ? '#FFB727' : COLORS.primary500,
+								width: 3,
+								flex: 1,
+								marginTop: 5,
+							}}
+						/>
 					) : (
 						<View style={{ width: 3, flex: 1 }} />
 					)}
 				</View>
-				<View>
-					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-						<Text style={{ color: '#7C7C7C', fontSize: 12, fontWeight: '600', marginTop: 6 }}>
+				<View style={{ flex: 1 }}>
+					<View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+						}}
+					>
+						<Text style={styles.historyDateText}>
+							{formatDate(props.itemData.item.created_at || '')}
+						</Text>
+						<Text style={{ color: '#7C7C7C', fontSize: 10, marginTop: 6 }}>
 							Clique Para Visualizar
 						</Text>
 					</View>
 					<View>
-						<Text
-							style={styles.historyDescriptionText}
-						>{`Você resgatou ${props.itemData.item.premio.nome}`}</Text>
+						<Text style={styles.historyDescriptionText}>{`Você ${
+							props.itemData.item.status === 1 ? 'resgatou' : 'solicitou'
+						} ${props.itemData.item.premio.nome}`}</Text>
 						<Text style={styles.historyPointsText}>
 							-{Number(props.itemData.item.premio.preco).toFixed(1)}pts
 						</Text>
 						<Text
 							style={[
 								styles.historyPointsText,
-								{ color: props.itemData.item.status === 1 ? 'green' : '#7C7C7C' },
+								{ color: props.itemData.item.status === 1 ? 'green' : '#FFB727' },
 							]}
 						>
 							{props.itemData.item.status === 1 ? 'Confirmado' : 'Não Confirmado'}

@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
+import { COLORS } from '../../../constants/colors'
 import { materials } from '../../../data/materialTable'
 
 export function PontuacaoPorMaterialScreen() {
@@ -32,8 +33,9 @@ export function PontuacaoPorMaterialScreen() {
 							style={{
 								margin: 10,
 								borderRadius: 20,
-								borderWidth: 2,
-								borderColor:
+								borderWidth: 1,
+								borderColor: COLORS.secondary400,
+								backgroundColor:
 									itemData.item.category === 'Plastic'
 										? '#D63636'
 										: itemData.item.category === 'Metal'
@@ -51,12 +53,13 @@ export function PontuacaoPorMaterialScreen() {
 								style={{
 									fontWeight: '600',
 									fontSize: 18,
-									color:
-										itemData.item.category === 'Plastic'
-											? '#D63636'
-											: itemData.item.category === 'Metal'
-											? '#F0C93E'
-											: '#2367CC',
+									// color:
+									// 	itemData.item.category === 'Plastic'
+									// 		? '#D63636'
+									// 		: itemData.item.category === 'Metal'
+									// 		? '#F0C93E'
+									// 		: '#2367CC',
+									color: '#fff',
 								}}
 							>
 								{itemData.item.title}
@@ -65,12 +68,13 @@ export function PontuacaoPorMaterialScreen() {
 								style={{
 									fontWeight: '600',
 									fontSize: 18,
-									color:
-										itemData.item.category === 'Plastic'
-											? '#D63636'
-											: itemData.item.category === 'Metal'
-											? '#F0C93E'
-											: '#2367CC',
+									// color:
+									// 	itemData.item.category === 'Plastic'
+									// 		? '#D63636'
+									// 		: itemData.item.category === 'Metal'
+									// 		? '#F0C93E'
+									// 		: '#2367CC',
+									color: '#fff',
 								}}
 							>
 								{itemData.item.pointsPerKg}Pts/kg

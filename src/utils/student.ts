@@ -97,7 +97,7 @@ export interface AwardHistory {
 	id: string
 	status: number
 	premio: Award
-	dataEntrega?: string
+	created_at?: string
 }
 
 export interface Award {
