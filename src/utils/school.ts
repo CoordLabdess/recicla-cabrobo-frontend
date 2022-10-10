@@ -296,6 +296,7 @@ export async function criarAtividade(token: string, data: CriarAtividadeDataInpu
 			return
 		})
 		.catch(err => {
+			console.log(err)
 			throw new Error(err)
 		})
 }

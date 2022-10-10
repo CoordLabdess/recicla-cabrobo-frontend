@@ -25,6 +25,7 @@ import {
 } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
 import { AtividadeDataOutput, CriarAtividadeDataInput } from '../../../types/atividades.type'
+import { NotifyModal } from '../../../components/modals/NotifyModal'
 
 const atividadeEmBranco: CriarAtividadeDataInput = {
 	nomeAtividade: '',
@@ -45,6 +46,8 @@ export function CriarAtividadeScreen() {
 	const [date, setDate] = useState(new Date())
 	const [show, setShow] = useState(false)
 	const [atividade, setAtividade] = useState<CriarAtividadeDataInput>(atividadeEmBranco)
+	const [success, setSuccess] = useState(false)
+	const [failure, setFailure] = useState(false)
 
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -55,12 +58,23 @@ export function CriarAtividadeScreen() {
 	}
 
 	function formatDate(d: Date) {
+		console.log(d.getDate())
 		return (
-			d.getDay().toString().padStart(2, '0') +
+			d.getDate().toString().padStart(2, '0') +
 			'-' +
 			(d.getMonth() + 1).toString().padStart(2, '0') +
 			'-' +
 			d.getFullYear().toString()
+		)
+	}
+
+	function formatDate2(d: Date) {
+		return (
+			d.getFullYear().toString() +
+			'-' +
+			(d.getMonth() + 1).toString().padStart(2, '0') +
+			'-' +
+			d.getDate().toString().padStart(2, '0')
 		)
 	}
 
@@ -72,15 +86,14 @@ export function CriarAtividadeScreen() {
 				descricao: atividade.descricao,
 				serie: atividade.serie,
 				pontos: atividade.pontos,
-				prazoFinal: formatDate(date),
+				prazoFinal: formatDate2(date) + 11,
 			})
 				.then(res => {
-					console.log(res)
 					setIsLoading(false)
-					navigation.navigate('Atividades' as never)
+					setSuccess(true)
 				})
 				.catch(err => {
-					console.log(err)
+					setFailure(true)
 					setIsLoading(false)
 				})
 		}
@@ -89,7 +102,6 @@ export function CriarAtividadeScreen() {
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<ScrollView
-				keyboardShouldPersistTaps='always'
 				contentContainerStyle={{
 					flexGrow: 1,
 					paddingBottom: 20,
@@ -178,6 +190,27 @@ export function CriarAtividadeScreen() {
 				<View style={{ marginTop: 20 }}>
 					<PrimaryButton title={'Criar'} isLoading={isLoading} onPress={createTask} />
 				</View>
+				<NotifyModal
+					visible={success}
+					buttonText='Continuar'
+					onAccept={() => {
+						setSuccess(false)
+						navigation.navigate('Atividades' as never)
+					}}
+					buttonColor={COLORS.primary500}
+					title='Sucesso!'
+					text='Atividade criada com sucesso!'
+				/>
+				<NotifyModal
+					visible={failure}
+					buttonText='Continuar'
+					onAccept={() => {
+						setFailure(false)
+					}}
+					title='Erro!'
+					buttonColor='#8E2941'
+					text='Ocorreu um erro durante o cadastro da atividade! Tente novamente!'
+				/>
 			</ScrollView>
 		</SafeAreaView>
 	)

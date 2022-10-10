@@ -29,6 +29,7 @@ import {
 	AtualizarAtividadeDataInput,
 	CriarAtividadeDataInput,
 } from '../../../types/atividades.type'
+import { NotifyModal } from '../../../components/modals/NotifyModal'
 
 interface EditarAtividadeScreen {
 	route: RouteProp<{ params: { atividade: AtividadeDataOutput } }>
@@ -51,6 +52,8 @@ export function EditarAtividadeScreen(props: EditarAtividadeScreen) {
 
 	const [isLoading1, setIsLoading1] = useState(false)
 	const [isLoading2, setIsLoading2] = useState(false)
+	const [success1, setSuccess1] = useState(false)
+	const [failure1, setFailure1] = useState(false)
 
 	function onChangeDate(event: DateTimePickerEvent, currentDate?: Date) {
 		const d = currentDate || date
@@ -81,10 +84,11 @@ export function EditarAtividadeScreen(props: EditarAtividadeScreen) {
 			})
 				.then(res => {
 					setIsLoading1(false)
-					navigation.navigate('Atividades' as never)
+					setSuccess1(true)
 				})
 				.catch(err => {
 					setIsLoading1(false)
+					setFailure1(true)
 				})
 		}
 	}
@@ -211,6 +215,27 @@ export function EditarAtividadeScreen(props: EditarAtividadeScreen) {
 						outterContainerStyle={{ width: 140 }}
 					/>
 				</View>
+				<NotifyModal
+					visible={success1}
+					buttonText='Continuar'
+					onAccept={() => {
+						setSuccess1(false)
+						navigation.navigate('Atividades' as never)
+					}}
+					buttonColor={COLORS.primary500}
+					title='Sucesso!'
+					text='Atividade editada com sucesso!'
+				/>
+				<NotifyModal
+					visible={failure1}
+					buttonText='Continuar'
+					onAccept={() => {
+						setFailure1(false)
+					}}
+					title='Erro!'
+					buttonColor='#8E2941'
+					text='Ocorreu um erro durante a edição da atividade! Tente novamente!'
+				/>
 			</ScrollView>
 		</SafeAreaView>
 	)
