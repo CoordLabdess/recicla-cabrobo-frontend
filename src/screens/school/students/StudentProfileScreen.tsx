@@ -14,6 +14,7 @@ import { deletarAluno, editarAluno, registerStudent } from '../../../utils/schoo
 import { AuthContext } from '../../../store/context/authContext'
 import { StudentData } from '../../../utils/student'
 import { ErrorMessage } from '../../../components/ui/ErrorMessage'
+import { NotifyModal } from '../../../components/modals/NotifyModal'
 
 interface StudentProfileScreenProps {
 	route: RouteProp<{ params: { mode: 'create' | 'edit'; student: StudentData } }, 'params'>
@@ -54,13 +55,10 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 	const [isLoading, setIsLoading] = useState(false)
 	const [creationError, setCreationError] = useState(false)
 
-	async function fakeFetching() {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				resolve('')
-			}, 1000)
-		})
-	}
+	const [success1, setSuccess1] = useState(false)
+	const [failure1, setFailure1] = useState(false)
+	const [success2, setSuccess2] = useState(false)
+	const [failure2, setFailure2] = useState(false)
 
 	function editStudent() {
 		if (!isLoading) {
@@ -180,7 +178,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 						>
 							<Picker.Item label='- Selecione o Sexo -' value='Nao Denifido' />
 							<Picker.Item label='Masculino' value='Masc' />
-							<Picker.Item label='Femino' value='Fem' />
+							<Picker.Item label='Feminino' value='Fem' />
 						</Picker>
 					</View>
 				</View>
@@ -268,6 +266,48 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				text='Confirmar inserção do aluno no sistema? Alunos cadastrados começam sem pontuação.'
 				onCancel={() => setConfirmModal('off')}
 				onConfirm={register}
+			/>
+			<NotifyModal
+				visible={success1}
+				buttonText='Continuar'
+				onAccept={() => {
+					setSuccess1(false)
+					navigation.navigate('Atividades' as never)
+				}}
+				buttonColor={COLORS.primary500}
+				title='Sucesso!'
+				text='Aluno criado com sucesso!'
+			/>
+			<NotifyModal
+				visible={failure1}
+				buttonText='Continuar'
+				onAccept={() => {
+					setFailure1(false)
+				}}
+				title='Erro!'
+				buttonColor='#8E2941'
+				text='Ocorreu um erro durante o cadastro do aluno! Tente novamente!'
+			/>
+			<NotifyModal
+				visible={success1}
+				buttonText='Continuar'
+				onAccept={() => {
+					setSuccess2(false)
+					navigation.navigate('Atividades' as never)
+				}}
+				buttonColor={COLORS.primary500}
+				title='Sucesso!'
+				text='Aluno editado com sucesso!'
+			/>
+			<NotifyModal
+				visible={failure1}
+				buttonText='Continuar'
+				onAccept={() => {
+					setFailure2(false)
+				}}
+				title='Erro!'
+				buttonColor='#8E2941'
+				text='Ocorreu um erro durante a edição do aluno! Tente novamente!'
 			/>
 		</SafeAreaView>
 	)

@@ -1,38 +1,62 @@
 import { Picker } from '@react-native-picker/picker'
-import { useState } from 'react'
+import { useContext, useLayoutEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, TextInput } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { PrimaryButton } from '../../../components/ui/Buttons'
 import { ConfirmModal } from '../../../components/ui/ConfirmModal'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
-import { TurboTask, turboTasks } from '../../../data/turboTasks'
-import { useNavigation } from '@react-navigation/native'
+import { RouteProp, useNavigation } from '@react-navigation/native'
+import { entregarAtividade, listarAtividades } from '../../../utils/school'
+import { AuthContext } from '../../../store/context/authContext'
+import { AtividadeDataOutput } from '../../../types/atividades.type'
+import { LoadingScreen } from '../../ui/LoadingScreen'
 
-export function InformTurboTaskScreen() {
+interface InformTurboTaskScreenProps {
+	route: RouteProp<
+		{
+			params: {
+				id: string
+				name: string
+				matricula: string
+			}
+		},
+		'params'
+	>
+}
+
+export function InformTurboTaskScreen(props: InformTurboTaskScreenProps) {
+	const authCtx = useContext(AuthContext)
 	const navigation = useNavigation()
-	const [selectedTurboTask, setSelectedTurboTask] = useState<TurboTask | null>(null)
+	const [selectedTurboTask, setSelectedTurboTask] = useState<AtividadeDataOutput | null>(null)
+	const [todasAtividades, setTodasAtividades] = useState<AtividadeDataOutput[] | null>(null)
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 
-	async function fakeFetching() {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				resolve('')
-			}, 1000)
-		})
+	async function sendChanges() {
+		if (!isLoading) {
+			setIsLoading(true)
+			await entregarAtividade(
+				authCtx.token || '',
+				String(selectedTurboTask?.id) || '',
+				props.route.params.matricula,
+			)
+				.then(response => {
+					setIsLoading(false)
+					navigation.navigate('Delivery0' as never)
+				})
+				.catch(error => {
+					setIsLoading(false)
+				})
+		}
 	}
 
-	async function sendChanges() {
-		setIsLoading(true)
-		await fakeFetching()
-			.then(response => {
-				setIsLoading(false)
-				navigation.navigate('Delivery0' as never)
-			})
-			.catch(error => {
-				setIsLoading(false)
-			})
+	useLayoutEffect(() => {
+		listarAtividades(authCtx.token || '').then(res => setTodasAtividades(res))
+	}, [])
+
+	if (!todasAtividades) {
+		return <LoadingScreen />
 	}
 
 	return (
@@ -54,18 +78,18 @@ export function InformTurboTaskScreen() {
 					<View style={{ overflow: 'hidden', borderRadius: 15, width: '100%' }}>
 						<Picker
 							onValueChange={text =>
-								setSelectedTurboTask(turboTasks.filter(task => task.id === Number(text))[0])
+								setSelectedTurboTask(todasAtividades.filter(task => task.id === text)[0])
 							}
 							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
 							selectedValue={selectedTurboTask?.id || ''}
 							enabled={true}
 						>
 							<Picker.Item label='- Selecione a atividade -' value='' />
-							{turboTasks.map(item => {
+							{todasAtividades.map(item => {
 								return (
 									<Picker.Item
 										key={item.id}
-										label={`${item.title} - ${item.class}`}
+										label={`${item.nome} - ${item.serie}`}
 										value={item.id}
 									/>
 								)
@@ -79,13 +103,13 @@ export function InformTurboTaskScreen() {
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Descrição da Atividade</Text>
 					<Text numberOfLines={10} style={[styles.field, { color: COLORS.secondary600 }]}>
-						{selectedTurboTask?.description}
+						{selectedTurboTask?.descricao}
 					</Text>
 				</View>
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Pontuação</Text>
 					<Text style={[styles.field, { color: COLORS.secondary600 }]}>
-						{selectedTurboTask?.points}
+						{selectedTurboTask?.pontos}
 					</Text>
 				</View>
 				<View style={{ marginTop: 50 }}>

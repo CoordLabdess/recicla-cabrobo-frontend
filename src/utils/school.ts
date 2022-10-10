@@ -464,3 +464,31 @@ export async function deletarAtividade(token: string, atividadeId: string) {
 			throw new Error(err)
 		})
 }
+
+export async function entregarAtividade(
+	token: string,
+	idAtividade: string,
+	matriculaAluno: string,
+) {
+	await axios
+		.post(
+			'https://recicla-cabrobo-backend.herokuapp.com/escola/entregaAtividade',
+			{
+				idAtividade: idAtividade,
+				matriculaAluno: matriculaAluno,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			console.log(res.data)
+			return
+		})
+		.catch(err => {
+			console.log(err)
+			throw new Error(err)
+		})
+}

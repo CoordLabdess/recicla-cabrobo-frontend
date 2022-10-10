@@ -21,12 +21,7 @@ import { LoadingScreen } from '../../ui/LoadingScreen'
 import { AwardHistoryElement } from '../../../components/home/AwardHistoryElement'
 import { ConfirmModal } from '../../../components/ui/ConfirmModal'
 import { AuthContext } from '../../../store/context/authContext'
-
-interface History {
-	date: Date
-	description: string
-	points: number
-}
+import { NotifyModal } from '../../../components/modals/NotifyModal'
 
 function AwardElement(props: { award: Award }) {
 	return (
@@ -48,6 +43,8 @@ export function PremiosDisponiveisScreen() {
 	const [awards, setAwards] = useState<Award[] | null>(null)
 	const [confirmModal, setConfirmModal] = useState<AwardHistory | null>(null)
 	const [isLoading, setIsLoading] = useState(false)
+	const [success, setSuccess] = useState(false)
+	const [failure, setFailure] = useState(false)
 
 	const student = useContext(StudentContext).getStudentData()
 
@@ -71,10 +68,11 @@ export function PremiosDisponiveisScreen() {
 				.then(() => {
 					setIsLoading(false)
 					setConfirmModal(null)
-					navigation.navigate('PremiosDisponiveis' as never)
+					setSuccess(true)
 				})
 				.catch(() => {
 					setIsLoading(false)
+					setFailure(true)
 				})
 		}
 	}
@@ -153,6 +151,27 @@ export function PremiosDisponiveisScreen() {
 					onConfirm={handleConfirm}
 					title='Confirmar Resgate?'
 					text='Deseja confirmar o resgate desse prêmio?'
+				/>
+				<NotifyModal
+					visible={success}
+					buttonText='Continuar'
+					onAccept={() => {
+						setSuccess(false)
+						navigation.navigate('PremiosDisponiveis' as never)
+					}}
+					buttonColor={COLORS.primary500}
+					title='Sucesso!'
+					text='Resgate confirmado com sucesso!'
+				/>
+				<NotifyModal
+					visible={failure}
+					buttonText='Continuar'
+					onAccept={() => {
+						setFailure(false)
+					}}
+					title='Erro!'
+					buttonColor='#8E2941'
+					text='Ocorreu o erro ao confirmar o resgate! Tente novamente!'
 				/>
 			</SafeAreaView>
 		)

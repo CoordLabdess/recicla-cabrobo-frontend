@@ -57,31 +57,25 @@ export function SearchStudentsScreen() {
 
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
+			<SimplePageHeader title='Pesquisar Aluno' />
+			<View style={styles.container}>
+				<TextInput
+					style={styles.searchInput}
+					placeholder='Pesquisar por nome ou Nº de matrícula'
+					returnKeyType='search'
+					onSubmitEditing={searchStudent}
+					value={search}
+					onChangeText={text => setSearch(text)}
+				/>
+				<PrimaryButton
+					title='Pesquisar'
+					isLoading={searching}
+					onPress={searchStudent}
+					textStyle={{ fontSize: 18 }}
+				/>
+			</View>
 			<FlatList
 				style={{ width: '100%' }}
-				ListHeaderComponent={() => {
-					return (
-						<>
-							<SimplePageHeader title='Pesquisar Aluno' />
-							<View style={styles.container}>
-								<TextInput
-									style={styles.searchInput}
-									placeholder='Pesquisar por nome ou Nº de matrícula'
-									returnKeyType='search'
-									onSubmitEditing={searchStudent}
-									value={search}
-									onChangeText={text => setSearch(text)}
-								/>
-								<PrimaryButton
-									title='Pesquisar'
-									isLoading={searching}
-									onPress={searchStudent}
-									textStyle={{ fontSize: 18 }}
-								/>
-							</View>
-						</>
-					)
-				}}
 				contentContainerStyle={{
 					flexGrow: 1,
 					justifyContent: 'flex-start',
