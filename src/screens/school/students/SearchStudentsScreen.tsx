@@ -15,7 +15,7 @@ function SearchHeader(props: { isLoading?: boolean; onSubmit: (text: string) => 
 	const [search, setSearch] = useState('')
 
 	return (
-		<View style={{ width: '100%' }}>
+		<View style={{ width: '100%', maxWidth: 500 }}>
 			<SimplePageHeader title='Pesquisar Aluno' />
 			<View style={styles.container}>
 				<TextInput
