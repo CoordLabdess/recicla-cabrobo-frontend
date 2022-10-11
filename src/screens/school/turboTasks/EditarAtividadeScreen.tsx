@@ -38,9 +38,16 @@ interface EditarAtividadeScreen {
 export function EditarAtividadeScreen(props: EditarAtividadeScreen) {
 	const authCtx = useContext(AuthContext)
 	const navigation = useNavigation()
-	const [date, setDate] = useState(new Date())
 	const [show, setShow] = useState(false)
 	const atvd = props.route.params.atividade
+	const [date, setDate] = useState(
+		new Date(
+			new Date(atvd.prazofinal).getFullYear(),
+			new Date(atvd.prazofinal).getMonth(),
+			new Date(atvd.prazofinal).getDate() + 1,
+		),
+	)
+
 	const [atividade, setAtividade] = useState<AtualizarAtividadeDataInput>({
 		idAtividade: atvd.id,
 		novoNome: atvd.nome,
@@ -59,6 +66,16 @@ export function EditarAtividadeScreen(props: EditarAtividadeScreen) {
 		const d = currentDate || date
 		setShow(false)
 		setDate(d)
+	}
+
+	function formatDate1(d: Date) {
+		return (
+			(d.getDate() + 1).toString().padStart(2, '0') +
+			'-' +
+			(d.getMonth() + 1).toString().padStart(2, '0') +
+			'-' +
+			d.getFullYear().toString()
+		)
 	}
 
 	function formatDate(d: Date) {
@@ -80,7 +97,7 @@ export function EditarAtividadeScreen(props: EditarAtividadeScreen) {
 				novaDescricao: atividade.novaDescricao,
 				novaPontuacao: atividade.novaPontuacao,
 				novaSerie: atividade.novaSerie,
-				novoPrazo: atividade.novoPrazo,
+				novoPrazo: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
 			})
 				.then(res => {
 					setIsLoading1(false)

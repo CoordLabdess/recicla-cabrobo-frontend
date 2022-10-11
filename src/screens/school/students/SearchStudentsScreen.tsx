@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 	searchInput: {
+		width: '90%',
+		maxWidth: 400,
 		backgroundColor: COLORS.secondary400,
 		fontSize: 16,
 		textAlign: 'center',

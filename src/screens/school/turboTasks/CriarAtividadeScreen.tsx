@@ -86,7 +86,7 @@ export function CriarAtividadeScreen() {
 				descricao: atividade.descricao,
 				serie: atividade.serie,
 				pontos: atividade.pontos,
-				prazoFinal: formatDate2(date) + 11,
+				prazoFinal: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
 			})
 				.then(res => {
 					setIsLoading(false)
