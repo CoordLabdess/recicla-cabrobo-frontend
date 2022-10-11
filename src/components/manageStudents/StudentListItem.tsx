@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 		borderRadius: 27,
 		backgroundColor: 'transparent',
 		shadowColor: '#000',
+		maxWidth: 500,
 		shadowOffset: {
 			width: 0,
 			height: 1,
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		paddingHorizontal: 9,
 		paddingVertical: 4,
-		width: 345,
 		minHeight: 100,
 		borderRadius: 27,
 		overflow: 'hidden',

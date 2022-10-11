@@ -11,23 +11,48 @@ import { getStudentsList } from '../../../utils/school'
 import { StudentData } from '../../../utils/student'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 
+function SearchHeader(props: { isLoading?: boolean; onSubmit: (text: string) => void }) {
+	const [search, setSearch] = useState('')
+
+	return (
+		<View style={{ width: '100%' }}>
+			<SimplePageHeader title='Pesquisar Aluno' />
+			<View style={styles.container}>
+				<TextInput
+					style={styles.searchInput}
+					placeholder='Nome ou Nº de matrícula'
+					returnKeyType='search'
+					onSubmitEditing={() => props.onSubmit(search)}
+					value={search}
+					onChangeText={text => setSearch(text)}
+				/>
+				<PrimaryButton
+					title='Pesquisar'
+					isLoading={props.isLoading}
+					onPress={() => props.onSubmit(search)}
+					textStyle={{ fontSize: 18 }}
+				/>
+			</View>
+		</View>
+	)
+}
+
 export function SearchStudentsScreen() {
 	const [filteredStudents, setFilteredStudents] = useState<StudentData[]>([])
 
-	const [search, setSearch] = useState('')
 	const [searching, setSearching] = useState(false)
 	const [allStudents, setAllStudents] = useState<StudentData[] | null>(null)
 	const authCtx = useContext(AuthContext)
 
-	function searchStudent() {
-		if (search.trim().length > 0 && allStudents) {
+	function searchStudent(text: string) {
+		if (text.trim().length > 0 && allStudents) {
 			setSearching(true)
-			if (/^\d+$/.test(search)) {
-				setFilteredStudents(allStudents.filter(student => String(student.matricula).match(search)))
+			if (/^\d+$/.test(text)) {
+				setFilteredStudents(allStudents.filter(student => String(student.matricula).match(text)))
 			} else {
 				setFilteredStudents(
 					allStudents.filter(student =>
-						search
+						text
 							.toLowerCase()
 							.trim()
 							.split(/\s+/)
@@ -51,37 +76,29 @@ export function SearchStudentsScreen() {
 		}
 	}, [])
 
+	function renderSearchHeader() {
+		return (
+			<>
+				<SearchHeader onSubmit={text => searchStudent(text)} isLoading={searching} />
+			</>
+		)
+	}
+
 	if (!allStudents) {
 		return <LoadingScreen />
 	}
 
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
-			<SimplePageHeader title='Pesquisar Aluno' />
-			<View style={styles.container}>
-				<TextInput
-					style={styles.searchInput}
-					placeholder='Pesquisar por nome ou Nº de matrícula'
-					returnKeyType='search'
-					onSubmitEditing={searchStudent}
-					value={search}
-					onChangeText={text => setSearch(text)}
-				/>
-				<PrimaryButton
-					title='Pesquisar'
-					isLoading={searching}
-					onPress={searchStudent}
-					textStyle={{ fontSize: 18 }}
-				/>
-			</View>
 			<FlatList
 				style={{ width: '100%' }}
+				ListHeaderComponent={renderSearchHeader}
 				contentContainerStyle={{
 					flexGrow: 1,
 					justifyContent: 'flex-start',
+					width: '100%',
 					paddingBottom: 20,
 					paddingHorizontal: '5%',
-					alignItems: 'center',
 				}}
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
@@ -106,7 +123,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 	searchInput: {
-		width: '90%',
+		width: '100%',
 		maxWidth: 400,
 		backgroundColor: COLORS.secondary400,
 		fontSize: 16,

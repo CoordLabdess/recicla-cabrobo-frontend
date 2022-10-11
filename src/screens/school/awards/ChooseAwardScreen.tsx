@@ -13,6 +13,7 @@ import { Award, getAwardList, StudentData } from '../../../utils/student'
 import { listarPremios, resgatarPremio } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
 import { LoadingScreen } from '../../ui/LoadingScreen'
+import { NotifyModal } from '../../../components/modals/NotifyModal'
 
 interface ChooseAwardScreenProps {
 	route: RouteProp<{ params: { student: StudentData; mode: 'get' | 'manage' } }, 'params'>
@@ -27,6 +28,9 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 	const authCtx = useContext(AuthContext)
 	const [isLoading, setIsLoading] = useState(false)
 
+	const [success, setSuccess] = useState(false)
+	const [failure, setFailure] = useState(false)
+
 	async function fakeFetching() {
 		return new Promise((resolve, reject) => {
 			setTimeout(() => {
@@ -38,15 +42,15 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 	async function sendChanges(premioId: string) {
 		if (!isLoading) {
 			setIsLoading(true)
-			console.log(premioId)
 			resgatarPremio(authCtx.token || '', String(student.matricula), premioId)
 				.then(() => {
-					navigation.navigate('Award1' as never)
 					setIsLoading(false)
 					setConfirmModal(false)
+					setSuccess(true)
 				})
 				.catch(() => {
 					setConfirmModal(false)
+					setFailure(true)
 					setIsLoading(false)
 				})
 		}
@@ -117,6 +121,27 @@ export function ChooseAwardScreen(props: ChooseAwardScreenProps) {
 					student={props.route.params.student}
 				/>
 			)}
+			<NotifyModal
+				visible={success}
+				buttonText='Continuar'
+				onAccept={() => {
+					setSuccess(false)
+					navigation.navigate('Award1' as never)
+				}}
+				buttonColor={COLORS.primary500}
+				title='Sucesso!'
+				text='Prêmio resgatado com sucesso!'
+			/>
+			<NotifyModal
+				visible={failure}
+				buttonText='Continuar'
+				onAccept={() => {
+					setFailure(false)
+				}}
+				title='Erro!'
+				buttonColor='#8E2941'
+				text='Ocorreu um erro durante o resgate do prêmio! Tente novamente!'
+			/>
 		</SafeAreaView>
 	)
 }

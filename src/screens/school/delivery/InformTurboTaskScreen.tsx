@@ -11,6 +11,7 @@ import { entregarAtividade, listarAtividades } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
 import { AtividadeDataOutput } from '../../../types/atividades.type'
 import { LoadingScreen } from '../../ui/LoadingScreen'
+import { NotifyModal } from '../../../components/modals/NotifyModal'
 
 interface InformTurboTaskScreenProps {
 	route: RouteProp<
@@ -32,6 +33,8 @@ export function InformTurboTaskScreen(props: InformTurboTaskScreenProps) {
 	const [todasAtividades, setTodasAtividades] = useState<AtividadeDataOutput[] | null>(null)
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
+	const [success, setSuccess] = useState(false)
+	const [failure, setFailure] = useState(false)
 
 	async function sendChanges() {
 		if (!isLoading) {
@@ -43,10 +46,13 @@ export function InformTurboTaskScreen(props: InformTurboTaskScreenProps) {
 			)
 				.then(response => {
 					setIsLoading(false)
-					navigation.navigate('Delivery0' as never)
+					setIsModalVisible(false)
+					setSuccess(true)
 				})
 				.catch(error => {
 					setIsLoading(false)
+					setIsModalVisible(false)
+					setFailure(true)
 				})
 		}
 	}
@@ -127,6 +133,27 @@ export function InformTurboTaskScreen(props: InformTurboTaskScreenProps) {
 				onCancel={() => setIsModalVisible(false)}
 				onConfirm={sendChanges}
 				text='A atividade será registrada no histórico do aluno como entregue e o mesmo receberá a pontuação atribuída.'
+			/>
+			<NotifyModal
+				visible={success}
+				buttonText='Continuar'
+				onAccept={() => {
+					setSuccess(false)
+					navigation.navigate('Delivery0' as never)
+				}}
+				buttonColor={COLORS.primary500}
+				title='Sucesso!'
+				text='Entrega de atividade realizada com sucesso!'
+			/>
+			<NotifyModal
+				visible={failure}
+				buttonText='Continuar'
+				onAccept={() => {
+					setFailure(false)
+				}}
+				title='Erro!'
+				buttonColor='#8E2941'
+				text='Ocorreu um erro durante a entrega da atividade! Tente novamente!'
 			/>
 		</SafeAreaView>
 	)

@@ -44,7 +44,7 @@ export function ConfirmAwardModal(props: ConfirmAwardModalProps) {
 								<Text style={styles.textDetail}>{props.award?.nome}</Text>
 							</View>
 							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-								<Text style={styles.textDetailTitle}>Prêmio: </Text>
+								<Text style={styles.textDetailTitle}>Descricão: </Text>
 								<Text style={styles.textDetail}>{props.award?.especificacao}</Text>
 							</View>
 							<View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>

@@ -73,6 +73,7 @@ export function ChooseStudentAwardScreen(props: ChooseStudentAwardScreenProps) {
 					justifyContent: 'flex-start',
 					paddingHorizontal: '5%',
 					alignItems: 'center',
+					paddingBottom: 20,
 				}}
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}

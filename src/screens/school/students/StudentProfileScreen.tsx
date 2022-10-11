@@ -53,47 +53,13 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 	const authCtx = useContext(AuthContext)
 	const [confirmModal, setConfirmModal] = useState<'off' | 'save' | 'exclude' | 'create'>('off')
 	const [isLoading, setIsLoading] = useState(false)
-	const [creationError, setCreationError] = useState(false)
 
 	const [success1, setSuccess1] = useState(false)
 	const [failure1, setFailure1] = useState(false)
 	const [success2, setSuccess2] = useState(false)
 	const [failure2, setFailure2] = useState(false)
-
-	function editStudent() {
-		if (!isLoading) {
-			setIsLoading(true)
-			editarAluno(authCtx.token || '', {
-				novoNome: name,
-				matriculaAluno: String(student.matricula),
-				novaIdade: Number(idade),
-				novaSerie: serie,
-				novoSexo: sexo,
-			})
-				.then(res => {
-					setIsLoading(false)
-					navigation.navigate('ManageStudents' as never)
-				})
-				.catch(err => {
-					console.log('aaa')
-					setIsLoading(false)
-				})
-		}
-	}
-
-	function deleteStudent() {
-		if (!isLoading) {
-			setIsLoading(true)
-			deletarAluno(authCtx.token || '', String(student.matricula))
-				.then(res => {
-					setIsLoading(false)
-					navigation.navigate('ManageStudents' as never)
-				})
-				.catch(err => {
-					setIsLoading(false)
-				})
-		}
-	}
+	const [success3, setSuccess3] = useState(false)
+	const [failure3, setFailure3] = useState(false)
 
 	function register() {
 		if (!isLoading && authCtx.token) {
@@ -106,15 +72,54 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				serie: serie,
 			})
 				.then(() => {
-					navigation.navigate('ManageStudents' as never)
 					setConfirmModal('off')
 					setIsLoading(false)
-					setCreationError(false)
+					setSuccess1(true)
 				})
 				.catch(err => {
 					setConfirmModal('off')
 					setIsLoading(false)
-					setCreationError(true)
+					setFailure1(true)
+				})
+		}
+	}
+
+	function editStudent() {
+		if (!isLoading) {
+			setIsLoading(true)
+			editarAluno(authCtx.token || '', {
+				novoNome: name,
+				matriculaAluno: String(student.matricula),
+				novaIdade: Number(idade),
+				novaSerie: serie,
+				novoSexo: sexo,
+			})
+				.then(res => {
+					setConfirmModal('off')
+					setIsLoading(false)
+					setSuccess2(true)
+				})
+				.catch(err => {
+					setConfirmModal('off')
+					setIsLoading(false)
+					setFailure2(true)
+				})
+		}
+	}
+
+	function deleteStudent() {
+		if (!isLoading) {
+			setIsLoading(true)
+			deletarAluno(authCtx.token || '', String(student.matricula))
+				.then(res => {
+					setConfirmModal('off')
+					setIsLoading(false)
+					setSuccess3(true)
+				})
+				.catch(err => {
+					setConfirmModal('off')
+					setIsLoading(false)
+					setFailure3(true)
 				})
 		}
 	}
@@ -212,37 +217,43 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 						secureTextEntry={!editable}
 					/>
 				</View>
-			</ScrollView>
-			<View style={{ width: '100%', alignItems: 'center', marginTop: 5 }}>
-				<ErrorMessage isActive={creationError}>Não foi possível cadastrar o aluno!</ErrorMessage>
-			</View>
+				{/* <View style={{ width: '100%', alignItems: 'center', marginTop: 5 }}>
+					<ErrorMessage isActive={creationError}>Não foi possível cadastrar o aluno!</ErrorMessage>
+				</View> */}
 
-			{props.route.params.mode === 'create' ? (
-				<View style={{ alignItems: 'center', paddingTop: 15, paddingBottom: 20 }}>
-					<PrimaryButton title='Cadastrar' onPress={() => setConfirmModal('create')} />
-				</View>
-			) : !editable ? (
-				<View style={{ alignItems: 'center', paddingTop: 15, paddingBottom: 20 }}>
-					<PrimaryButton title='Editar Informações' onPress={() => setEditable(true)} />
-				</View>
-			) : (
-				<View
-					style={{
-						alignItems: 'center',
-						flexDirection: 'row',
-						justifyContent: 'space-around',
-						paddingTop: 15,
-						paddingBottom: 20,
-					}}
-				>
-					<PrimaryButton title='Salvar' onPress={() => setConfirmModal('save')} />
-					<PrimaryButton
-						title='Excluir'
-						innerContainerStyle={{ backgroundColor: '#8E2941' }}
-						onPress={() => setConfirmModal('exclude')}
-					/>
-				</View>
-			)}
+				{props.route.params.mode === 'create' ? (
+					<View style={{ alignItems: 'center', paddingTop: 15, paddingBottom: 20 }}>
+						<PrimaryButton title='Cadastrar' onPress={() => setConfirmModal('create')} />
+					</View>
+				) : !editable ? (
+					<View style={{ alignItems: 'center', paddingTop: 15, paddingBottom: 20 }}>
+						<PrimaryButton title='Editar Informações' onPress={() => setEditable(true)} />
+					</View>
+				) : (
+					<View
+						style={{
+							alignItems: 'center',
+							flexDirection: 'row',
+							justifyContent: 'space-around',
+							paddingTop: 15,
+							paddingBottom: 20,
+						}}
+					>
+						<PrimaryButton
+							title='Salvar'
+							onPress={() => setConfirmModal('save')}
+							marginRight={10}
+						/>
+						<PrimaryButton
+							title='Excluir'
+							innerContainerStyle={{ backgroundColor: '#8E2941' }}
+							onPress={() => setConfirmModal('exclude')}
+							marginLeft={10}
+						/>
+					</View>
+				)}
+			</ScrollView>
+
 			<ConfirmModal
 				visible={confirmModal === 'save'}
 				title='Salvar alterações?'
@@ -272,11 +283,11 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				buttonText='Continuar'
 				onAccept={() => {
 					setSuccess1(false)
-					navigation.navigate('Atividades' as never)
+					navigation.navigate('ManageStudents' as never)
 				}}
 				buttonColor={COLORS.primary500}
 				title='Sucesso!'
-				text='Aluno criado com sucesso!'
+				text='Aluno cadastrado com sucesso!'
 			/>
 			<NotifyModal
 				visible={failure1}
@@ -289,18 +300,18 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				text='Ocorreu um erro durante o cadastro do aluno! Tente novamente!'
 			/>
 			<NotifyModal
-				visible={success1}
+				visible={success2}
 				buttonText='Continuar'
 				onAccept={() => {
 					setSuccess2(false)
-					navigation.navigate('Atividades' as never)
+					navigation.navigate('ManageStudents' as never)
 				}}
 				buttonColor={COLORS.primary500}
 				title='Sucesso!'
 				text='Aluno editado com sucesso!'
 			/>
 			<NotifyModal
-				visible={failure1}
+				visible={failure2}
 				buttonText='Continuar'
 				onAccept={() => {
 					setFailure2(false)
@@ -308,6 +319,27 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				title='Erro!'
 				buttonColor='#8E2941'
 				text='Ocorreu um erro durante a edição do aluno! Tente novamente!'
+			/>
+			<NotifyModal
+				visible={success3}
+				buttonText='Continuar'
+				onAccept={() => {
+					setSuccess3(false)
+					navigation.navigate('ManageStudents' as never)
+				}}
+				buttonColor={COLORS.primary500}
+				title='Sucesso!'
+				text='Aluno excluído com sucesso!'
+			/>
+			<NotifyModal
+				visible={failure3}
+				buttonText='Continuar'
+				onAccept={() => {
+					setFailure3(false)
+				}}
+				title='Erro!'
+				buttonColor='#8E2941'
+				text='Ocorreu um erro durante a exclusão do aluno! Tente novamente!'
 			/>
 		</SafeAreaView>
 	)
