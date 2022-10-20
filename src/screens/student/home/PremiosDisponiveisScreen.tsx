@@ -135,13 +135,15 @@ export function PremiosDisponiveisScreen() {
 						showsVerticalScrollIndicator={false}
 						alwaysBounceVertical={false}
 						data={awardHistory}
-						renderItem={itemData => (
-							<AwardHistoryElement
-								last={itemData.index + 1 >= awards.length}
-								itemData={itemData}
-								onPress={e => e.status === 0 && setConfirmModal(e)}
-							/>
-						)}
+						renderItem={itemData => {
+							return (
+								<AwardHistoryElement
+									last={itemData.index + 1 >= awardHistory.length}
+									itemData={itemData}
+									onPress={e => e.status === 0 && setConfirmModal(e)}
+								/>
+							)
+						}}
 					/>
 				)}
 				<ConfirmModal
