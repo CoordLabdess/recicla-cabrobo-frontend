@@ -65,12 +65,25 @@ export function EstoqueEditModal(props: PrivacPolicyModalProps) {
 								style={{ fontSize: 30, marginBottom: 20, width: 100, textAlign: 'center' }}
 								placeholder='0'
 							/>
-							<PrimaryButton
-								isLoading={props.isLoading}
-								title='Salvar'
-								onPress={() => props.onSave(Number(ammount))}
-								outterContainerStyle={{ width: 160 }}
-							/>
+							<View style={{ flexDirection: 'row' }}>
+								<PrimaryButton
+									isLoading={props.isLoading}
+									textStyle={{ fontSize: 18 }}
+									title='Adicionar'
+									onPress={() => props.onSave(Number(ammount))}
+									outterContainerStyle={{ width: 140 }}
+									marginRight={5}
+								/>
+								<PrimaryButton
+									isLoading={props.isLoading}
+									textStyle={{ fontSize: 18 }}
+									title='Remover'
+									innerContainerStyle={{ backgroundColor: COLORS.error }}
+									onPress={() => props.onSave(Number(-ammount))}
+									outterContainerStyle={{ width: 140 }}
+									marginLeft={5}
+								/>
+							</View>
 						</ScrollView>
 					</View>
 				</View>

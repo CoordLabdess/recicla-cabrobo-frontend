@@ -6,4 +6,5 @@ export const COLORS = {
 	secondary500: '#7C7C7C',
 	secondary600: '#646464',
 	red500: '#D63636',
+	error: '#8E2941',
 }
