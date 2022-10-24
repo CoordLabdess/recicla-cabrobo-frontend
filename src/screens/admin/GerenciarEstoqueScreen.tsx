@@ -1,18 +1,22 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useLayoutEffect, useContext, useState } from 'react'
-import { ScrollView, View, Text, StyleSheet, Pressable, FlatList } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, Pressable, FlatList } from 'react-native'
+import { useContext, useLayoutEffect, useState } from 'react'
+import { SchoolContext } from '../../store/context/schoolContext'
+import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
-import { SimplePageHeader } from '../../components/ui/SimplePageHeader'
-import { atualizarEstoque, listarPremios } from '../../utils/school'
 import { AuthContext } from '../../store/context/authContext'
-import { LoadingScreen } from '../ui/LoadingScreen'
-import { Award } from '../../utils/student'
 import { EstoqueListItem } from '../../components/awards/EstoqueListItem'
-import { EstoqueEditModal } from '../../components/modals/EstoqueEditModal'
+import { Award } from '../../utils/student'
 import { useIsFocused } from '@react-navigation/native'
+import { atualizarEstoque, listarPremios } from '../../utils/school'
+import { LoadingScreen } from '../ui/LoadingScreen'
+import { EstoqueEditModal } from '../../components/modals/EstoqueEditModal'
+import { SimplePageHeader } from '../../components/ui/SimplePageHeader'
 
 export function GerenciarEstoqueScreen() {
 	const authCtx = useContext(AuthContext)
+	const adminCtx = useContext(SchoolContext)
+
 	const [premios, setPremios] = useState<Award[] | null>(null)
 	const [isLoading, setIsLoading] = useState(false)
 	const [editModal, setEditModal] = useState<Award | null>(null)
@@ -52,15 +56,12 @@ export function GerenciarEstoqueScreen() {
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
 				contentContainerStyle={{
-					flexGrow: 1,
 					justifyContent: 'flex-start',
-					paddingHorizontal: '5%',
-					alignItems: 'center',
 				}}
 				alwaysBounceVertical={false}
 				showsVerticalScrollIndicator={false}
 				ListHeaderComponent={() => {
-					return <SimplePageHeader title='Gerenciar Estoques' dontShowGoBack />
+					return <SimplePageHeader title='Gerenciar Estoque' />
 				}}
 				data={premios}
 				renderItem={i => {
@@ -93,5 +94,23 @@ const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 		backgroundColor: '#fff',
+	},
+	adminHeader: {
+		paddingHorizontal: '5%',
+		flexDirection: 'row',
+		width: '100%',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		paddingVertical: 10,
+		borderBottomWidth: 1,
+		borderColor: COLORS.secondary500,
+		marginBottom: 20,
+	},
+	charge: {
+		fontSize: 20,
+		fontWeight: '600',
+	},
+	name: {
+		fontSize: 20,
 	},
 })

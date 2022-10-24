@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { Platform } from 'react-native'
 import { useContext, useLayoutEffect } from 'react'
-import { InicioScreen } from '../../screens/admin/Inicio'
+import { InicioScreen } from '../../screens/admin/InicioScreen'
 import { AuthContext } from '../../store/context/authContext'
 import { SchoolContext } from '../../store/context/schoolContext'
 import { getSchoolDataFromToken, getSchoolPointsById } from '../../utils/school'
@@ -55,6 +55,22 @@ export function AdminRootBottomTabNavigator() {
 			<BottomTab.Screen
 				name='AdminInicio'
 				component={InicioScreen}
+				options={{
+					tabBarLabel: () => null,
+					tabBarIcon: tabInfo => {
+						return (
+							<Ionicons
+								name={tabInfo.focused ? 'home-sharp' : 'home-outline'}
+								size={40}
+								color={tabInfo.color}
+							/>
+						)
+					},
+				}}
+			/>
+			<BottomTab.Screen
+				name='AdminGerenciarEstoque'
+				component={GerenciarEstoqueScreen}
 				options={{
 					tabBarLabel: () => null,
 					tabBarIcon: tabInfo => {
