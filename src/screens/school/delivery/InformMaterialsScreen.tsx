@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import {
 	View,
 	Text,
@@ -20,7 +20,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { RouteProp, useNavigation } from '@react-navigation/native'
 import { DeliveredModal } from '../../../components/delivery/DeliveredModal'
 import { ConfirmDeliveryModal } from '../../../components/delivery/ConfirmDeliveryModal'
-import { criarEntrega } from '../../../utils/school'
+import { criarEntrega, listarMateriais } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
 
 interface InformMaterialScreenProps {
@@ -94,6 +94,10 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 			// 	})
 		}
 	}
+
+	useLayoutEffect(() => {
+		listarMateriais(authCtx.token || '').then(res => {})
+	}, [])
 
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>

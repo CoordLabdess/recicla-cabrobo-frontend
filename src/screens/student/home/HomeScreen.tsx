@@ -17,6 +17,7 @@ import {
 } from '../../../utils/student'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 import { StudentContext } from '../../../store/context/studentContext'
+import { NoHistoryMessage } from '../../../components/history/NoHistoryMessage'
 
 function Header() {
 	return <ProfileHeader />
@@ -70,7 +71,7 @@ export function HomeScreen() {
 					alwaysBounceVertical={false}
 					showsVerticalScrollIndicator={false}
 					ListHeaderComponent={Header}
-					ListEmptyComponent={() => <LoadingScreen />}
+					ListEmptyComponent={NoHistoryMessage}
 					data={history}
 					renderItem={itemData => (
 						<History last={itemData.index + 1 >= history.length} itemData={itemData} />

@@ -42,7 +42,7 @@ export function TurboTasksClassesScreen() {
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 			<FlatList
 				ListHeaderComponent={() => (
-					<SimplePageHeader textStyle={styles.title} dontShowGoBack title='Atividades Turbinadas' />
+					<SimplePageHeader textStyle={styles.title} title='Atividades Turbinadas' />
 				)}
 				contentContainerStyle={{
 					flexGrow: 1,

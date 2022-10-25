@@ -128,7 +128,7 @@ export function SchoolRootBottomTabNavigator() {
 				listeners={({ navigation }) => ({
 					tabPress: event => {
 						event.preventDefault()
-						navigation.navigate('RootTurboTasks', { screen: 'Atividades' })
+						navigation.navigate('RootTurboTasks', { screen: 'AtividadesInicio' })
 					},
 				})}
 				options={{

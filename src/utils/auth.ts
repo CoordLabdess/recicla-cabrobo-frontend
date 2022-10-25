@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { ErrorMessage } from '../components/ui/ErrorMessage'
 import { useContext } from 'react'
 import { AuthContext, AuthType } from '../store/context/authContext'
+import { CLIENT_URL } from './client'
 
 const API_KEY = 'AIzaSyDSY7X0UxEzruB1q3P34dbkYuuBR35Ag6w'
 
@@ -24,7 +25,7 @@ async function authenticate(
 ) {
 	const url =
 		mode === 'signInWithPassword'
-			? 'https://recicla-teste-back.herokuapp.com/login'
+			? `${CLIENT_URL}/login`
 			: `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`
 
 	const response = await axios.post(url, {
@@ -60,7 +61,7 @@ function getAuthType(data: any): { token: string; type: AuthType } {
 }
 
 export async function signIn(identificador: string, password: string) {
-	const url = 'https://recicla-cabrobo-backend.herokuapp.com/login'
+	const url = `${CLIENT_URL}/login`
 	const response = await axios.post(url, {
 		identificador,
 		password,

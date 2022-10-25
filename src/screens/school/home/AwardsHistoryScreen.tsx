@@ -7,6 +7,7 @@ import { AuthContext } from '../../../store/context/authContext'
 import { getSchoolAwardsWithdrawHistory, SchoolAwardsWithdraw } from '../../../utils/school'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 import { AwardWithDrawListItem } from '../../../components/awards/AwardWithdrawListItem'
+import { NoHistoryMessage } from '../../../components/history/NoHistoryMessage'
 
 export function AwardsHistoryScreen() {
 	const authCtx = useContext(AuthContext)
@@ -32,6 +33,7 @@ export function AwardsHistoryScreen() {
 				ListHeaderComponent={() => <SimplePageHeader title='Histórico de Resgates' />}
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{ width: '100%' }}
+				ListEmptyComponent={NoHistoryMessage}
 				alwaysBounceVertical={false}
 				data={awardsHistory}
 				style={styles.contentList}

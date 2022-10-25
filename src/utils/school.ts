@@ -5,6 +5,7 @@ import {
 	AtualizarAtividadeDataInput,
 	CriarAtividadeDataInput,
 } from '../types/atividades.type'
+import { CLIENT_URL } from './client'
 
 interface SchoolData {
 	id: string
@@ -16,7 +17,7 @@ interface SchoolData {
 
 export async function getSchoolDataFromToken(token: string): Promise<SchoolData> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/perfilEscola', {
+		.get(`${CLIENT_URL}/escola/perfilEscola`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -38,7 +39,7 @@ export interface SchoolRank {
 
 export async function getSchoolRank(token: string): Promise<SchoolRank[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/listarRankingEscolas', {
+		.get(`${CLIENT_URL}/escola/listarRankingEscolas`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -54,7 +55,7 @@ export async function getSchoolRank(token: string): Promise<SchoolRank[]> {
 
 export async function getSchoolPointsById(id: string, token: string): Promise<number> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/pontosEscola', {
+		.get(`${CLIENT_URL}/escola/pontosEscola`, {
 			params: {
 				idEscola: id,
 			},
@@ -95,7 +96,7 @@ export async function getSchoolAwardsWithdrawHistory(
 	token: string,
 ): Promise<SchoolAwardsWithdraw[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/resgatePremio/listar', {
+		.get(`${CLIENT_URL}resgatePremio/listar`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -114,14 +115,11 @@ export async function getStudentByMatricula(
 	token: string,
 ): Promise<StudentData> {
 	return await axios
-		.get(
-			`https://recicla-cabrobo-backend.herokuapp.com/escola/consultarAlunoMatricula/${matricula}`,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
+		.get(`${CLIENT_URL}/escola/consultarAlunoMatricula/${matricula}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
 			},
-		)
+		})
 		.then(res => {
 			const x = res.data as StudentData
 			return x
@@ -143,7 +141,7 @@ export interface Entrega {
 
 export async function getSchoolDeliveryHistory(token: string): Promise<Entrega[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/consultarEntregasCompletas', {
+		.get(`${CLIENT_URL}/escola/consultarEntregasCompletas`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -159,7 +157,7 @@ export async function getSchoolDeliveryHistory(token: string): Promise<Entrega[]
 
 export async function getStudentsList(token: string): Promise<StudentData[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/listarAlunos', {
+		.get(`${CLIENT_URL}/escola/listarAlunos`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -187,7 +185,7 @@ export async function registerStudent(
 ): Promise<StudentData[]> {
 	return await axios
 		.post(
-			'https://recicla-cabrobo-backend.herokuapp.com/escola/cadastrarAluno',
+			`${CLIENT_URL}/escola/cadastrarAluno`,
 			{
 				nome: aluno.nome,
 				serie: aluno.serie,
@@ -220,9 +218,10 @@ export async function criarEntrega(
 	matricula: string,
 	dadosEntrega: DadosEntrega[],
 ): Promise<{ pontosRecebidos: number; statusPontuacaoAluno: string }> {
+	console.log(matricula)
 	return await axios
 		.post(
-			'https://recicla-cabrobo-backend.herokuapp.com/escola/criarEntrega',
+			`${CLIENT_URL}/escola/criarEntrega`,
 			{
 				matriculaAluno: matricula,
 				dadosEntrega: dadosEntrega,
@@ -238,6 +237,7 @@ export async function criarEntrega(
 			return x
 		})
 		.catch(err => {
+			console.log(err)
 			throw new Error(err)
 		})
 }
@@ -253,7 +253,7 @@ interface AlterarAlunoData {
 export async function editarAluno(token: string, data: AlterarAlunoData) {
 	await axios
 		.patch(
-			'https://recicla-cabrobo-backend.herokuapp.com/escola/alterarAlunos',
+			`${CLIENT_URL}/escola/alterarAlunos`,
 			{
 				matriculaAluno: data.matriculaAluno,
 				novaIdade: data.novaIdade,
@@ -278,7 +278,7 @@ export async function editarAluno(token: string, data: AlterarAlunoData) {
 export async function criarAtividade(token: string, data: CriarAtividadeDataInput) {
 	await axios
 		.post(
-			'https://recicla-cabrobo-backend.herokuapp.com/escola/criarAtividade',
+			`${CLIENT_URL}/escola/criarAtividade`,
 			{
 				nomeAtividade: data.nomeAtividade,
 				pontos: data.pontos,
@@ -303,7 +303,7 @@ export async function criarAtividade(token: string, data: CriarAtividadeDataInpu
 
 export async function listarAtividades(token: string): Promise<AtividadeDataOutput[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/escola/listarAtividades', {
+		.get(`${CLIENT_URL}/escola/listarAtividades`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -320,7 +320,7 @@ export async function listarAtividades(token: string): Promise<AtividadeDataOutp
 export async function atualizarAtividade(token: string, data: AtualizarAtividadeDataInput) {
 	await axios
 		.patch(
-			'https://recicla-cabrobo-backend.herokuapp.com/escola/alterarAtividade',
+			`${CLIENT_URL}/escola/alterarAtividade`,
 			{
 				idAtividade: data.idAtividade,
 				novoNome: data.novoNome,
@@ -346,7 +346,7 @@ export async function atualizarAtividade(token: string, data: AtualizarAtividade
 
 export async function excluirAtividade(token: string, atividadeId: string) {
 	await axios
-		.delete('https://recicla-cabrobo-backend.herokuapp.com/escola/atividade', {
+		.delete(`${CLIENT_URL}/escola/atividade`, {
 			headers: {
 				Authorization: 'Bearer ' + token,
 			},
@@ -364,7 +364,7 @@ export async function excluirAtividade(token: string, atividadeId: string) {
 
 export async function listarPremios(token: string): Promise<Award[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/premio/listar', {
+		.get(`${CLIENT_URL}/premio/listar`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -381,7 +381,7 @@ export async function listarPremios(token: string): Promise<Award[]> {
 export async function resgatarPremio(token: string, matriculaAluno: string, premio: string) {
 	await axios
 		.post(
-			'https://recicla-cabrobo-backend.herokuapp.com/escola/criarResgatePremios',
+			`${CLIENT_URL}/escola/criarResgatePremios`,
 			{
 				matriculaAluno: matriculaAluno,
 				premio: premio,
@@ -405,7 +405,7 @@ export async function resgatarPremio(token: string, matriculaAluno: string, prem
 export async function atualizarEstoque(token: string, premioId: string, quantidade: number) {
 	await axios
 		.patch(
-			`https://recicla-cabrobo-backend.herokuapp.com/escola/addEstoque/${premioId}`,
+			`${CLIENT_URL}/escola/addEstoque/${premioId}`,
 			{
 				quantidadeAdicionada: quantidade,
 			},
@@ -426,7 +426,7 @@ export async function atualizarEstoque(token: string, premioId: string, quantida
 export async function deletarAluno(token: string, studentId: string) {
 	await axios
 		.patch(
-			`https://recicla-cabrobo-backend.herokuapp.com/escola/deletarAluno/${studentId}`,
+			`${CLIENT_URL}/escola/deletarAluno/${studentId}`,
 			{},
 			{
 				headers: {
@@ -446,7 +446,7 @@ export async function deletarAluno(token: string, studentId: string) {
 export async function deletarAtividade(token: string, atividadeId: string) {
 	await axios
 		.patch(
-			`https://recicla-cabrobo-backend.herokuapp.com/escola/deletarAtividade`,
+			`${CLIENT_URL}/escola/deletarAtividade`,
 			{
 				idAtividade: atividadeId,
 			},
@@ -472,7 +472,7 @@ export async function entregarAtividade(
 ) {
 	await axios
 		.post(
-			'https://recicla-cabrobo-backend.herokuapp.com/escola/entregaAtividade',
+			`${CLIENT_URL}/escola/entregaAtividade`,
 			{
 				idAtividade: idAtividade,
 				matriculaAluno: matriculaAluno,
@@ -489,6 +489,29 @@ export async function entregarAtividade(
 		})
 		.catch(err => {
 			console.log(err)
+			throw new Error(err)
+		})
+}
+
+export interface MaterialOutput {
+	id: string
+	nomeMaterial: string
+	pontosPorKg: number
+	categoria: string
+}
+
+export async function listarMateriais(token: string): Promise<MaterialOutput[]> {
+	return await axios
+		.get(`${CLIENT_URL}/material/listar`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as MaterialOutput[]
+			return x
+		})
+		.catch(err => {
 			throw new Error(err)
 		})
 }

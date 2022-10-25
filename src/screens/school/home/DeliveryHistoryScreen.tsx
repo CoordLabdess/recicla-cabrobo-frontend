@@ -2,6 +2,7 @@ import { useContext, useLayoutEffect, useState } from 'react'
 import { FlatList, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { DeliveryListItem } from '../../../components/awards/DeliveryListItem'
+import { NoHistoryMessage } from '../../../components/history/NoHistoryMessage'
 import { History } from '../../../components/home/History'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { AuthContext } from '../../../store/context/authContext'
@@ -32,6 +33,7 @@ export function DeliveryHistoryScreen() {
 				ListHeaderComponent={() => <SimplePageHeader title='Histórico de Entregas' />}
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={{ width: '100%' }}
+				ListEmptyComponent={NoHistoryMessage}
 				alwaysBounceVertical={false}
 				data={deliveryHistory}
 				style={styles.contentList}

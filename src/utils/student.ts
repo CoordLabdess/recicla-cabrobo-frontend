@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { AtividadeDataOutput } from '../types/atividades.type'
+import { CLIENT_URL } from './client'
 
 export interface StudentData {
 	id: string
@@ -22,7 +23,7 @@ export interface StudentData {
 
 export async function getStudentData(token: string): Promise<StudentData> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno', {
+		.get(`${CLIENT_URL}/aluno`, {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 		.then(res => {
@@ -41,7 +42,7 @@ export interface StudentRank {
 
 export async function getRanking(token: string, studentCode: string): Promise<number> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/rankingAlunos', {
+		.get(`${CLIENT_URL}/aluno/rankingAlunos`, {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 		.then(res => {
@@ -58,7 +59,7 @@ export async function getRanking(token: string, studentCode: string): Promise<nu
 
 export async function getGeneralRank(token: string): Promise<StudentRank[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/rankingAlunos', {
+		.get(`${CLIENT_URL}/aluno/rankingAlunos`, {
 			headers: { Authorization: `Bearer ${token}` },
 		})
 		.then(res => {
@@ -79,7 +80,7 @@ export interface History {
 
 export async function getStudentHistory(token: string): Promise<History[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/listarEntregas', {
+		.get(`${CLIENT_URL}/aluno/listarEntregas`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -110,7 +111,7 @@ export interface Award {
 
 export async function getStudentAwardHistory(token: string): Promise<AwardHistory[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/listResgates', {
+		.get(`${CLIENT_URL}/aluno/listResgates`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -126,7 +127,7 @@ export async function getStudentAwardHistory(token: string): Promise<AwardHistor
 
 export async function getAwardList(token: string): Promise<Award[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/premio/listar', {
+		.get(`${CLIENT_URL}/premio/listar`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -142,7 +143,7 @@ export async function getAwardList(token: string): Promise<Award[]> {
 
 export async function listarAtividadesDoAluno(token: string): Promise<AtividadeDataOutput[]> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/listarAtividades', {
+		.get(`${CLIENT_URL}/aluno/listarAtividades`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -177,7 +178,7 @@ export async function valoresCalculadoraImpactoAluno(
 	token: string,
 ): Promise<CalculadoraImapctoOutput> {
 	return await axios
-		.get('https://recicla-cabrobo-backend.herokuapp.com/aluno/calculadoraImpacto', {
+		.get(`${CLIENT_URL}/aluno/calculadoraImpacto`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -194,7 +195,7 @@ export async function valoresCalculadoraImpactoAluno(
 export async function confirmarResgate(token: string, idPremio: string) {
 	return await axios
 		.put(
-			'https://recicla-cabrobo-backend.herokuapp.com/aluno/confResgate',
+			`${CLIENT_URL}/aluno/confResgate`,
 			{
 				idResgate: idPremio,
 			},
