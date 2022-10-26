@@ -55,8 +55,8 @@ export function ConfirmAwardModal(props: ConfirmAwardModalProps) {
 
 						<View style={{ alignItems: 'center', width: 250, marginVertical: 20 }}>
 							<Text style={{ fontWeight: '600', textAlign: 'center' }}>
-								Ao continuar, será descontando o valor do prêmio da pontuação do aluno. Essa ação
-								não pode ser desfeita.
+								Ao continuar, será descontado o valor do prêmio da pontuação do aluno. Essa ação não
+								pode ser desfeita.
 							</Text>
 						</View>
 						<View style={styles.modalButtonsContainer}>
