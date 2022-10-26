@@ -97,7 +97,7 @@ export async function getSchoolAwardsWithdrawHistory(
 	token: string,
 ): Promise<SchoolAwardsWithdraw[]> {
 	return await axios
-		.get(`${CLIENT_URL}resgatePremio/listar`, {
+		.get(`${CLIENT_URL}/resgatePremio/listar`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
