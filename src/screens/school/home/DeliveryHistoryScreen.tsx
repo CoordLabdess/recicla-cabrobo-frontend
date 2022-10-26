@@ -6,24 +6,34 @@ import { NoHistoryMessage } from '../../../components/history/NoHistoryMessage'
 import { History } from '../../../components/home/History'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { AuthContext } from '../../../store/context/authContext'
-import { Entrega, getSchoolDeliveryHistory } from '../../../utils/school'
+import {
+	Entrega,
+	getSchoolDeliveryHistory,
+	listarMateriais,
+	MaterialOutput,
+} from '../../../utils/school'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 
 export function DeliveryHistoryScreen() {
 	const [deliveryHistory, setDeliveryHistory] = useState<Entrega[] | null>(null)
 	const authCtx = useContext(AuthContext)
+	const [listaMateriais, setListaMateriais] = useState<MaterialOutput[] | null>(null)
 
 	useLayoutEffect(() => {
 		if (authCtx.token) {
 			getSchoolDeliveryHistory(authCtx.token).then(res => {
+				console.log(res)
 				setDeliveryHistory(
 					res.sort((b, a) => Number(new Date(a.created_at)) - Number(new Date(b.created_at))),
 				)
 			})
+			listarMateriais(authCtx.token).then(res => {
+				setListaMateriais(res)
+			})
 		}
 	}, [])
 
-	if (!deliveryHistory) {
+	if (!deliveryHistory || !listaMateriais) {
 		return <LoadingScreen />
 	}
 
@@ -39,6 +49,7 @@ export function DeliveryHistoryScreen() {
 				style={styles.contentList}
 				renderItem={itemData => (
 					<DeliveryListItem
+						materialsList={listaMateriais}
 						last={itemData.index + 1 >= deliveryHistory.length}
 						itemData={itemData}
 					/>

@@ -2,11 +2,17 @@ import { View, Text, StyleSheet, ListRenderItemInfo, YellowBox, Pressable } from
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../constants/colors'
 import { History as H } from '../../utils/student'
-import { Entrega, SchoolAwardsWithdraw } from '../../utils/school'
+import { Entrega, MaterialOutput, SchoolAwardsWithdraw } from '../../utils/school'
 import { materials } from '../../data/materialTable'
 import { formatDate } from '../../utils/formatData'
 
-export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>; last: boolean }) {
+interface DeliveryListItemProps {
+	itemData: ListRenderItemInfo<Entrega>
+	last: boolean
+	materialsList: MaterialOutput[]
+}
+
+export function DeliveryListItem(props: DeliveryListItemProps) {
 	return (
 		<Pressable style={styles.root} android_ripple={{ color: '#ccc' }}>
 			<View style={styles.historyElement}>
@@ -37,7 +43,8 @@ export function DeliveryListItem(props: { itemData: ListRenderItemInfo<Entrega>;
 						<Text style={styles.historyDescriptionText}>{`${
 							props.itemData.item.aluno.nome
 						} entregou ${props.itemData.item.pesagemEntrega}kg de ${
-							materials.filter(m => m.id === props.itemData.item.idMaterial)[0].title
+							props.materialsList.filter(m => m.id === props.itemData.item.idMaterial)[0]
+								.nomeMaterial
 						} `}</Text>
 
 						<Text style={styles.historyPointsText}>
