@@ -6,6 +6,7 @@ import {
 	CriarAtividadeDataInput,
 } from '../types/atividades.type'
 import { CLIENT_URL } from './client'
+import { MaterialCategory } from '../data/materialTable'
 
 interface SchoolData {
 	id: string
@@ -497,7 +498,7 @@ export interface MaterialOutput {
 	id: string
 	nomeMaterial: string
 	pontosPorKg: number
-	categoria: string
+	categoria: MaterialCategory
 }
 
 export async function listarMateriais(token: string): Promise<MaterialOutput[]> {

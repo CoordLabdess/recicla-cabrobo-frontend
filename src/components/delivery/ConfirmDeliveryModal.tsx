@@ -8,6 +8,9 @@ import { MaterialCategory } from '../../data/materialTable'
 
 interface MaterialWeight {
 	materialId: string
+	nome: string
+	pontosPorKg: number
+	categoria: MaterialCategory
 	weight: string
 }
 
@@ -20,9 +23,9 @@ interface ConfirmDeliveryModalProps {
 }
 
 function getMaterialCategoryColor(category: MaterialCategory): string {
-	return category === 'Plastic'
+	return category === 'Plastico'
 		? '#D63636'
-		: category === 'Paper'
+		: category === 'Papel'
 		? '#2367CC'
 		: category === 'Metal'
 		? '#F0C93E'
@@ -72,12 +75,11 @@ export function ConfirmDeliveryModal(props: ConfirmDeliveryModalProps) {
 	}
 
 	function renderElement(itemData: ListRenderItemInfo<MaterialWeight>) {
-		const { title, category } = getMaterialsName(itemData.item.materialId)
 		return (
 			<MaterialWeightElement
 				key={itemData.item.materialId}
-				name={title}
-				category={category}
+				name={itemData.item.nome}
+				category={itemData.item.categoria}
 				weight={itemData.item.weight}
 			/>
 		)

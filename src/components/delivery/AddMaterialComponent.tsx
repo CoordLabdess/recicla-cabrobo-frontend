@@ -2,19 +2,21 @@ import { useLinkProps } from '@react-navigation/native'
 import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
 import { COLORS } from '../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
+import { MaterialOutput } from '../../utils/school'
+import { MaterialCategory } from '../../data/materialTable'
 
-interface Material {
-	id: string
-	title: string
-	category: 'Plastic' | 'Paper' | 'Metal' | 'Glass'
-	pointsPerKg: number
-	icon: string
+interface MaterialWeight {
+	materialId: string
+	nome: string
+	pontosPorKg: number
+	categoria: MaterialCategory
+	weight: string
 }
 
 interface AddMaterialComponentProps {
-	material: Material
+	material: MaterialWeight
 	materialWeight: string
-	setMaterialsWeight: (materialId: string, weight: string) => void
+	setMaterialsWeight: (materialData: MaterialWeight) => void
 }
 
 export function AddMaterialComponent(props: AddMaterialComponentProps) {
@@ -22,11 +24,11 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 		<View
 			style={[
 				styles.shadowContainer,
-				props.material.category === 'Plastic'
+				props.material.categoria === 'Plastico'
 					? styles.plastic
-					: props.material.category === 'Metal'
+					: props.material.categoria === 'Metal'
 					? styles.metal
-					: props.material.category === 'Paper'
+					: props.material.categoria === 'Papel'
 					? styles.paper
 					: styles.glass,
 			]}
@@ -36,22 +38,22 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 					<Ionicons name='trash' size={52} color='#fff' />
 				</View>
 				<View>
-					<Text style={styles.title}>{props.material.title}</Text>
+					<Text style={styles.title}>{props.material.nome}</Text>
 					<View style={{ flexDirection: 'row', marginTop: 7 }}>
 						<TextInput
 							numberOfLines={1}
 							keyboardType='number-pad'
 							value={props.materialWeight}
-							onChangeText={text => props.setMaterialsWeight(props.material.id, text)}
+							onChangeText={text => props.setMaterialsWeight({ ...props.material, weight: text })}
 							style={[
 								styles.input,
-								props.material.category === 'Plastic'
+								props.material.categoria === 'Plastico'
 									? styles.plasticInput
-									: props.material.category === 'Metal'
+									: props.material.categoria === 'Metal'
 									? styles.metalInput
-									: props.material.category === 'Paper'
+									: props.material.categoria === 'Papel'
 									? styles.paperInput
-									: styles.glass,
+									: styles.glassInput,
 							]}
 						/>
 						<Text style={styles.title}>Kg</Text>
@@ -75,7 +77,7 @@ export function AddMaterialComponent(props: AddMaterialComponentProps) {
 					>
 						<Ionicons name='information-circle' size={26} color='#fff' />
 					</Pressable>
-					<Text style={styles.pointsText}>{props.material.pointsPerKg}Pts/kg</Text>
+					<Text style={styles.pointsText}>{props.material.pontosPorKg}Pts/kg</Text>
 				</View>
 			</View>
 		</View>
@@ -148,6 +150,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#C7922C',
 	},
 	glassInput: {
-		backgroundColor: 'green',
+		backgroundColor: '#50873C',
 	},
 })

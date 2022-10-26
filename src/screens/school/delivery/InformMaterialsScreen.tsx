@@ -15,13 +15,14 @@ import { AddMaterialComponent } from '../../../components/delivery/AddMaterialCo
 import { PrimaryButton } from '../../../components/ui/Buttons'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
-import { materials } from '../../../data/materialTable'
+import { MaterialCategory, materials } from '../../../data/materialTable'
 import { Ionicons } from '@expo/vector-icons'
 import { RouteProp, useNavigation } from '@react-navigation/native'
 import { DeliveredModal } from '../../../components/delivery/DeliveredModal'
 import { ConfirmDeliveryModal } from '../../../components/delivery/ConfirmDeliveryModal'
-import { criarEntrega, listarMateriais } from '../../../utils/school'
+import { criarEntrega, listarMateriais, MaterialOutput } from '../../../utils/school'
 import { AuthContext } from '../../../store/context/authContext'
+import { LoadingScreen } from '../../ui/LoadingScreen'
 
 interface InformMaterialScreenProps {
 	route: RouteProp<{ params: { id: string; name: string; matricula: string } }, 'params'>
@@ -29,6 +30,9 @@ interface InformMaterialScreenProps {
 
 interface MaterialWeight {
 	materialId: string
+	nome: string
+	pontosPorKg: number
+	categoria: MaterialCategory
 	weight: string
 }
 
@@ -37,19 +41,9 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 	const [isLoading, setIsLoading] = useState(false)
 	const [isModalActive, setIsModalActive] = useState(false)
 	const [dataSent, setDataSent] = useState(false)
+	const [materialsList, setMaterialsList] = useState<MaterialOutput[] | null>(null)
 
-	const [materialsWeight, setMaterialsWeight] = useState<MaterialWeight[]>([
-		{ materialId: '27552729-bedf-42ec-9254-6a3c4a6730df', weight: '0' },
-		{ materialId: 'da5258a4-138d-4e4c-b32a-8ff02f049878', weight: '0' },
-		{ materialId: 'f0d6a223-11a6-4d75-836d-2f596e61f63b', weight: '0' },
-		{ materialId: '07ea2ebe-d40a-45a2-ae5d-cb6b172e4203', weight: '0' },
-		{ materialId: '56968a7b-fb08-48f0-8010-607324d05685', weight: '0' },
-		{ materialId: '6e9d4de0-ef49-4b40-8a00-768f5abd8323', weight: '0' },
-		{ materialId: '8b311f78-4400-4f76-909a-259681f1dae0', weight: '0' },
-		{ materialId: 'b346c87d-fcf4-48d8-a7cc-22a0a701f61c', weight: '0' },
-		{ materialId: '4b2dd6c4-072b-4274-824b-1ceb43fdc813', weight: '0' },
-		{ materialId: '74c16d5b-45c7-467b-8e5b-7e59def0e151', weight: '0' },
-	])
+	const [materialsWeight, setMaterialsWeight] = useState<MaterialWeight[]>([])
 
 	const [total, setTotal] = useState(0)
 
@@ -79,25 +73,33 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 					setIsLoading(false)
 					console.log('aaa')
 				})
-			// await new Promise((resolve, reject) => {
-			// 	setTimeout(() => {
-			// 		resolve('')
-			// 	}, 1000)
-			// })
-			// 	.then(() => {
-			// 		setDataSent(true)
-			// 		setIsModalActive(false)
-			// 		setIsLoading(false)
-			// 	})
-			// 	.catch(() => {
-			// 		setIsLoading(false)
-			// 	})
 		}
 	}
 
 	useLayoutEffect(() => {
-		listarMateriais(authCtx.token || '').then(res => {})
+		listarMateriais(authCtx.token || '').then(res => {
+			setMaterialsList(res)
+			setMaterialsWeight(
+				res.map(m => {
+					return {
+						materialId: m.id,
+						nome: m.nomeMaterial,
+						pontosPorKg: m.pontosPorKg,
+						categoria: m.categoria,
+						weight: '0',
+					}
+				}),
+			)
+		})
 	}, [])
+
+	useEffect(() => {
+		console.log(materialsWeight)
+	}, [materialsWeight])
+
+	if (!materialsList || materialsWeight.length < 1) {
+		return <LoadingScreen />
+	}
 
 	return (
 		<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
@@ -114,23 +116,24 @@ export function InformMaterialsScreen(props: InformMaterialScreenProps) {
 			>
 				<SimplePageHeader title='Informe o Peso dos Materiais' textStyle={styles.title} />
 
-				{materials.map((material, key) => {
+				{materialsWeight.map((material, key) => {
 					return (
-						<View key={material.id} style={[styles.container]}>
+						<View key={material.materialId} style={[styles.container]}>
 							<AddMaterialComponent
 								material={material}
 								materialWeight={
-									materialsWeight.filter(cMaterial => cMaterial.materialId === material.id)[0]
-										.weight
+									materialsWeight.filter(m => m.materialId === material.materialId)[0].weight
 								}
-								setMaterialsWeight={(materialId: string, weight: string) => {
+								setMaterialsWeight={materialData => {
 									setMaterialsWeight(cWeight => {
 										const mIndex = cWeight.indexOf(
-											materialsWeight.filter(material => material.materialId === materialId)[0],
+											materialsWeight.filter(
+												material => material.materialId === materialData.materialId,
+											)[0],
 										)
 										return [
 											...cWeight.slice(0, mIndex),
-											{ materialId: materialId, weight: weight },
+											{ ...materialData },
 											...cWeight.slice(mIndex + 1),
 										]
 									})
