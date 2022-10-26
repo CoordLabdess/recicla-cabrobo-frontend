@@ -213,3 +213,24 @@ export async function confirmarResgate(token: string, idPremio: string) {
 			throw new Error(error)
 		})
 }
+
+export async function entregarAtividade(token: string, idAtividade: string) {
+	return await axios
+		.post(
+			`${CLIENT_URL}/aluno/entregaAtividade`,
+			{
+				idAtividade,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			return
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}

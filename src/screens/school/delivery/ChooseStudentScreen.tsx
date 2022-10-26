@@ -88,6 +88,7 @@ export function ChooseStudentScreen(props: ChooseStudentScreenProps) {
 					flexGrow: 1,
 					justifyContent: 'flex-start',
 					paddingHorizontal: '5%',
+					paddingBottom: 20,
 					alignItems: 'center',
 				}}
 				alwaysBounceVertical={false}
