@@ -44,7 +44,7 @@ export function EditarAtividadeScreen(props: EditarAtividadeScreen) {
 		new Date(
 			new Date(atvd.prazofinal).getFullYear(),
 			new Date(atvd.prazofinal).getMonth(),
-			new Date(atvd.prazofinal).getDate() + 1,
+			new Date(atvd.prazofinal).getDate(),
 		),
 	)
 

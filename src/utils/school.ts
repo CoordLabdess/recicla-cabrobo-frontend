@@ -516,3 +516,34 @@ export async function listarMateriais(token: string): Promise<MaterialOutput[]> 
 			throw new Error(err)
 		})
 }
+
+export interface SolicitacaoAtividadeOutput {
+	id: string
+	matricula: string
+	status: 'PENDENTE' | 'CONCLUIDO' | string
+	idEscola: string
+	__atividade__: {
+		nome: string
+		id: string
+		pontos: number
+	}
+	__has_atividade__: boolean
+}
+
+export async function listarSolicitacoesAtividades(
+	token: string,
+): Promise<SolicitacaoAtividadeOutput[]> {
+	return axios
+		.get(`${CLIENT_URL}/escola/listarEntregasAtividade`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as SolicitacaoAtividadeOutput[]
+			return x
+		})
+		.catch(err => {
+			throw new err(err)
+		})
+}
