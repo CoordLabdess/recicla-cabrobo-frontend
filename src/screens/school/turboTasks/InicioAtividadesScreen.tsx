@@ -30,7 +30,7 @@ export function InicioAtividadeScreen() {
 						}}
 					>
 						<Ionicons name='calendar-outline' size={60} color={COLORS.primary500} />
-						<Text style={styles.cardTitle}>Gerenciar Aticidades</Text>
+						<Text style={styles.cardTitle}>Gerenciar Atividades</Text>
 					</Pressable>
 				</View>
 				<View style={styles.outterContainer}>
