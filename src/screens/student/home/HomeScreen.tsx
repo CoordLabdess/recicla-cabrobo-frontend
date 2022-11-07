@@ -49,18 +49,22 @@ export function HomeScreen() {
 	}, [])
 
 	useEffect(() => {
-		getStudentHistory(student.token)
-			.then(res => {
-				setHistory(
-					res.sort((b, a) => Number(new Date(a.dataEntrega)) - Number(new Date(b.dataEntrega))),
-				)
-			})
-			.catch(() => {})
+		if (student.token)
+			getStudentHistory(student.token)
+				.then(res => {
+					const x = res.sort(
+						(b, a) => Number(new Date(a.dataEntrega)) - Number(new Date(b.dataEntrega)),
+					)
+
+					setHistory(x)
+				})
+				.catch(() => {})
 	}, [student.token])
 
-	if (!student.name || !student.studentNumber || !student.token || !history) {
+	if (!student.name || !student.studentNumber || !student.token) {
 		return <LoadingScreen />
 	} else {
+		console.log(history)
 		return (
 			<SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
 				<FlatList
@@ -71,7 +75,7 @@ export function HomeScreen() {
 					alwaysBounceVertical={false}
 					showsVerticalScrollIndicator={false}
 					ListHeaderComponent={Header}
-					ListEmptyComponent={NoHistoryMessage}
+					ListEmptyComponent={!history ? <LoadingScreen /> : NoHistoryMessage}
 					data={history}
 					renderItem={itemData => (
 						<History last={itemData.index + 1 >= history.length} itemData={itemData} />
