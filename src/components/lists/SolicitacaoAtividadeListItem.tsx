@@ -4,10 +4,12 @@ import { useNavigation } from '@react-navigation/native'
 
 interface SolicitacaoAtividadeListItemProps {
 	nomeAluno: string
+	serie: string
 	matriculaAluno: string
 	nomeAtividade: string
 	status: 'PENDENTE' | 'CONCLUIDO' | string
 	pontosAtividade: number
+	onPress: () => void
 }
 
 export function SolicitacaoAtividadeListItem(props: SolicitacaoAtividadeListItemProps) {
@@ -17,20 +19,29 @@ export function SolicitacaoAtividadeListItem(props: SolicitacaoAtividadeListItem
 			<View style={styles.shadowContainer}>
 				<View style={{ overflow: 'hidden', borderRadius: 27 }}>
 					<Pressable
-						style={styles.cardContainer}
+						style={[styles.cardContainer]}
 						android_ripple={{ color: '#ccc' }}
-						onPress={() => navigation.navigate('' as never)}
+						onPress={props.onPress}
 					>
-						<View style={{ flex: 1.2 }}>
-							<Text style={styles.nomeAluno}>Fulano da Silva Sauro</Text>
-							<Text style={styles.matriculaAluno}>{props.matriculaAluno}</Text>
+						<View style={styles.field}>
+							<Text style={styles.fieldLabel}>Atividade: </Text>
+							<Text>{props.nomeAtividade}</Text>
 						</View>
-						<View style={{ flex: 1.5 }}>
-							<Text style={styles.nomeAtividade}>{props.nomeAtividade}</Text>
+						<View style={styles.field}>
+							<Text style={styles.fieldLabel}>Aluno: </Text>
+							<Text>{props.nomeAluno}</Text>
 						</View>
-						<View style={{ flex: 1 }}>
-							<Text style={styles.points}>{props.pontosAtividade}</Text>
-							<Text style={styles.status}>{props.status}</Text>
+						<View style={styles.field}>
+							<Text style={styles.fieldLabel}>Série: </Text>
+							<Text>{props.serie}</Text>
+						</View>
+						<View style={styles.field}>
+							<Text style={styles.fieldLabel}>Pontos: </Text>
+							<Text>{props.pontosAtividade}</Text>
+						</View>
+						<View style={styles.field}>
+							<Text style={styles.fieldLabel}>Status: </Text>
+							<Text>{props.status}</Text>
 						</View>
 					</Pressable>
 				</View>
@@ -59,51 +70,17 @@ const styles = StyleSheet.create({
 		marginBottom: 14,
 	},
 	cardContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
+		flexDirection: 'column',
 		backgroundColor: '#fff',
-		paddingHorizontal: 9,
-		paddingVertical: 4,
-		minHeight: 110,
+		padding: 20,
 		borderRadius: 27,
 		overflow: 'hidden',
 	},
-	profileImageContainer: {
-		height: 80,
-		width: 80,
-		borderRadius: 100,
-		overflow: 'hidden',
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: COLORS.secondary400,
-		marginRight: 10,
+	field: {
+		flexDirection: 'row',
 	},
-	profileImage: {
-		height: '100%',
-		width: '100%',
-	},
-	profileInfoName: {
-		fontSize: 14,
-	},
-	profileMinorInfo: {
-		fontSize: 12,
-		color: COLORS.secondary500,
-	},
-	nomeAluno: {
-		fontWeight: '500',
+	fieldLabel: {
 		fontSize: 16,
-	},
-	matriculaAluno: {},
-	nomeAtividade: {
-		textAlign: 'center',
-	},
-	points: {
-		fontSize: 20,
-		textAlign: 'center',
 		fontWeight: '500',
-	},
-	status: {
-		textAlign: 'center',
 	},
 })

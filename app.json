@@ -23,7 +23,7 @@
 			"package": "com.reciclaCabrobo",
 			"versionCode": 8,
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptiveIcon.png",
+				"foregroundImage": "./assets/adaptiveIconRecicla.png",
 				"backgroundColor": "#FFFFFF"
 			}
 		},

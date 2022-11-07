@@ -519,13 +519,17 @@ export async function listarMateriais(token: string): Promise<MaterialOutput[]> 
 
 export interface SolicitacaoAtividadeOutput {
 	id: string
-	matricula: string
 	status: 'PENDENTE' | 'CONCLUIDO' | string
 	idEscola: string
 	__atividade__: {
 		nome: string
 		id: string
 		pontos: number
+	}
+	aluno: {
+		nome: string
+		matricula: string
+		serie: string
 	}
 	__has_atividade__: boolean
 }
@@ -545,5 +549,33 @@ export async function listarSolicitacoesAtividades(
 		})
 		.catch(err => {
 			throw new err(err)
+		})
+}
+
+export async function aceitarEntregaAtividade(
+	token: string,
+	idEntregaAtividade: string,
+	matriculaAluno: string,
+) {
+	console.log(idEntregaAtividade, matriculaAluno)
+	await axios
+		.patch(
+			`${CLIENT_URL}/escola/confirmarEntregaAtividade`,
+			{
+				idEntregaAtividade: idEntregaAtividade,
+				matriculaAluno: matriculaAluno,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		)
+		.then(res => {
+			return
+		})
+		.catch(err => {
+			console.log(err)
+			throw new Error(err)
 		})
 }
