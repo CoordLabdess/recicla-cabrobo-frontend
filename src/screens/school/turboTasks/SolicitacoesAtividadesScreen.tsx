@@ -164,7 +164,7 @@ export function SolicitacoesAtividadesScreen() {
 				}}
 				buttonColor={COLORS.primary500}
 				title='Sucesso!'
-				text='Atividade criada com sucesso!'
+				text='Atividade confirmada com sucesso!'
 			/>
 			<NotifyModal
 				visible={failure}
@@ -174,7 +174,7 @@ export function SolicitacoesAtividadesScreen() {
 				}}
 				title='Erro!'
 				buttonColor='#8E2941'
-				text='Ocorreu um erro durante o cadastro da atividade! Tente novamente!'
+				text='Ocorreu um erro durante a confirmação da atividade! Tente novamente!'
 			/>
 		</>
 	)

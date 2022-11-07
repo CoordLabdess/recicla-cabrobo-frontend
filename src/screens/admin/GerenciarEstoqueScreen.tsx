@@ -18,22 +18,29 @@ export function GerenciarEstoqueScreen() {
 	const adminCtx = useContext(SchoolContext)
 
 	const [premios, setPremios] = useState<Award[] | null>(null)
-	const [isLoading, setIsLoading] = useState(false)
+	const [isLoading1, setIsLoading1] = useState(false)
+	const [isLoading2, setIsLoading2] = useState(false)
 	const [editModal, setEditModal] = useState<Award | null>(null)
 	const [a, setA] = useState()
 	const isFocused = useIsFocused()
 
 	function updateAmmount(ammount: number) {
-		if (!isLoading && editModal) {
-			setIsLoading(true)
+		if (!isLoading1 && !isLoading2 && editModal) {
+			if (ammount >= 0) {
+				setIsLoading1(true)
+			} else {
+				setIsLoading2(true)
+			}
 			atualizarEstoque(authCtx.token || '', editModal.id, ammount)
 				.then(() => {
-					setIsLoading(false)
+					setIsLoading1(false)
+					setIsLoading2(false)
 					setEditModal(null)
 					atualizar()
 				})
 				.catch(() => {
-					setIsLoading(false)
+					setIsLoading1(false)
+					setIsLoading2(false)
 				})
 		}
 	}
@@ -77,7 +84,8 @@ export function GerenciarEstoqueScreen() {
 			/>
 			{editModal && (
 				<EstoqueEditModal
-					isLoading={isLoading}
+					isLoading1={isLoading1}
+					isLoading2={isLoading2}
 					visible={editModal ? true : false}
 					premio={editModal}
 					onCancel={() => setEditModal(null)}

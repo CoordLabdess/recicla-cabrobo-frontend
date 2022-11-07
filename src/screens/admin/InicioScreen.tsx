@@ -47,12 +47,12 @@ export function InicioScreen() {
 					<SchoolHomeListItem
 						icon='time'
 						title='Histórico de Entregas'
-						onPress={() => navigation.navigate('HistoricoEntregasEscolas' as never)}
+						onPress={() => navigation.navigate('AdminHistoricoEntregas' as never)}
 					/>
 					<SchoolHomeListItem
 						icon='time'
 						title='Histórico de Resgates'
-						onPress={() => navigation.navigate('HistoricoResgatesEscolas' as never)}
+						onPress={() => navigation.navigate('AdminHistoricoResgates' as never)}
 					/>
 				</View>
 			</ScrollView>

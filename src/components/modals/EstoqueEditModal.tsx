@@ -6,15 +6,16 @@ import { Ionicons } from '@expo/vector-icons'
 import { PrimaryTextInput } from '../ui/TextInputs'
 import { Award } from '../../utils/student'
 
-interface PrivacPolicyModalProps {
+interface EstoqueEditModalProps {
 	premio: Award
 	visible: boolean
-	isLoading: boolean
+	isLoading1?: boolean
+	isLoading2?: boolean
 	onSave: (a: number) => void
 	onCancel: () => void
 }
 
-export function EstoqueEditModal(props: PrivacPolicyModalProps) {
+export function EstoqueEditModal(props: EstoqueEditModalProps) {
 	const [ammount, setAmmount] = useState('0')
 
 	return (
@@ -67,7 +68,8 @@ export function EstoqueEditModal(props: PrivacPolicyModalProps) {
 							/>
 							<View style={{ flexDirection: 'row' }}>
 								<PrimaryButton
-									isLoading={props.isLoading}
+									isLoading={props.isLoading1}
+									avoidClick={Number(ammount) == 0 || Number(ammount) == NaN || props.isLoading2}
 									textStyle={{ fontSize: 18 }}
 									title='Adicionar'
 									onPress={() => props.onSave(Number(ammount))}
@@ -75,7 +77,8 @@ export function EstoqueEditModal(props: PrivacPolicyModalProps) {
 									marginRight={5}
 								/>
 								<PrimaryButton
-									isLoading={props.isLoading}
+									isLoading={props.isLoading2}
+									avoidClick={Number(ammount) == 0 || Number(ammount) == NaN || props.isLoading1}
 									textStyle={{ fontSize: 18 }}
 									title='Remover'
 									innerContainerStyle={{ backgroundColor: COLORS.error }}
