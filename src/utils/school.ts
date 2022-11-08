@@ -582,7 +582,7 @@ export async function aceitarEntregaAtividade(
 }
 
 export interface HistoricoResgate {
-	statusEntrega: number
+	statusEntrega: string
 	idResgate: string
 	dataCriacaoResgate: string
 	escola: {

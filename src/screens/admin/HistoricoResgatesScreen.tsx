@@ -7,6 +7,7 @@ import { AwardWithDrawListItem } from '../../components/awards/AwardWithdrawList
 import { NoHistoryMessage } from '../../components/history/NoHistoryMessage'
 import { SimplePageHeader } from '../../components/ui/SimplePageHeader'
 import { AuthContext } from '../../store/context/authContext'
+import { formatarDataStringToDate } from '../../utils/formatData'
 import { HistoricoResgate, obterHistoricoDeResgates } from '../../utils/school'
 import { LoadingScreen } from '../ui/LoadingScreen'
 
@@ -21,7 +22,8 @@ export function HistoricoResgateScreen() {
 				setAwardsHistory(
 					res.sort(
 						(b, a) =>
-							Number(new Date(a.dataCriacaoResgate)) - Number(new Date(b.dataCriacaoResgate)),
+							Number(formatarDataStringToDate(a.dataCriacaoResgate, 'dd-mm-yyyy', '/')) -
+							Number(formatarDataStringToDate(b.dataCriacaoResgate, 'dd-mm-yyyy', '/')),
 					),
 				)
 			})
@@ -44,12 +46,20 @@ export function HistoricoResgateScreen() {
 				alwaysBounceVertical={false}
 				data={awardHistory}
 				style={styles.contentList}
-				renderItem={itemData => (
-					<AwardHistoryListItem
-						last={itemData.index + 1 >= awardHistory.length}
-						itemData={itemData}
-					/>
-				)}
+				renderItem={itemData => {
+					const item = itemData.item
+					return (
+						<AwardHistoryListItem
+							date={formatarDataStringToDate(item.dataCriacaoResgate, 'dd-mm-yyyy', '/')}
+							aluno={item.aluno.nome}
+							premio={item.premio.nome}
+							escola={item.escola.nome}
+							status={item.statusEntrega}
+							preco={item.premio.preco}
+							last={itemData.index + 1 >= awardHistory.length}
+						/>
+					)
+				}}
 			/>
 		</SafeAreaView>
 	)
