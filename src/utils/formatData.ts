@@ -25,19 +25,25 @@ export function formatarDataStringToDate(
 		const day = d[0].padStart(2, '0')
 		const month = d[1].padStart(2, '0')
 		const year = d[2].substring(0, 5)
-		return new Date(Number(year), Number(month), Number(day))
+		return new Date(Number(year), Number(month) - 1, Number(day))
 	} else {
 		const d = inputDate.split(splitter)
 		const day = d[1].padStart(2, '0')
 		const month = d[0].padStart(2, '0')
 		const year = d[2].substring(0, 5)
-		return new Date(Number(year), Number(month), Number(day))
+		return new Date(Number(year), Number(month) - 1, Number(day))
 	}
 }
 
-export function formatarDataDateToString(inputDate: Date, stringFormat: dateStringFormat): string {
+export function formatarDataDateToString(
+	inputDate: Date,
+	stringFormat: dateStringFormat,
+	splitter: string,
+): string {
 	const day = inputDate.getDate()
 	const month = inputDate.getMonth() + 1
 	const year = inputDate.getFullYear()
-	return stringFormat === 'dd-mm-yyyy' ? `${day}/${month}/${year}` : `${month}/${day}/${year}`
+	return stringFormat === 'dd-mm-yyyy'
+		? `${day}${splitter}${month}${splitter}${year}`
+		: `${month}/${day}/${year}`
 }

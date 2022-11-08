@@ -38,7 +38,7 @@ export function AwardHistoryListItem(props: {
 				<View style={{ width: '100%' }}>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						<Text style={styles.historyDateText}>
-							{formatarDataDateToString(props.date, 'dd-mm-yyyy')}
+							{formatarDataDateToString(props.date, 'dd-mm-yyyy', '/')}
 						</Text>
 						<Text style={{ color: '#7C7C7C', fontSize: 10, marginTop: 6 }}>
 							Clique Para Visualizar

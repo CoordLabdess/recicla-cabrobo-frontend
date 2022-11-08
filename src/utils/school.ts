@@ -7,6 +7,7 @@ import {
 } from '../types/atividades.type'
 import { CLIENT_URL } from './client'
 import { MaterialCategory } from '../data/materialTable'
+import { formatarDataDateToString } from './formatData'
 
 interface SchoolData {
 	id: string
@@ -603,9 +604,19 @@ export interface HistoricoResgate {
 	}
 }
 
-export async function obterHistoricoDeResgates(token: string): Promise<HistoricoResgate[]> {
+export async function obterHistoricoDeResgates(
+	token: string,
+	dataInicio: Date,
+	dataFim: Date,
+	idEscola: string,
+): Promise<HistoricoResgate[]> {
 	return axios
 		.get(`${CLIENT_URL}/escola/histResgateAdm`, {
+			params: {
+				idLoginEscola: idEscola,
+				dataInicio: formatarDataDateToString(dataInicio, 'mm-dd-yyyy', '-'),
+				dataFim: formatarDataDateToString(dataFim, 'mm-dd-yyyy', '-'),
+			},
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
