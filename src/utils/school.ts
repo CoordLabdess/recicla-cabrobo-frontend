@@ -91,6 +91,7 @@ export interface SchoolAwardsWithdraw {
 		nome: string
 		preco: number
 	}
+	statusEntrega: string
 }
 
 export async function getSchoolAwardsWithdrawHistory(
@@ -577,5 +578,43 @@ export async function aceitarEntregaAtividade(
 		.catch(err => {
 			console.log(err)
 			throw new Error(err)
+		})
+}
+
+export interface HistoricoResgate {
+	statusEntrega: number
+	idResgate: string
+	dataCriacaoResgate: string
+	escola: {
+		nome: string
+		gestor: string
+	}
+	aluno: {
+		nome: string
+		matricula: string
+		pontos: string
+	}
+	premio: {
+		id: string
+		nome: string
+		preco: number
+		especificacao: string
+		estoque: number
+	}
+}
+
+export async function obterHistoricoDeResgates(token: string): Promise<HistoricoResgate[]> {
+	return axios
+		.get(`${CLIENT_URL}/escola/histResgateAdm`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as HistoricoResgate[]
+			return x
+		})
+		.catch(err => {
+			throw new err(err)
 		})
 }
