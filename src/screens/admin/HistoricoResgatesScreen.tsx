@@ -157,7 +157,6 @@ export function HistoricoResgateScreen() {
 												{escolas.map(e => {
 													return <Picker.Item label={e.nome} value={e.idLogin} />
 												})}
-												<Picker.Item label='Multisérie' value='Multiserie' />
 											</Picker>
 										</View>
 									</View>
