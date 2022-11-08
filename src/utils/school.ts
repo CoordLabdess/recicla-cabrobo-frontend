@@ -626,6 +626,30 @@ export async function obterHistoricoDeResgates(
 			return x
 		})
 		.catch(err => {
-			throw new err(err)
+			throw new Error(err)
+		})
+}
+
+export interface ListarEscolaReturn {
+	id: string
+	idLogin: string
+	nome: string
+	email: string
+	nomeGestor: string
+}
+
+export function listarEscolas(token: string): Promise<ListarEscolaReturn[]> {
+	return axios
+		.get(`${CLIENT_URL}/escola/listar`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as ListarEscolaReturn[]
+			return x
+		})
+		.catch(err => {
+			throw new Error(err)
 		})
 }

@@ -9,13 +9,20 @@ import { NoHistoryMessage } from '../../components/history/NoHistoryMessage'
 import { SimplePageHeader } from '../../components/ui/SimplePageHeader'
 import { AuthContext } from '../../store/context/authContext'
 import { formatarDataDateToString, formatarDataStringToDate } from '../../utils/formatData'
-import { HistoricoResgate, obterHistoricoDeResgates } from '../../utils/school'
+import {
+	HistoricoResgate,
+	ListarEscolaReturn,
+	listarEscolas,
+	obterHistoricoDeResgates,
+} from '../../utils/school'
 import { LoadingScreen } from '../ui/LoadingScreen'
 import { COLORS } from '../../constants/colors'
+import { Picker } from '@react-native-picker/picker'
 
-interface filtroData {
+interface filtro {
 	dataInicial: Date
 	dataFinal: Date
+	loginEscola: string
 }
 
 export function HistoricoResgateScreen() {
@@ -24,20 +31,29 @@ export function HistoricoResgateScreen() {
 	const [awardHistory, setAwardsHistory] = useState<HistoricoResgate[]>([])
 	const [show1, setShow1] = useState(false)
 	const [show2, setShow2] = useState(false)
-	const [filtroData, setFiltroData] = useState<filtroData>({
+	const [escolas, setEscolas] = useState<ListarEscolaReturn[] | null>(null)
+	const [filtro, setFiltro] = useState<filtro>({
 		dataInicial: new Date(2022, 0, 1),
 		dataFinal: new Date(),
+		loginEscola: '',
 	})
 	const [isLoading, setIsLoading] = useState(false)
 
 	useLayoutEffect(() => {
 		if (!isLoading) {
 			setIsLoading(true)
+			listarEscolas(authCtx.token || '')
+				.then(res => {
+					setEscolas(res)
+				})
+				.catch(err => {
+					console.log(err)
+				})
 			obterHistoricoDeResgates(
 				authCtx.token || '',
-				filtroData.dataInicial,
-				filtroData.dataFinal,
-				'',
+				filtro.dataInicial,
+				filtro.dataFinal,
+				filtro.loginEscola,
 			)
 				.then(res => {
 					setAwardsHistory(
@@ -54,14 +70,14 @@ export function HistoricoResgateScreen() {
 					setIsLoading(false)
 				})
 		}
-	}, [isFocused, filtroData])
+	}, [isFocused, filtro])
 
 	function onChangeDataInicial(event: DateTimePickerEvent, currentDate?: Date) {
 		setShow1(false)
 
 		if (currentDate) {
-			setFiltroData({
-				...filtroData,
+			setFiltro({
+				...filtro,
 				dataInicial: currentDate,
 			})
 		}
@@ -71,11 +87,19 @@ export function HistoricoResgateScreen() {
 		setShow2(false)
 
 		if (currentDate) {
-			setFiltroData({
-				...filtroData,
+			setFiltro({
+				...filtro,
 				dataFinal: currentDate,
 			})
 		}
+	}
+
+	function onChangeEscola(value: string) {
+		setFiltro({ ...filtro, loginEscola: value })
+	}
+
+	if (!escolas) {
+		return <LoadingScreen />
 	}
 
 	return (
@@ -88,7 +112,14 @@ export function HistoricoResgateScreen() {
 								<SimplePageHeader title='Histórico de Resgates' />
 
 								<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-									<View style={{ marginRight: 20, borderRadius: 10, overflow: 'hidden' }}>
+									<View
+										style={{
+											marginRight: 20,
+											borderRadius: 10,
+											overflow: 'hidden',
+											marginBottom: 20,
+										}}
+									>
 										<Pressable
 											android_ripple={{ color: '#c3c3c3' }}
 											style={styles.dateContainer}
@@ -96,7 +127,7 @@ export function HistoricoResgateScreen() {
 										>
 											<Text style={styles.label}>De</Text>
 											<Text style={styles.points}>
-												{formatarDataDateToString(filtroData.dataInicial, 'dd-mm-yyyy', '/')}
+												{formatarDataDateToString(filtro.dataInicial, 'dd-mm-yyyy', '/')}
 											</Text>
 										</Pressable>
 									</View>
@@ -108,9 +139,27 @@ export function HistoricoResgateScreen() {
 										>
 											<Text style={styles.label}>Até</Text>
 											<Text style={styles.points}>
-												{formatarDataDateToString(filtroData.dataFinal, 'dd-mm-yyyy', '/')}
+												{formatarDataDateToString(filtro.dataFinal, 'dd-mm-yyyy', '/')}
 											</Text>
 										</Pressable>
+									</View>
+								</View>
+								<View style={{ width: '100%', alignItems: 'center' }}>
+									<View style={styles.elementContainer}>
+										<View style={{ overflow: 'hidden', borderRadius: 15 }}>
+											<Picker
+												style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
+												selectedValue={filtro.loginEscola}
+												onValueChange={onChangeEscola}
+												enabled={true}
+											>
+												<Picker.Item label='- Selecione uma escola -' value='' />
+												{escolas.map(e => {
+													return <Picker.Item label={e.nome} value={e.idLogin} />
+												})}
+												<Picker.Item label='Multisérie' value='Multiserie' />
+											</Picker>
+										</View>
 									</View>
 								</View>
 							</View>
@@ -144,18 +193,18 @@ export function HistoricoResgateScreen() {
 			</SafeAreaView>
 			{show1 && (
 				<DateTimePicker
-					value={filtroData.dataInicial}
+					value={filtro.dataInicial}
 					onChange={onChangeDataInicial}
 					minimumDate={new Date(2022, 0, 1)}
-					maximumDate={filtroData.dataFinal}
+					maximumDate={filtro.dataFinal}
 				/>
 			)}
 			{show2 && (
 				<DateTimePicker
-					value={filtroData.dataFinal}
+					value={filtro.dataFinal}
 					onChange={onChangeDataFinal}
 					accentColor={COLORS.primary500}
-					minimumDate={filtroData.dataInicial}
+					minimumDate={filtro.dataInicial}
 					maximumDate={new Date()}
 				/>
 			)}
@@ -172,7 +221,10 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		flexGrow: 1,
 	},
-	elementContainer: {},
+	elementContainer: {
+		borderRadius: 10,
+		width: 300,
+	},
 
 	points: {
 		textAlign: 'center',
@@ -192,5 +244,12 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		paddingVertical: 2,
 		minWidth: 150,
+	},
+	textInput: {
+		backgroundColor: COLORS.secondary400,
+		fontSize: 14,
+		paddingVertical: 9,
+		paddingHorizontal: 17,
+		borderRadius: 16,
 	},
 })
