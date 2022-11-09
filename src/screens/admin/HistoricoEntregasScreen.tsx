@@ -10,9 +10,13 @@ import { SimplePageHeader } from '../../components/ui/SimplePageHeader'
 import { AuthContext } from '../../store/context/authContext'
 import { formatarDataDateToString, formatarDataStringToDate } from '../../utils/formatData'
 import {
+	HistoricoEntrega,
 	HistoricoResgate,
 	ListarEscolaReturn,
 	listarEscolas,
+	listarMateriais,
+	MaterialOutput,
+	obterHistoricoDeEntregas,
 	obterHistoricoDeResgates,
 } from '../../utils/school'
 import { LoadingScreen } from '../ui/LoadingScreen'
@@ -23,19 +27,22 @@ interface filtro {
 	dataInicial: Date
 	dataFinal: Date
 	loginEscola: string
+	material: string
 }
 
-export function HistoricoResgateScreen() {
+export function HistoricoEntregasScreen() {
 	const authCtx = useContext(AuthContext)
 	const isFocused = useIsFocused()
-	const [awardHistory, setAwardsHistory] = useState<HistoricoResgate[]>([])
+	const [awardHistory, setAwardsHistory] = useState<HistoricoEntrega[]>([])
 	const [show1, setShow1] = useState(false)
 	const [show2, setShow2] = useState(false)
+	const [materiais, setMateriais] = useState<MaterialOutput[] | null>(null)
 	const [escolas, setEscolas] = useState<ListarEscolaReturn[] | null>(null)
 	const [filtro, setFiltro] = useState<filtro>({
 		dataInicial: new Date(2022, 0, 1),
 		dataFinal: new Date(),
 		loginEscola: '',
+		material: '',
 	})
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -44,23 +51,33 @@ export function HistoricoResgateScreen() {
 			setIsLoading(true)
 			listarEscolas(authCtx.token || '')
 				.then(res => {
-					setEscolas(res)
+					setEscolas(res.sort((a, b) => (a.nome < b.nome ? -1 : b.nome > a.nome ? 1 : 0)))
 				})
 				.catch(err => {
 					console.log(err)
 				})
-			obterHistoricoDeResgates(
+			listarMateriais(authCtx.token || '')
+				.then(res => {
+					setMateriais(
+						res.sort((a, b) =>
+							a.nomeMaterial < b.nomeMaterial ? -1 : b.nomeMaterial > a.nomeMaterial ? 1 : 0,
+						),
+					)
+				})
+				.catch(err => console.log(err))
+			obterHistoricoDeEntregas(
 				authCtx.token || '',
 				filtro.dataInicial,
 				filtro.dataFinal,
 				filtro.loginEscola,
+				filtro.material,
 			)
 				.then(res => {
 					setAwardsHistory(
 						res.sort(
 							(b, a) =>
-								Number(formatarDataStringToDate(a.dataCriacaoResgate, 'dd-mm-yyyy', '/')) -
-								Number(formatarDataStringToDate(b.dataCriacaoResgate, 'dd-mm-yyyy', '/')),
+								Number(formatarDataStringToDate(a.dataEntrega, 'dd-mm-yyyy', '/')) -
+								Number(formatarDataStringToDate(b.dataEntrega, 'dd-mm-yyyy', '/')),
 						),
 					)
 					setIsLoading(false)
@@ -75,7 +92,7 @@ export function HistoricoResgateScreen() {
 	function onChangeDataInicial(event: DateTimePickerEvent, currentDate?: Date) {
 		setShow1(false)
 
-		if (currentDate) {
+		if (currentDate && currentDate != filtro.dataInicial) {
 			setFiltro({
 				...filtro,
 				dataInicial: currentDate,
@@ -86,7 +103,7 @@ export function HistoricoResgateScreen() {
 	function onChangeDataFinal(event: DateTimePickerEvent, currentDate?: Date) {
 		setShow2(false)
 
-		if (currentDate) {
+		if (currentDate && currentDate != filtro.dataFinal) {
 			setFiltro({
 				...filtro,
 				dataFinal: currentDate,
@@ -98,7 +115,11 @@ export function HistoricoResgateScreen() {
 		setFiltro({ ...filtro, loginEscola: value })
 	}
 
-	if (!escolas) {
+	function onChangeMaterial(value: string) {
+		setFiltro({ ...filtro, material: value })
+	}
+
+	if (!escolas || !materiais) {
 		return <LoadingScreen />
 	}
 
@@ -109,7 +130,7 @@ export function HistoricoResgateScreen() {
 					ListHeaderComponent={() => {
 						return (
 							<View style={{ marginBottom: 30 }}>
-								<SimplePageHeader title='Histórico de Resgates' />
+								<SimplePageHeader title='Histórico de Entregas' />
 
 								<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 									<View
@@ -144,7 +165,7 @@ export function HistoricoResgateScreen() {
 										</Pressable>
 									</View>
 								</View>
-								<View style={{ width: '100%', alignItems: 'center' }}>
+								<View style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}>
 									<View style={styles.elementContainer}>
 										<View style={{ overflow: 'hidden', borderRadius: 15 }}>
 											<Picker
@@ -161,6 +182,23 @@ export function HistoricoResgateScreen() {
 										</View>
 									</View>
 								</View>
+								<View style={{ width: '100%', alignItems: 'center' }}>
+									<View style={styles.elementContainer}>
+										<View style={{ overflow: 'hidden', borderRadius: 15 }}>
+											<Picker
+												style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
+												selectedValue={filtro.material}
+												onValueChange={onChangeMaterial}
+												enabled={true}
+											>
+												<Picker.Item label='- Selecione um material -' value='' />
+												{materiais.map(e => {
+													return <Picker.Item label={e.nomeMaterial} value={e.nomeMaterial} />
+												})}
+											</Picker>
+										</View>
+									</View>
+								</View>
 							</View>
 						)
 					}}
@@ -169,7 +207,7 @@ export function HistoricoResgateScreen() {
 					ListEmptyComponent={
 						isLoading
 							? LoadingScreen
-							: () => <NoHistoryMessage msg='Não houve resgates nesse período' />
+							: () => <NoHistoryMessage msg='Não houve entregas nesse período' />
 					}
 					alwaysBounceVertical={false}
 					data={isLoading ? [] : awardHistory}
@@ -178,13 +216,13 @@ export function HistoricoResgateScreen() {
 						const item = itemData.item
 						return (
 							<AwardHistoryListItem
-								key={item.idResgate}
-								date={formatarDataStringToDate(item.dataCriacaoResgate, 'dd-mm-yyyy', '/')}
+								key={item.id}
+								date={formatarDataStringToDate(item.dataEntrega, 'dd-mm-yyyy', '/')}
 								aluno={item.aluno.nome}
-								premio={item.premio.nome}
 								escola={item.escola.nome}
-								status={item.statusEntrega}
-								preco={item.premio.preco}
+								material={item.material.nome}
+								pontos={Number(item.pontosEntrega)}
+								peso={item.pesagemEntrega}
 								last={itemData.index + 1 >= awardHistory.length}
 							/>
 						)

@@ -12,6 +12,8 @@ export function AwardHistoryListItem(props: {
 	premio?: string
 	message?: string
 	status?: string
+	material?: string
+	peso?: string
 	last: boolean
 	preco?: number
 	pontos?: number
@@ -56,12 +58,18 @@ export function AwardHistoryListItem(props: {
 						{props.premio && (
 							<Text style={styles.historyDescriptionText}>{`Prêmio :${props.premio}`}</Text>
 						)}
+						{props.material && (
+							<Text style={styles.historyDescriptionText}>{`Material :${props.material}`}</Text>
+						)}
+						{props.peso && (
+							<Text style={styles.historyDescriptionText}>{`Peso :${props.peso} Kg`}</Text>
+						)}
 						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 							{props.preco && (
 								<Text style={styles.historyPointsText}>-{Number(props.preco).toFixed(1)}pts</Text>
 							)}
 							{props.pontos && (
-								<Text style={styles.historyPointsText}>{Number(props.pontos).toFixed(1)}pts</Text>
+								<Text style={styles.historyPointsText}>+{Number(props.pontos).toFixed(1)}pts</Text>
 							)}
 							<View />
 							{props.status && <Text style={styles.historyPointsText}>{props.status}</Text>}

@@ -11,6 +11,7 @@ import { getSchoolDataFromToken, getSchoolPointsById } from '../../utils/school'
 import { LoadingScreen } from '../../screens/ui/LoadingScreen'
 import { GerenciarEstoqueScreen } from '../../screens/admin/GerenciarEstoqueScreen'
 import { HistoricoResgateScreen } from '../../screens/admin/HistoricoResgatesScreen'
+import { HistoricoEntregasScreen } from '../../screens/admin/HistoricoEntregasScreen'
 
 const BottomTab = createBottomTabNavigator()
 
@@ -72,6 +73,22 @@ export function AdminRootBottomTabNavigator() {
 			<BottomTab.Screen
 				name='AdminGerenciarEstoque'
 				component={GerenciarEstoqueScreen}
+				options={{
+					tabBarLabel: () => null,
+					tabBarIcon: tabInfo => {
+						return (
+							<Ionicons
+								name={tabInfo.focused ? 'home-sharp' : 'home-outline'}
+								size={40}
+								color={tabInfo.color}
+							/>
+						)
+					},
+				}}
+			/>
+			<BottomTab.Screen
+				name='AdminHistoricoEntregas'
+				component={HistoricoEntregasScreen}
 				options={{
 					tabBarLabel: () => null,
 					tabBarIcon: tabInfo => {

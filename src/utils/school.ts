@@ -653,3 +653,53 @@ export function listarEscolas(token: string): Promise<ListarEscolaReturn[]> {
 			throw new Error(err)
 		})
 }
+
+export interface HistoricoEntrega {
+	id: string
+	aluno: {
+		nome: string
+		matricula: string
+		serie: string
+		pontos: number
+	}
+	escola: {
+		nome: string
+		nomeGestor: string
+	}
+	material: {
+		nome: string
+		pontosPorKg: string
+		categoria: string
+	}
+	pesagemEntrega: string
+	pontosEntrega: string
+	dataEntrega: string
+}
+
+export async function obterHistoricoDeEntregas(
+	token: string,
+	dataInicio: Date,
+	dataFim: Date,
+	idEscola: string,
+	material: string,
+): Promise<HistoricoEntrega[]> {
+	return axios
+		.get(`${CLIENT_URL}/escola/historicoEntregasMateriais`, {
+			params: {
+				idLoginEscola: idEscola,
+				dataInicio: formatarDataDateToString(dataInicio, 'mm-dd-yyyy', '-'),
+				dataFim: formatarDataDateToString(dataFim, 'mm-dd-yyyy', '-'),
+				material: material,
+			},
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(res => {
+			const x = res.data as HistoricoEntrega[]
+			return x
+		})
+		.catch(err => {
+			throw new Error(err)
+		})
+}
