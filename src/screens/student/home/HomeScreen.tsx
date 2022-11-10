@@ -39,6 +39,7 @@ export function HomeScreen() {
 						token: token,
 						name: res.nome,
 						points: res.pontos,
+						serie: res.serie,
 						studentNumber: res.matricula,
 						type: 'Student',
 						rank: -1,

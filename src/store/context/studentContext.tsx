@@ -14,6 +14,7 @@ interface StudentData {
 	token: string
 	name: string
 	type: 'Student'
+	serie: string
 	points: number
 	rank: number
 }
@@ -23,6 +24,7 @@ export const StudentContext = createContext<StudentAuth>({
 		token: '',
 		studentNumber: -1,
 		name: '',
+		serie: '',
 		type: 'Student',
 		points: -1,
 		rank: -1,
@@ -35,6 +37,7 @@ const emptyStudent: StudentData = {
 	token: '',
 	studentNumber: -1,
 	name: '',
+	serie: '',
 	type: 'Student',
 	points: -1,
 	rank: -1,

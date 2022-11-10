@@ -14,11 +14,13 @@ import { LoadingScreen } from '../../ui/LoadingScreen'
 import { AtividadeDataOutput } from '../../../types/atividades.type'
 import { listarAtividadesDoAluno } from '../../../utils/student'
 import { StudentTurboTaskListItem } from '../../../components/turboTasks/StudentTurboTaskListItem'
+import { StudentContext } from '../../../store/context/studentContext'
 
 export function PontuacaoTurbinadaScreen() {
 	const authCtx = useContext(AuthContext)
 	const navigation = useNavigation()
 	const isFocused = useIsFocused()
+	const studentCtx = useContext(StudentContext)
 
 	const [atividades, setAtividades] = useState<AtividadeDataOutput[] | null>(null)
 
@@ -27,7 +29,13 @@ export function PontuacaoTurbinadaScreen() {
 			.then(res => {
 				setAtividades(
 					res
-						.filter(s => s.status !== 'Inativo')
+						.filter(
+							s =>
+								s.status !== 'Inativo' &&
+								(s.serie === studentCtx.studentData.serie ||
+									s.serie === 'Multiserie' ||
+									s.serie === ''),
+						)
 						.sort((a, b) => (a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0)),
 				)
 			})
