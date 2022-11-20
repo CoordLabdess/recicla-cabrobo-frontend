@@ -11,35 +11,41 @@ import { StudentContext, StudentContextProvider } from '../store/context/student
 import { KeyboardAvoidingView } from 'react-native'
 import { SchoolContextProvider } from '../store/context/schoolContext'
 import { AdminRootBottomTabNavigator } from './admin/AdminRootBottomTabNavigator'
+import { NativeBaseProvider } from 'native-base'
 
 export function UserTypeRouter() {
 	const AuthCtx = useContext(AuthContext)
-
-	return AuthCtx.type === 'Student' ? (
-		<NavigationContainer>
-			<StudentContextProvider>
-				<StatusBar style='dark' backgroundColor='#fff' />
-				<StudentRootBottomTabNavigator />
-			</StudentContextProvider>
-		</NavigationContainer>
-	) : AuthCtx.type === 'School' ? (
-		<NavigationContainer>
-			<SchoolContextProvider>
-				<StatusBar style='dark' backgroundColor='#fff' />
-				<SchoolRootBottomTabNavigator />
-			</SchoolContextProvider>
-		</NavigationContainer>
-	) : AuthCtx.type === 'Admin' ? (
-		<NavigationContainer>
-			<SchoolContextProvider>
-				<StatusBar style='dark' backgroundColor='#fff' />
-				<AdminRootBottomTabNavigator />
-			</SchoolContextProvider>
-		</NavigationContainer>
-	) : (
-		<NavigationContainer>
-			<StatusBar style='light' backgroundColor={COLORS.primary500} />
-			<AnyScreen />
-		</NavigationContainer>
+	return (
+		<NativeBaseProvider>
+			{AuthCtx.type === 'Student' ? (
+				<NavigationContainer >
+					<StudentContextProvider>
+						<StatusBar style='dark' backgroundColor='#fff' />
+						<StudentRootBottomTabNavigator />
+					</StudentContextProvider>
+				</NavigationContainer>
+			) : AuthCtx.type === 'School' ? (
+				<NavigationContainer>
+					<SchoolContextProvider>
+						<StatusBar style='dark' backgroundColor='#fff' />
+						<SchoolRootBottomTabNavigator />
+					</SchoolContextProvider>
+				</NavigationContainer>
+			) : AuthCtx.type === 'Admin' ? (
+				<NavigationContainer>
+					<SchoolContextProvider>
+						<StatusBar style='dark' backgroundColor='#fff' />
+						<AdminRootBottomTabNavigator />
+					</SchoolContextProvider>
+				</NavigationContainer>
+			) : (
+				<NavigationContainer>
+					<StatusBar style='light' backgroundColor={COLORS.primary500} />
+					<AnyScreen />
+				</NavigationContainer>
+			)
+			}
+		</NativeBaseProvider >
 	)
+
 }

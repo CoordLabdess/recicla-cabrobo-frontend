@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Picker } from '@react-native-picker/picker'
 import { View, Text, StyleSheet } from 'react-native'
 import { COLORS } from '../../constants/colors'
+import { Select } from 'native-base'
 
 interface FiltroTurmaProps {
 	onChange: (text: string) => void
@@ -13,27 +13,30 @@ export function FiltroTurma(props: FiltroTurmaProps) {
 		<View>
 			<Text>Turma</Text>
 			<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-				<Picker
-					style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
-					selectedValue={text}
+				<Select
+					fontSize={20}
+					fontWeight={600} selectedValue={text}
+					backgroundColor={COLORS.secondary400}
+					py={9}
+					px={17}
+					borderRadius={16}
 					onValueChange={value => {
 						props.onChange(value)
-
 						setText(value)
 					}}
-					enabled={true}
+					placeholder="Selecione uma turma"
 				>
-					<Picker.Item label='- Selecione uma turma -' value='' />
-					<Picker.Item label='4º ano' value='4º ano' />
-					<Picker.Item label='5º ano' value='5º ano' />
-					<Picker.Item label='6º ano' value='6º ano' />
-					<Picker.Item label='7º ano' value='7º ano' />
-					<Picker.Item label='8º ano' value='8º ano' />
-					<Picker.Item label='9º ano' value='9º ano' />
-					<Picker.Item label='Multisérie' value='Multiserie' />
-				</Picker>
+					<Select.Item label='- Selecione uma turma -' value='' />
+					<Select.Item label='4º ano' value='4º ano' />
+					<Select.Item label='5º ano' value='5º ano' />
+					<Select.Item label='6º ano' value='6º ano' />
+					<Select.Item label='7º ano' value='7º ano' />
+					<Select.Item label='8º ano' value='8º ano' />
+					<Select.Item label='9º ano' value='9º ano' />
+					<Select.Item label='Multisérie' value='Multiserie' />
+				</Select>
 			</View>
-		</View>
+		</View >
 	)
 }
 

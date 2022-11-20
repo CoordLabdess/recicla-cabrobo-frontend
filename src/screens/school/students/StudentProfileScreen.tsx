@@ -1,7 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
-import { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, TextInput } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { PrimaryButton } from '../../../components/ui/Buttons'
 import { ConfirmModal } from '../../../components/ui/ConfirmModal'
@@ -15,6 +14,7 @@ import { AuthContext } from '../../../store/context/authContext'
 import { StudentData } from '../../../utils/student'
 import { ErrorMessage } from '../../../components/ui/ErrorMessage'
 import { NotifyModal } from '../../../components/modals/NotifyModal'
+import { Select } from 'native-base'
 
 interface StudentProfileScreenProps {
 	route: RouteProp<{ params: { mode: 'create' | 'edit'; student: StudentData } }, 'params'>
@@ -175,36 +175,46 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Sexo</Text>
 					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-						<Picker
-							onValueChange={text => setSexo(text)}
-							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
+						<Select
+							onValueChange={value => setSexo(value)}
 							selectedValue={sexo}
-							enabled={editable}
+							isDisabled={!editable}
+							fontSize={20}
+							fontWeight={600}
+							placeholder=" - Selecione o Sexo - "
+							padding={11}
+							borderRadius={15}
+							backgroundColor={COLORS.secondary400}
 						>
-							<Picker.Item label='- Selecione o Sexo -' value='Nao Denifido' />
-							<Picker.Item label='Masculino' value='Masc' />
-							<Picker.Item label='Feminino' value='Fem' />
-						</Picker>
+							<Select.Item label="Não Definido" value="Nao Definido" />
+							<Select.Item label='Masculino' value='Masc' />
+							<Select.Item label='Feminino' value='Fem' />
+						</Select>
 					</View>
 				</View>
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Série</Text>
 					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-						<Picker
+						<Select
 							onValueChange={text => setSerie(text)}
-							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
 							selectedValue={serie}
-							enabled={editable}
+							isDisabled={!editable}
+							fontSize={20}
+							fontWeight={600}
+							placeholder=" - Selecione a Série - "
+							padding={11}
+							borderRadius={15}
+							backgroundColor={COLORS.secondary400}
 						>
-							<Picker.Item label='- Não Definida -' value='Nao Definido' />
-							<Picker.Item label='4º ano' value='4º ano' />
-							<Picker.Item label='5º ano' value='5º ano' />
-							<Picker.Item label='6º ano' value='6º ano' />
-							<Picker.Item label='7º ano' value='7º ano' />
-							<Picker.Item label='8º ano' value='8º ano' />
-							<Picker.Item label='9º ano' value='9º ano' />
-							<Picker.Item label='Multisérie' value='Multiserie' />
-						</Picker>
+							<Select.Item label='- Não Definida -' value='Nao Definido' />
+							<Select.Item label='4º ano' value='4º ano' />
+							<Select.Item label='5º ano' value='5º ano' />
+							<Select.Item label='6º ano' value='6º ano' />
+							<Select.Item label='7º ano' value='7º ano' />
+							<Select.Item label='8º ano' value='8º ano' />
+							<Select.Item label='9º ano' value='9º ano' />
+							<Select.Item label='Multisérie' value='Multiserie' />
+						</Select>
 					</View>
 				</View>
 
@@ -341,7 +351,7 @@ export function StudentProfileScreen(props: StudentProfileScreenProps) {
 				buttonColor='#8E2941'
 				text='Ocorreu um erro durante a exclusão do aluno! Tente novamente!'
 			/>
-		</SafeAreaView>
+		</SafeAreaView >
 	)
 }
 

@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react'
 import { COLORS } from '../../../constants/colors'
 import { Ionicons } from '@expo/vector-icons'
 import { useIsFocused, useLinkProps, useNavigation } from '@react-navigation/native'
-import { Picker } from '@react-native-picker/picker'
 import { AwardListItem } from '../../../components/awards/AwardListItem'
 import { History } from '../../../components/home/History'
 import {
@@ -26,7 +25,7 @@ import { NotifyModal } from '../../../components/modals/NotifyModal'
 function AwardElement(props: { award: Award }) {
 	return (
 		<View style={{ alignItems: 'center' }}>
-			<AwardListItem award={props.award} onPress={() => {}} />
+			<AwardListItem award={props.award} onPress={() => { }} />
 		</View>
 	)
 }

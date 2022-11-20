@@ -1,5 +1,5 @@
-import { Picker } from '@react-native-picker/picker'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { Select } from 'native-base'
 import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -91,23 +91,25 @@ export function SolicitacoesAtividadesScreen() {
 								<View>
 									<Text>Turma</Text>
 									<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-										<Picker
-											style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
+										<Select
+											fontWeight={600}
+											fontSize={20}
 											selectedValue={filtroSerie}
-											onValueChange={value => {
-												atualizarFiltro(value)
-											}}
-											enabled={true}
+											onValueChange={value => atualizarFiltro(value)}
+											backgroundColor={COLORS.secondary400}
+											py={9}
+											px={17}
+											borderRadius={16}
+											placeholder='Selecione uma turma'
 										>
-											<Picker.Item label='- Selecione uma turma -' value='' />
-											<Picker.Item label='4º ano' value='4º ano' />
-											<Picker.Item label='5º ano' value='5º ano' />
-											<Picker.Item label='6º ano' value='6º ano' />
-											<Picker.Item label='7º ano' value='7º ano' />
-											<Picker.Item label='8º ano' value='8º ano' />
-											<Picker.Item label='9º ano' value='9º ano' />
-											<Picker.Item label='Multisérie' value='Multiserie' />
-										</Picker>
+											<Select.Item label='4º ano' value='4º ano' />
+											<Select.Item label='5º ano' value='5º ano' />
+											<Select.Item label='6º ano' value='6º ano' />
+											<Select.Item label='7º ano' value='7º ano' />
+											<Select.Item label='8º ano' value='8º ano' />
+											<Select.Item label='9º ano' value='9º ano' />
+											<Select.Item label='Multisérie' value='Multiserie' />
+										</Select>
 									</View>
 								</View>
 							</View>

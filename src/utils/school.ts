@@ -700,6 +700,7 @@ export async function obterHistoricoDeEntregas(
 			return x
 		})
 		.catch(err => {
+			console.log(err.response)
 			throw new Error(err)
 		})
 }
