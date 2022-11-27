@@ -1,4 +1,3 @@
-import { Picker } from '@react-native-picker/picker'
 import { useContext, useLayoutEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, TextInput } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -12,6 +11,7 @@ import { AuthContext } from '../../../store/context/authContext'
 import { AtividadeDataOutput } from '../../../types/atividades.type'
 import { LoadingScreen } from '../../ui/LoadingScreen'
 import { NotifyModal } from '../../../components/modals/NotifyModal'
+import { Select } from 'native-base'
 
 interface InformTurboTaskScreenProps {
 	route: RouteProp<
@@ -81,25 +81,27 @@ export function InformTurboTaskScreen(props: InformTurboTaskScreenProps) {
 				<View style={styles.fieldContainer}>
 					<Text style={styles.label}>Atividade</Text>
 					<View style={{ overflow: 'hidden', borderRadius: 15, width: '100%' }}>
-						<Picker
-							onValueChange={text =>
-								setSelectedTurboTask(todasAtividades.filter(task => task.id === text)[0])
-							}
-							style={[styles.field, { fontSize: 20, fontWeight: '600' }]}
+						<Select
+							onValueChange={text => setSelectedTurboTask(todasAtividades.filter(task => task.id === text)[0])}
 							selectedValue={selectedTurboTask?.id || ''}
-							enabled={true}
+							placeholder="- Selecione uma atividade - "
+							fontSize={20}
+							fontWeight={600}
+							padding={11}
+							borderRadius={15}
+							backgroundColor={COLORS.secondary400}
 						>
-							<Picker.Item label='- Selecione a atividade -' value='' />
 							{todasAtividades.map(item => {
 								return (
-									<Picker.Item
+									<Select.Item
 										key={item.id}
 										label={`${item.nome} - ${item.serie}`}
 										value={item.id}
 									/>
 								)
 							})}
-						</Picker>
+
+						</Select>
 					</View>
 				</View>
 				<View style={{ marginVertical: 20 }}>

@@ -13,7 +13,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SimplePageHeader } from '../../../components/ui/SimplePageHeader'
 import { COLORS } from '../../../constants/colors'
-import { Picker } from '@react-native-picker/picker'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { PrimaryButton } from '../../../components/ui/Buttons'
 import { useNavigation } from '@react-navigation/native'
@@ -26,6 +25,7 @@ import {
 import { AuthContext } from '../../../store/context/authContext'
 import { AtividadeDataOutput, CriarAtividadeDataInput } from '../../../types/atividades.type'
 import { NotifyModal } from '../../../components/modals/NotifyModal'
+import { Select } from 'native-base'
 
 const atividadeEmBranco: CriarAtividadeDataInput = {
 	nomeAtividade: '',
@@ -141,23 +141,27 @@ export function CriarAtividadeScreen() {
 				<View style={styles.elementContainer}>
 					<Text style={styles.label}>Série</Text>
 					<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-						<Picker
-							style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
+						<Select
 							selectedValue={atividade.serie}
 							onValueChange={value => {
 								setAtividade({ ...atividade, serie: value })
 							}}
-							enabled={true}
+							fontSize={20}
+							fontWeight={600}
+							backgroundColor={COLORS.secondary400}
+							py={9}
+							px={17}
+							borderRadius={16}
+							placeholder="- Selecione uma turma -"
 						>
-							<Picker.Item label='- Selecione uma turma -' value='' />
-							<Picker.Item label='4º ano' value='4º ano' />
-							<Picker.Item label='5º ano' value='5º ano' />
-							<Picker.Item label='6º ano' value='6º ano' />
-							<Picker.Item label='7º ano' value='7º ano' />
-							<Picker.Item label='8º ano' value='8º ano' />
-							<Picker.Item label='9º ano' value='9º ano' />
-							<Picker.Item label='Multisérie' value='Multiserie' />
-						</Picker>
+							<Select.Item label='4º ano' value='4º ano' />
+							<Select.Item label='5º ano' value='5º ano' />
+							<Select.Item label='6º ano' value='6º ano' />
+							<Select.Item label='7º ano' value='7º ano' />
+							<Select.Item label='8º ano' value='8º ano' />
+							<Select.Item label='9º ano' value='9º ano' />
+							<Select.Item label='Multisérie' value='Multiserie' />
+						</Select>
 					</View>
 				</View>
 				<View style={styles.elementContainer}>

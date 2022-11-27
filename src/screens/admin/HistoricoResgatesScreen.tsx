@@ -18,6 +18,7 @@ import {
 import { LoadingScreen } from '../ui/LoadingScreen'
 import { COLORS } from '../../constants/colors'
 import { Picker } from '@react-native-picker/picker'
+import { Select } from 'native-base'
 
 interface filtro {
 	dataInicial: Date
@@ -147,17 +148,22 @@ export function HistoricoResgateScreen() {
 								<View style={{ width: '100%', alignItems: 'center' }}>
 									<View style={styles.elementContainer}>
 										<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-											<Picker
-												style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
+											<Select
+												fontSize={20}
+												fontWeight={600}
 												selectedValue={filtro.loginEscola}
 												onValueChange={onChangeEscola}
-												enabled={true}
+												backgroundColor={COLORS.secondary400}
+												py={9}
+												px={17}
+												borderRadius={16}
+												placeholder="- Selecione uma escola -"
 											>
-												<Picker.Item label='- Selecione uma escola -' value='' />
 												{escolas.map(e => {
-													return <Picker.Item label={e.nome} value={e.idLogin} />
+													return <Select.Item label={e.nome} value={e.idLogin} key={e.id} />
 												})}
-											</Picker>
+
+											</Select>
 										</View>
 									</View>
 								</View>
@@ -191,23 +197,27 @@ export function HistoricoResgateScreen() {
 					}}
 				/>
 			</SafeAreaView>
-			{show1 && (
-				<DateTimePicker
-					value={filtro.dataInicial}
-					onChange={onChangeDataInicial}
-					minimumDate={new Date(2022, 0, 1)}
-					maximumDate={filtro.dataFinal}
-				/>
-			)}
-			{show2 && (
-				<DateTimePicker
-					value={filtro.dataFinal}
-					onChange={onChangeDataFinal}
-					accentColor={COLORS.primary500}
-					minimumDate={filtro.dataInicial}
-					maximumDate={new Date()}
-				/>
-			)}
+			{
+				show1 && (
+					<DateTimePicker
+						value={filtro.dataInicial}
+						onChange={onChangeDataInicial}
+						minimumDate={new Date(2022, 0, 1)}
+						maximumDate={filtro.dataFinal}
+					/>
+				)
+			}
+			{
+				show2 && (
+					<DateTimePicker
+						value={filtro.dataFinal}
+						onChange={onChangeDataFinal}
+						accentColor={COLORS.primary500}
+						minimumDate={filtro.dataInicial}
+						maximumDate={new Date()}
+					/>
+				)
+			}
 		</>
 	)
 }

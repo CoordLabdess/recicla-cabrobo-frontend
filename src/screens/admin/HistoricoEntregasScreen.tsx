@@ -21,7 +21,7 @@ import {
 } from '../../utils/school'
 import { LoadingScreen } from '../ui/LoadingScreen'
 import { COLORS } from '../../constants/colors'
-import { Picker } from '@react-native-picker/picker'
+import { Select } from 'native-base'
 
 interface filtro {
 	dataInicial: Date
@@ -168,34 +168,40 @@ export function HistoricoEntregasScreen() {
 								<View style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}>
 									<View style={styles.elementContainer}>
 										<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-											<Picker
-												style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
-												selectedValue={filtro.loginEscola}
+											<Select
+												selectedValue={filtro.loginEscola} placeholder="Selecione uma Escola"
+												fontSize={20}
+												fontWeight={600}
 												onValueChange={onChangeEscola}
-												enabled={true}
+												bgColor={COLORS.secondary400}
+												py={9}
+												px={17}
+												borderRadius={16}
 											>
-												<Picker.Item label='- Selecione uma escola -' value='' />
 												{escolas.map(e => {
-													return <Picker.Item label={e.nome} value={e.idLogin} />
+													return <Select.Item label={e.nome} value={e.idLogin} key={e.id} />
 												})}
-											</Picker>
+											</Select>
 										</View>
 									</View>
 								</View>
 								<View style={{ width: '100%', alignItems: 'center' }}>
 									<View style={styles.elementContainer}>
 										<View style={{ overflow: 'hidden', borderRadius: 15 }}>
-											<Picker
-												style={[styles.textInput, { fontSize: 20, fontWeight: '600' }]}
-												selectedValue={filtro.material}
+											<Select
+												selectedValue={filtro.material} placeholder="Selecione um material"
+												fontSize={20}
+												fontWeight={600}
 												onValueChange={onChangeMaterial}
-												enabled={true}
+												bgColor={COLORS.secondary400}
+												py={9}
+												px={17}
+												borderRadius={16}
 											>
-												<Picker.Item label='- Selecione um material -' value='' />
 												{materiais.map(e => {
-													return <Picker.Item label={e.nomeMaterial} value={e.nomeMaterial} />
+													return <Select.Item label={e.nomeMaterial} value={e.nomeMaterial} key={e.id} />
 												})}
-											</Picker>
+											</Select>
 										</View>
 									</View>
 								</View>
@@ -229,23 +235,27 @@ export function HistoricoEntregasScreen() {
 					}}
 				/>
 			</SafeAreaView>
-			{show1 && (
-				<DateTimePicker
-					value={filtro.dataInicial}
-					onChange={onChangeDataInicial}
-					minimumDate={new Date(2022, 0, 1)}
-					maximumDate={filtro.dataFinal}
-				/>
-			)}
-			{show2 && (
-				<DateTimePicker
-					value={filtro.dataFinal}
-					onChange={onChangeDataFinal}
-					accentColor={COLORS.primary500}
-					minimumDate={filtro.dataInicial}
-					maximumDate={new Date()}
-				/>
-			)}
+			{
+				show1 && (
+					<DateTimePicker
+						value={filtro.dataInicial}
+						onChange={onChangeDataInicial}
+						minimumDate={new Date(2022, 0, 1)}
+						maximumDate={filtro.dataFinal}
+					/>
+				)
+			}
+			{
+				show2 && (
+					<DateTimePicker
+						value={filtro.dataFinal}
+						onChange={onChangeDataFinal}
+						accentColor={COLORS.primary500}
+						minimumDate={filtro.dataInicial}
+						maximumDate={new Date()}
+					/>
+				)
+			}
 		</>
 	)
 }
