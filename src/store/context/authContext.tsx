@@ -1,5 +1,6 @@
-import React, { createContext, useState } from 'react'
-
+import React, { createContext, useEffect, useState } from 'react'
+import * as SecureStore from 'expo-secure-store'
+import * as SplashScreen from 'expo-splash-screen'
 export type AuthType = 'Student' | 'School' | 'Admin' | null
 
 interface Auth {
@@ -14,22 +15,50 @@ export const AuthContext = createContext<Auth>({
 	token: '',
 	type: null,
 	isAuthenticated: false,
-	authenticate: () => {},
-	logout: () => {},
+	authenticate: () => { },
+	logout: () => { },
 })
 
 export function AuthContextProvider(props: { children: React.ReactNode }) {
 	const [authToken, setAuthToken] = useState<null | string>(null)
 	const [authType, setAuthType] = useState<AuthType>(null)
 
-	function authenticate(token: string, type: AuthType) {
+	async function authenticate(token: string, type: AuthType) {
+		await SecureStore.setItemAsync('token', token)
+		await SecureStore.setItemAsync('type', type || "")
 		setAuthToken(token)
 		setAuthType(type)
 	}
 
-	function logout() {
+	async function logout() {
 		setAuthToken(null)
+		await SecureStore.deleteItemAsync('token')
+		await SecureStore.deleteItemAsync('type')
 	}
+
+	async function fetchToken() {
+		try {
+			SplashScreen.preventAutoHideAsync()
+
+			const token = await SecureStore.getItemAsync('token')
+			const type = await SecureStore.getItemAsync('type')
+			if (token && type) {
+				setAuthType(type as AuthType)
+				setAuthToken(token)
+			} else {
+				setAuthToken(null)
+				setAuthType(null)
+			}
+		} catch (error) {
+			console.log(error)
+		} finally {
+			SplashScreen.hideAsync()
+		}
+	}
+
+	useEffect(() => {
+		fetchToken()
+	}, [])
 
 	const value: Auth = {
 		token: authToken,
