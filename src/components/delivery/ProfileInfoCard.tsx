@@ -33,7 +33,7 @@ export function ProfileInfoCard(props: ProfileInfoCardProps) {
 					</View>
 					<View style={styles.topicContainer}>
 						<Text style={styles.topicTitle}>Série:</Text>
-						<Text style={styles.topicText}>9º ano</Text>
+						<Text style={styles.topicText}>{props.serie}</Text>
 					</View>
 					<View style={styles.topicContainer}>
 						<Text style={styles.topicTitle}>Escola:</Text>

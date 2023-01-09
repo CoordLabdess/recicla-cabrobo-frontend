@@ -46,6 +46,7 @@ export function ConfirmStudentScreen(props: ConfirmStudentScreenProps) {
 						profileImg={genericImgSrc}
 						uniqueCode={String(student.matricula)}
 						type='Student'
+						serie={student.serie}
 					/>
 				</View>
 				<View style={[styles.container]}>
